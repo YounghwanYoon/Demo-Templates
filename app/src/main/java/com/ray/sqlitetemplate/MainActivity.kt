@@ -2,12 +2,12 @@ package com.ray.sqlitetemplate
 
 import android.nfc.Tag
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -20,8 +20,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.main_activity);
-        mLogin_Id = findViewById(R.id.login_id_editText)
+        setContentView(R.layout.activity_main);
+        mLogin_Id = findViewById(R.id.login_id_edit_text)
         mAddButton = findViewById(R.id.add_button)
 
         assignListeners()
