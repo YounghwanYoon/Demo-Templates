@@ -1,6 +1,5 @@
 package com.ray.sqlitetemplate
 
-import android.nfc.Tag
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
@@ -37,14 +36,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View) {
+        Log.i(Tag, "It is inside of onClick()")
         when (v.id) {
             R.id.add_button -> {
-                Toast.makeText(this, "Current ID is ${mLogin_Id.text.toString()}", Toast.LENGTH_SHORT);
+                Log.i(Tag, "It is inside of add_button")
+                Toast.makeText(this, "Current ID is ${mLogin_Id.text} added", Toast.LENGTH_SHORT).show()
             }
             R.id.remove_button -> {
-                //TODO
+             Toast.makeText(this, "Current ID is ${mLogin_Id.text} removed", Toast.LENGTH_SHORT).show()
             }
-
         }
     }
 

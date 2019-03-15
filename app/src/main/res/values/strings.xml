@@ -3,6 +3,6 @@
     <string name="sqlite">SQLite</string>
     <string name="add">Add</string>
     <string name="remove">Remove</string>
-    <string name="log_in_id">Log In ID</string>
+    <string name="log_in_id">Login ID or Email</string>
     <string name="password">Password</string>
 </resources>
