@@ -21,18 +21,19 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main);
         mLogin_Id = findViewById(R.id.login_id_edit_text)
+        mLogin_Pw= findViewById(R.id.password_edit_text)
         mAddButton = findViewById(R.id.add_button)
-
+        mRemoveButton = findViewById(R.id.remove_button)
         assignListeners()
     }
 
     private fun assignListeners() {
-        var loginStr: String;
-        loginStr = mLogin_Id.selectAll().toString();
+        var loginStr:String = mLogin_Id.getText().toString()
+        var pwStr:String = mLogin_Pw.getText().toString()
         val v = Log.v(Tag, "Current Input Id is $loginStr")
 
         mAddButton.setOnClickListener(this)
-
+        mRemoveButton.setOnClickListener(this)
     }
 
     override fun onClick(v: View) {
