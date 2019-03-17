@@ -1,22 +1,21 @@
 package com.ray.sqlitetemplate
 
-class LoginData{
+class LoginData(private var id:String, private var pw:String){
+    var mLoginID:String = id
+        get() = field
+        set(value) {
+            field = value
+        }
+    var mLoginPW:String =pw
+        get() = field
+        set(value) {
+            field = value
+        }
 
-    fun constructor(id:String, pw:String){
+    init{
         mLoginID = id
         mLoginPW = pw
     }
+
+
 }
-
-private  var LoginData.mLoginPW:String
-    get() = mLoginPW
-    set(value) {
-        mLoginPW = value
-    }
-
-private var LoginData.mLoginID:String
-    get() = this.mLoginID
-    set(value) {
-        mLoginID = value
-    }
-

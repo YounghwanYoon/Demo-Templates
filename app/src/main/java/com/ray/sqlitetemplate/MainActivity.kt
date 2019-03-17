@@ -7,13 +7,13 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private val Tag: String = "MainActivity"
     private lateinit var mLogin_Id: EditText
     private lateinit var mLogin_Pw: EditText
-
     private lateinit var mAddButton: Button
     private lateinit var mRemoveButton: Button
 
@@ -41,17 +41,40 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         when (v.id) {
             R.id.add_button -> {
                 Log.i(Tag, "It is inside of add_button")
-                Toast.makeText(this, "Current ID is ${mLogin_Id.text} added", Toast.LENGTH_SHORT).show()
+                if(validateInputData(R.id.add_button)){
+                    var loginData:LoginData = LoginData(mLogin_Id.text.toString(), mLogin_Pw.text.toString())
+                    var db = DatabaseHelper(this, DatabaseHelper.Companion.DATABASE_NAME,null,1)
+                    db.insertData(loginData)
+                }
+                    Toast.makeText(this, "Current ID is ${mLogin_Id.text} added", Toast.LENGTH_SHORT).show()
             }
             R.id.remove_button -> {
-             Toast.makeText(this, "Current ID is ${mLogin_Id.text} removed", Toast.LENGTH_SHORT).show()
+                if(validateInputData(R.id.remove_button))
+                    Toast.makeText(this, "Current ID is ${mLogin_Id.text} removed", Toast.LENGTH_SHORT).show()
             }
         }
     }
-
-    private val clickListener = View.OnClickListener {
-
-
+    private fun validateInputData(button:Int): Boolean{
+        when (button){
+            R.id.add_button -> {
+                if(mLogin_Id.text.toString().length <= 0){
+                    Toast.makeText(this, "Please insert Login ID", Toast.LENGTH_SHORT).show()
+                    return false
+                }
+                else if(mLogin_Pw.text.toString().length <= 0){
+                    Toast.makeText(this, "Please insert Password", Toast.LENGTH_SHORT).show()
+                    return false
+                }
+                return true
+            }
+            R.id.remove_button ->{
+                return false
+                //TODO deal with a case when remove_button wonlt work such as given ID is not in the table.
+            }
+        }
+        return false
     }
 
+    private val clickListener = View.OnClickListener {
+    }
 }
