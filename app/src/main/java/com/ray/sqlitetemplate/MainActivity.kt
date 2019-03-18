@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 Log.i(Tag, "It is inside of add_button")
                 if(validateInputData(R.id.add_button)){
                     var loginData:LoginData = LoginData(mLogin_Id.text.toString(), mLogin_Pw.text.toString())
-                    var db = DatabaseHelper(this, DatabaseHelper.Companion.DATABASE_NAME,null,1)
+                    var db = DatabaseHelper(this, DatabaseHelper.FeedEntry.DATABASE_NAME,null,1)
                     db.insertData(loginData)
                 }
                     Toast.makeText(this, "Current ID is ${mLogin_Id.text} added", Toast.LENGTH_SHORT).show()
