@@ -12,14 +12,16 @@ class DatabaseHelper(var context: Context?, var name: String? = DATABASE_NAME, f
     companion object {
         const val DATABASE_NAME:String ="mylist.db"
         private const val TABLE_NAME:String = "mylist_data"
+        private const val UniquqID:String = "UniqueID"
         private const val COL_ID:String = "ID"
-        private const val COL_PW:String ="ITEM1"
+        private const val COL_PW:String ="PW"
     }
     override fun onCreate(p0: SQLiteDatabase?) {
-        val createTable = "CREATE TABLE " + TABLE_NAME +" (" +
-                COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                COL_PW + "VARCHAR(256)"
-
+        val createTable:String = " CREATE TABLE " + TABLE_NAME + " (" +
+                UniquqID + " INTEGER PRIMARY KEY AUTOINCREMENT,  "+
+                COL_ID + " TEXT NOT NULL, " +
+                COL_PW + " TEXT NOT NULL"+
+                ");"
         p0!!.execSQL(createTable)
     }
 
