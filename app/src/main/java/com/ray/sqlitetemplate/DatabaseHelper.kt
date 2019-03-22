@@ -16,7 +16,7 @@ class DatabaseHelper(var context: Context?, var name: String? = FeedEntry.DATABA
     object FeedEntry : BaseColumns {
         const val DATABASE_NAME: String = "mylist.db"
         internal const val TABLE_NAME: String = "mylist_data"
-        private const val UniquqID: String = "UniqueID"
+        internal const val UniquqID: String = "UniqueID"
         internal const val COL_ID: String = "ID"
         internal const val COL_PW: String = "PW"
         internal const val createTable: String = " CREATE TABLE " + TABLE_NAME + " (" +
@@ -61,14 +61,16 @@ class DatabaseHelper(var context: Context?, var name: String? = FeedEntry.DATABA
 
         // Define a projection that specifies which columns from the database
         // you will actually use after this query.
-        val projection = arrayOf(BaseColumns._ID, FeedEntry.COL_ID, FeedEntry.COL_PW)
+        val projection = arrayOf(BaseColumns._ID, FeedEntry.UniquqID, FeedEntry.COL_ID, FeedEntry.COL_PW)
 
-        // Filter results WHERE "title" = 'My Title'
+       /* // Filter results WHERE "title" = 'My Title'
         val selection = "${FeedEntry.COL_ID} = ?"
         val selectionArgs = arrayOf("My Title")
-
+*/
+        val selection = null
+        val selectionArgs = null
         // How you want the results sorted in the resulting Cursor
-        val sortOrder = "${FeedEntry.COL_PW} DESC"
+        val sortOrder = "${FeedEntry.UniquqID} DESC"
 
         val cursor = database.query(
                 FeedEntry.TABLE_NAME,   // The table to query

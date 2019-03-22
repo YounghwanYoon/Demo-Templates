@@ -1,6 +1,8 @@
 package com.ray.sqlitetemplate
 
+import android.content.Intent
 import android.os.Bundle
+import android.provider.BaseColumns
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
@@ -51,6 +53,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             R.id.remove_button -> {
                 if(validateInputData(R.id.remove_button))
                     Toast.makeText(this, "Current ID is ${mLogin_Id.text} removed", Toast.LENGTH_SHORT).show()
+            }
+            R.id.check_sql_button->{
+                val listViewActivityIntent = Intent(this, List_View_Activity::class.java)
+                startActivity(listViewActivityIntent)
             }
         }
     }
