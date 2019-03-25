@@ -1,8 +1,13 @@
 package com.ray.sqlitetemplate
 
+import android.Manifest
+import android.app.Activity
+import android.app.PendingIntent.getActivity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.provider.BaseColumns
+import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
@@ -18,14 +23,20 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var mLogin_Pw: EditText
     private lateinit var mAddButton: Button
     private lateinit var mRemoveButton: Button
+    private lateinit var dbController: DatabaseController
+    private lateinit var mCheckListButton:Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main);
-        mLogin_Id = findViewById(R.id.login_id_edit_text)
+        mLogin_Id = this.findViewById(R.id.login_id_edit_text)
         mLogin_Pw= findViewById(R.id.password_edit_text)
         mAddButton = findViewById(R.id.add_button)
         mRemoveButton = findViewById(R.id.remove_button)
+        mCheckListButton= findViewById(R.id.check_sql_button)
+
+        dbController = DatabaseController(this)
+        verifyStoragePermissions()
         assignListeners()
     }
 
@@ -36,6 +47,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         mAddButton.setOnClickListener(this)
         mRemoveButton.setOnClickListener(this)
+        mCheckListButton.setOnClickListener(this)
     }
 
     override fun onClick(v: View) {
@@ -45,9 +57,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 Log.i(Tag, "It is inside of add_button")
                 if(validateInputData(R.id.add_button)){
                     var loginData:LoginData = LoginData(mLogin_Id.text.toString(), mLogin_Pw.text.toString())
-                    var db = DatabaseHelper(this, DatabaseHelper.FeedEntry.DATABASE_NAME,null,1)
-                    db.insertData(loginData)
+                    dbController.addData(loginData)
                 }
+                mLogin_Id.text.clear()
+                mLogin_Pw.text.clear()
+
                     Toast.makeText(this, "Current ID is ${mLogin_Id.text} added", Toast.LENGTH_SHORT).show()
             }
             R.id.remove_button -> {
@@ -55,7 +69,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     Toast.makeText(this, "Current ID is ${mLogin_Id.text} removed", Toast.LENGTH_SHORT).show()
             }
             R.id.check_sql_button->{
-                val listViewActivityIntent = Intent(this, List_View_Activity::class.java)
+                val listViewActivityIntent: Intent = Intent(this@MainActivity, blank::class.java)
+                Toast.makeText(this, "Starting New Activity", Toast.LENGTH_SHORT).show()
+
                 startActivity(listViewActivityIntent)
             }
         }
@@ -80,7 +96,19 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
         return false
     }
+        fun verifyStoragePermissions() {
+        // Check if we have write permission
+        val permission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            // We don't have permission so prompt the user
+            ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                    0
+            )
+        }
+    }
     private val clickListener = View.OnClickListener {
     }
 }

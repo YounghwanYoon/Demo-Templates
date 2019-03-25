@@ -1,14 +1,18 @@
 package com.ray.sqlitetemplate
 
+import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.provider.BaseColumns
+import android.webkit.CookieSyncManager.createInstance
 import android.widget.Toast
+import com.ray.sqlitetemplate.DatabaseHelper.FeedEntry.TABLE_NAME
 import com.ray.sqlitetemplate.DatabaseHelper.FeedEntry.createTable
 import com.ray.sqlitetemplate.DatabaseHelper.FeedEntry.deleteTable
+
 
 //name variable is the DataBase name
 class DatabaseHelper(var context: Context?, var name: String? = FeedEntry.DATABASE_NAME, factory: SQLiteDatabase.CursorFactory?, var version: Int) : SQLiteOpenHelper(context, name, null, 1) {
@@ -25,6 +29,25 @@ class DatabaseHelper(var context: Context?, var name: String? = FeedEntry.DATABA
                 COL_PW + " TEXT NOT NULL" +
                 ");"
         internal const val deleteTable: String = "DROP TABLE IF EXISTS $createTable"
+    }
+
+    companion object singletonInstance{
+        @SuppressLint("StaticFieldLeak")
+        private var instance:DatabaseHelper? = null
+
+        @Synchronized
+        fun getInstance(context:Context){
+            if(instance ==null)
+                createInstance(context)
+        }
+    }
+
+    @Synchronized
+    private fun createInstance(context:Context): DatabaseHelper {
+        if (instance == null) {
+            instance = DatabaseHelper(context, name, null, version)
+        }
+        return instance!!
     }
 
     override fun onCreate(p0: SQLiteDatabase?) {
@@ -72,7 +95,7 @@ class DatabaseHelper(var context: Context?, var name: String? = FeedEntry.DATABA
         // How you want the results sorted in the resulting Cursor
         val sortOrder = "${FeedEntry.UniquqID} DESC"
 
-        val cursor = database.query(
+/*        val cursor = database.query(
                 FeedEntry.TABLE_NAME,   // The table to query
                 projection,             // The array of columns to return (pass null to get all)
                 selection,              // The columns for the WHERE clause
@@ -80,7 +103,9 @@ class DatabaseHelper(var context: Context?, var name: String? = FeedEntry.DATABA
                 null,                   // don't group the rows
                 null,                   // don't filter by row groups
                 sortOrder               // The sort order
-        )
+        )*/
+        val selectQuery = "SELECT * FROM "+ TABLE_NAME
+        val cursor = database.rawQuery(selectQuery, selectionArgs)
 
         return cursor
     }
