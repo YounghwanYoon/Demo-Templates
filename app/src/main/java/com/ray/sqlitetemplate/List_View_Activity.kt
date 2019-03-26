@@ -28,10 +28,6 @@ class List_View_Activity() :AppCompatActivity()/*, AsyncTask<String, String, Str
 
         setView()
         setContentView(R.layout.list_view)
-
-
-
-
     }
     fun setView(){
         val dbController = DatabaseController(this)
