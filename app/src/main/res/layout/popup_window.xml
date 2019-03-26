@@ -9,18 +9,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="#cc515050">
         <Button
                 android:text="Remove"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/button3"
+                android:id="@+id/remove_button"
                 android:layout_weight="1"/>
         <Button
                 android:text="Update"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/button2"
+                android:id="@+id/update_button"
                 android:layout_weight="1"/>
     </LinearLayout>
 
