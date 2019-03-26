@@ -6,9 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 
 //ArrayAdapter is Binding between listview and each view .
 //resource is the each_row.xml
@@ -35,7 +33,19 @@ class MyArrayAdapter(context: Context , val resource:Int, users:ArrayList<Pair<L
         userUniqueID!!.text = user.first.toString()
         userID!!.text = user.second.mLoginID
         userPW!!.text = user.second.mLoginPW
+
+        //setOnItemClickListener
+        eachView.setOnLongClickListener(View.OnLongClickListener{
+            Toast.makeText(context,"I am clicked for a long time", Toast.LENGTH_SHORT).show()
+            true
+        })
+
         // Return the completed view to render on screen
         return eachView
     }
+
+    class popUpActivity():AppCompatActivity(){
+
+    }
+
 }

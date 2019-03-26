@@ -2,10 +2,12 @@ package com.ray.sqlitetemplate
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.AdapterView
 import android.widget.ListView
 import android.widget.TextView
+import android.widget.Toast
 
-class blank : AppCompatActivity() {
+class ListView_Activity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,5 +23,7 @@ class blank : AppCompatActivity() {
         val listView = findViewById<ListView>(R.id.lists)
 
         listView.adapter = itemsAdapter
-    }
+     }
+
+
 }

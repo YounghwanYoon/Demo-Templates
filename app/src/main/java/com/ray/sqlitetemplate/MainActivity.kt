@@ -1,12 +1,9 @@
 package com.ray.sqlitetemplate
 
 import android.Manifest
-import android.app.Activity
-import android.app.PendingIntent.getActivity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.provider.BaseColumns
 import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
@@ -14,7 +11,6 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -22,7 +18,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var mLogin_Id: EditText
     private lateinit var mLogin_Pw: EditText
     private lateinit var mAddButton: Button
-    private lateinit var mRemoveButton: Button
+    //private lateinit var mRemoveButton: Button
     private lateinit var dbController: DatabaseController
     private lateinit var mCheckListButton:Button
 
@@ -32,7 +28,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         mLogin_Id = this.findViewById(R.id.login_id_edit_text)
         mLogin_Pw= findViewById(R.id.password_edit_text)
         mAddButton = findViewById(R.id.add_button)
-        mRemoveButton = findViewById(R.id.remove_button)
+        //mRemoveButton = findViewById(R.id.remove_button)
         mCheckListButton= findViewById(R.id.check_sql_button)
 
         dbController = DatabaseController(this)
@@ -46,7 +42,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         val v = Log.v(Tag, "Current Input Id is $loginStr")
 
         mAddButton.setOnClickListener(this)
-        mRemoveButton.setOnClickListener(this)
+       // mRemoveButton.setOnClickListener(this)
         mCheckListButton.setOnClickListener(this)
     }
 
@@ -69,7 +65,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     Toast.makeText(this, "Current ID is ${mLogin_Id.text} removed", Toast.LENGTH_SHORT).show()
             }
             R.id.check_sql_button->{
-                val listViewActivityIntent: Intent = Intent(this@MainActivity, blank::class.java)
+                val listViewActivityIntent: Intent = Intent(this@MainActivity, ListView_Activity::class.java)
                 Toast.makeText(this, "Starting New Activity", Toast.LENGTH_SHORT).show()
 
                 startActivity(listViewActivityIntent)
