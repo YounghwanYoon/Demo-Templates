@@ -2,6 +2,7 @@ package com.ray.sqlitetemplate
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.content.ContextCompat.getSystemService
 import android.support.v7.app.AppCompatActivity
@@ -45,8 +46,9 @@ class MyArrayAdapter(context: Context , val resource:Int, users:ArrayList<Pair<L
                     //Initialize a layout inflater instance
                     val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
                     //inflate a custom view  using layout inflater
-                    val view = inflater.inflate(R.layout.popup_window, null)
-                    val popUpView:PopupWindow = PopupWindow(view,
+                    val view = inflater.inflate(R.layout.popup_window, null) //inflate custome view
+                    val popUpView:PopupWindow = PopupWindow(
+                            view,//Custom View
                             LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
                     popUpView.elevation = 10.0F
 
@@ -57,17 +59,17 @@ class MyArrayAdapter(context: Context , val resource:Int, users:ArrayList<Pair<L
                     //Set up button a onClick Listern
                     removeButton.setOnClickListener{object:View.OnClickListener{
                             override fun onClick(p0: View?) {
+                                removeButton.setTextColor(Color.BLUE)
                                 Toast.makeText(context, "Works!", Toast.LENGTH_SHORT ).show()
                             }
                         }}
                     updateButton.setOnClickListener{object:View.OnClickListener{
                         override fun onClick(p0: View?) {
+                            updateButton.setTextColor(Color.BLUE)
                             Toast.makeText(context, "Works!", Toast.LENGTH_SHORT ).show()
                         }
                     }}
 //https://android--code.blogspot.com/2018/02/android-kotlin-popup-window-example.html
-                    popUpView.showAtLocation()
-
                 }
             }
             Toast.makeText(context,"I am clicked for a long time", Toast.LENGTH_SHORT).show()

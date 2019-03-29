@@ -24,6 +24,4 @@ class ListView_Activity : AppCompatActivity() {
 
         listView.adapter = itemsAdapter
      }
-
-
 }
