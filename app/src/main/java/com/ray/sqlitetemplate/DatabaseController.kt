@@ -3,10 +3,12 @@ package com.ray.sqlitetemplate
 import android.annotation.SuppressLint
 import android.content.Context
 import android.database.Cursor
+import android.nfc.Tag
+import android.util.Log
 
 class DatabaseController(var context:Context) {
     private var db:DatabaseHelper = DatabaseHelper(context, DatabaseHelper.FeedEntry.DATABASE_NAME, null,1)
-
+    val Tag ="DatabaseController.kt"
     companion object  SingletonInstances {
         @SuppressLint("StaticFieldLeak")
         private var instance: DatabaseController? = null
@@ -44,5 +46,10 @@ class DatabaseController(var context:Context) {
         readCursor.close()
         return outPut
     }
+    fun removeData(uniqueID:String){
+        Log.i(Tag, "Have you deleted the selected data ? ${db.deleteData(uniqueID)}" )
+        db.close()
+    }
+
 
 }

@@ -78,7 +78,20 @@ class DatabaseHelper(var context: Context?, var name: String? = FeedEntry.DATABA
         else
             Toast.makeText(context, "Succeeded", Toast.LENGTH_SHORT)
     }
+    fun deleteData(uniqueID: String):Boolean{
+        //Gets the data repository in write mode
+        val p0 = this.writableDatabase
 
+        //Define 'where' part of query
+        val selection = FeedEntry.UniquqID + " LIKE ?"
+
+        //Specify arguments in placeholder order
+        val selectionArgs = arrayOf(uniqueID)
+
+        val _success = p0!!.delete(FeedEntry.TABLE_NAME, selection, selectionArgs)
+
+        return Integer.parseInt("$_success") != -1
+    }
     fun getData(): Cursor {
         var database: SQLiteDatabase = this.readableDatabase
 

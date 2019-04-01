@@ -60,13 +60,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
                     Toast.makeText(this, "Current ID is ${mLogin_Id.text} added", Toast.LENGTH_SHORT).show()
             }
-            R.id.remove_button -> {
-                if(validateInputData(R.id.remove_button))
-                    Toast.makeText(this, "Current ID is ${mLogin_Id.text} removed", Toast.LENGTH_SHORT).show()
-            }
             R.id.check_sql_button->{
-                val listViewActivityIntent: Intent = Intent(this@MainActivity, ListView_Activity::class.java)
-                Toast.makeText(this, "Starting New Activity", Toast.LENGTH_SHORT).show()
+                val listViewActivityIntent: Intent = Intent(this@MainActivity, ListViewActivity::class.java)
 
                 startActivity(listViewActivityIntent)
             }
@@ -84,10 +79,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     return false
                 }
                 return true
-            }
-            R.id.remove_button ->{
-                return false
-                //TODO deal with a case when remove_button wonlt work such as given ID is not in the table.
             }
         }
         return false

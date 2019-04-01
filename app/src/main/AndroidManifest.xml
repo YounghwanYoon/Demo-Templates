@@ -16,7 +16,7 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ListView_Activity">
+        <activity android:name=".ListViewActivity">
         </activity>
         <activity android:name=".MainActivity">
             <intent-filter>
