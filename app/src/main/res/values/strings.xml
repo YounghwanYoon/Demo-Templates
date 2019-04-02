@@ -6,4 +6,5 @@
     <string name="log_in_id">Login ID or Email</string>
     <string name="password">Password</string>
     <string name="check_list">Check List</string>
+    <string name="popUpView_Warning_Before_Change">Please Verify information below before making changes</string>
 </resources>

@@ -16,6 +16,7 @@ import com.ray.sqlitetemplate.DatabaseHelper.FeedEntry.deleteTable
 
 //name variable is the DataBase name
 class DatabaseHelper(var context: Context?, var name: String? = FeedEntry.DATABASE_NAME, factory: SQLiteDatabase.CursorFactory?, var version: Int) : SQLiteOpenHelper(context, name, null, 1) {
+    private val Tag:String = this.javaClass.name
 
     object FeedEntry : BaseColumns {
         const val DATABASE_NAME: String = "mylist.db"

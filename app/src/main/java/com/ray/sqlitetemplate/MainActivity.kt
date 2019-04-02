@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.check_sql_button->{
                 val listViewActivityIntent: Intent = Intent(this@MainActivity, ListViewActivity::class.java)
-
+                listViewActivityIntent.flags = Intent.FLAG_ACTIVITY_NO_HISTORY
                 startActivity(listViewActivityIntent)
             }
         }

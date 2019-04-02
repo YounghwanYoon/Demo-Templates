@@ -3,11 +3,7 @@ package com.ray.sqlitetemplate
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
-import android.support.v4.content.ContextCompat.startActivity
-import android.transition.TransitionManager
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -41,12 +37,32 @@ class MyArrayAdapter(context: Context , private val resource:Int, users:ArrayLis
         userID!!.text = user.second.mLoginID
         userPW!!.text = user.second.mLoginPW
 
-        setListener(eachView)
+        setListener(eachView,position)
         // Return the completed view to render on screen
         return eachView
     }
 
-    fun setListener(oneListView:View){
+    //delete data
+    fun deleteUser(uniqueID:String){
+        db.removeData(uniqueID)
+    }
+    //refresh activity to display updated data.
+
+    fun updateUserPW(uniqueID: String, userPW: String, userNewPW: String){
+        //db.updatePW(uniqueID,userPW,userNewPW)
+    }
+
+    fun refreshListActivity():Boolean{
+        val refreshIntent:Intent = Intent(this.context, ListViewActivity::class.java)
+        refreshIntent.flags = Intent.FLAG_ACTIVITY_NO_HISTORY // Adds the FLAG_ACTIVITY_NO_HISTORY flag
+
+        //Refreshing activity
+        context.startActivity(refreshIntent)
+
+        return true
+    }
+
+    fun setListener(oneListView:View, position:Int){
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
         //inflate a custom view  using layout inflater
@@ -63,22 +79,45 @@ class MyArrayAdapter(context: Context , private val resource:Int, users:ArrayLis
         //Set up button a onClick Listener
         removeButton.setOnClickListener(object:View.OnClickListener{
             override fun onClick(p0: View?) {
-                var uniqueID:String
-                val someView = oneListView.findViewById<TextView>(p0!!.id)
+                val uniqueID:String
                 Toast.makeText(context, "selected id is ${context.getText(p0!!.id).toString()}!", Toast.LENGTH_SHORT ).show()
-
-                val refreshIntent: Intent =   Intent(context, ListViewActivity::class.java)
-                refreshIntent.setFlags(refreshIntent.getFlags() or Intent.FLAG_ACTIVITY_NO_HISTORY) // Adds the FLAG_ACTIVITY_NO_HISTORY flag
+                val itemSelected = getItem(position)
+                uniqueID = itemSelected!!.first.toString()
 
                 //Refreshing activity
-                startActivity(refreshIntent);
+                deleteUser(uniqueID)
+                refreshListActivity()
+
                 popUpWindow.dismiss() //close window
             }
         })
 
         updateButton.setOnClickListener(View.OnClickListener {
-                Toast.makeText(context, "updateButton!", Toast.LENGTH_SHORT ).show()
-                popUpWindow.dismiss()
+            val updateLayout = myPopUpView.findViewById<LinearLayout>(R.id.update_layout)
+            val confirm_button = myPopUpView.findViewById<Button>(R.id.confirm_update_button)
+
+            updateLayout.visibility = View.VISIBLE
+
+            confirm_button.setOnClickListener(View.OnClickListener {
+                val edit_text = myPopUpView.findViewById<EditText>(R.id.edit_password)
+                val itemSelected = getItem(position)
+                val uniqueID:String = itemSelected!!.first.toString()
+                val userOldPW:String = itemSelected!!.second.mLoginPW
+                val userNewPW = edit_text.text.toString()
+
+                if(!userNewPW.isEmpty() || userNewPW !=""){
+                    updateUserPW(uniqueID, userOldPW,userNewPW)
+
+                    updateLayout.visibility = View.GONE
+                    edit_text.text.clear()
+
+                    refreshListActivity()
+                    //close popup window
+                    popUpWindow.dismiss()
+                }else{
+                    Toast.makeText(context, "Please Enter New Password", Toast.LENGTH_SHORT).show()
+                }
+            })
         })
 
         //setOnItemClickListener
