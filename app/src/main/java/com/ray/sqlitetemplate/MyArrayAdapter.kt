@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.ColorDrawable
+import android.support.constraint.ConstraintLayout
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -93,14 +94,24 @@ class MyArrayAdapter(context: Context , private val resource:Int, users:ArrayLis
         })
 
         updateButton.setOnClickListener(View.OnClickListener {
-            val updateLayout = myPopUpView.findViewById<LinearLayout>(R.id.update_layout)
+            val itemSelected = getItem(position)
+            val updateLayout = myPopUpView!!.findViewById<LinearLayout>(R.id.update_layout)
             val confirm_button = myPopUpView.findViewById<Button>(R.id.confirm_update_button)
 
-            updateLayout.visibility = View.VISIBLE
+            val userID_TextView = myPopUpView.findViewById<TextView>(R.id.login_id_text)
+            val userOldPW_TextView = myPopUpView.findViewById<TextView>(R.id.old_password_text)
 
+            Toast.makeText(context, "Is selected Item Empty?: ${itemSelected.second.mLoginID}", Toast.LENGTH_SHORT).show()
+            //To display user ID and old password to user to verify selected item.
+            if(itemSelected != null){
+                userID_TextView.text = itemSelected!!.second.mLoginID.toString()
+                userOldPW_TextView.text = itemSelected!!.second.mLoginPW.toString()
+            }
+
+            updateLayout.visibility = View.VISIBLE
             confirm_button.setOnClickListener(View.OnClickListener {
+
                 val edit_text = myPopUpView.findViewById<EditText>(R.id.edit_password)
-                val itemSelected = getItem(position)
                 val uniqueID:String = itemSelected!!.first.toString()
                 val userOldPW:String = itemSelected!!.second.mLoginPW
                 val userNewPW = edit_text.text.toString()
@@ -136,7 +147,6 @@ class MyArrayAdapter(context: Context , private val resource:Int, users:ArrayLis
 
             //Show the popup window
             //TransitionManager.beginDelayedTransition()
-
             popUpWindow.showAtLocation(
                     myPopUpView.rootView, //Location to display popup window
                     Gravity.CENTER, //Center the item
@@ -149,4 +159,3 @@ class MyArrayAdapter(context: Context , private val resource:Int, users:ArrayLis
         })
     }
 }
-

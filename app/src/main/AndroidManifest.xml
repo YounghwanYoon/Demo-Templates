@@ -27,7 +27,8 @@
         </activity>
         <activity
                 android:name=".otherway.List_View_Activity"
-                android:label="ListView">
+                android:label="ListView"
+                android:windowSoftInputMode="adjustResize">
         </activity>
     </application>
 
