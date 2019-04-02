@@ -2,9 +2,11 @@ package com.ray.sqlitetemplate
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
+import android.support.v4.content.ContextCompat.startActivity
 import android.transition.TransitionManager
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -14,7 +16,7 @@ import android.widget.*
 
 //ArrayAdapter is Binding between listview and each view .
 //resource is the each_row.xml
-class MyArrayAdapter(context: Context , private val resource:Int, users:ArrayList<Pair<Long,LoginData>>):ArrayAdapter<Pair<Long, LoginData>>(context, resource, users){
+class MyArrayAdapter(context: Context , private val resource:Int, users:ArrayList<Pair<Long,LoginData>>, val db:DatabaseController):ArrayAdapter<Pair<Long, LoginData>>(context, resource, users){
     val TAG = "MyArrayAdapter.java"
 
     @SuppressLint("ViewHolder")
@@ -39,11 +41,11 @@ class MyArrayAdapter(context: Context , private val resource:Int, users:ArrayLis
         userID!!.text = user.second.mLoginID
         userPW!!.text = user.second.mLoginPW
 
-   //     setListener(eachView)
+        setListener(eachView)
         // Return the completed view to render on screen
         return eachView
     }
-/*
+
     fun setListener(oneListView:View){
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
@@ -64,6 +66,12 @@ class MyArrayAdapter(context: Context , private val resource:Int, users:ArrayLis
                 var uniqueID:String
                 val someView = oneListView.findViewById<TextView>(p0!!.id)
                 Toast.makeText(context, "selected id is ${context.getText(p0!!.id).toString()}!", Toast.LENGTH_SHORT ).show()
+
+                val refreshIntent: Intent =   Intent(context, ListViewActivity::class.java)
+                refreshIntent.setFlags(refreshIntent.getFlags() or Intent.FLAG_ACTIVITY_NO_HISTORY) // Adds the FLAG_ACTIVITY_NO_HISTORY flag
+
+                //Refreshing activity
+                startActivity(refreshIntent);
                 popUpWindow.dismiss() //close window
             }
         })
@@ -101,8 +109,5 @@ class MyArrayAdapter(context: Context , private val resource:Int, users:ArrayLis
             true
         })
     }
-*/
-
-
 }
 
