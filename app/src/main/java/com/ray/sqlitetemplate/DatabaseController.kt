@@ -22,6 +22,10 @@ class DatabaseController(var context:Context) {
         return instance as DatabaseController
     }
 
+    fun updateUserPW(uniqueID: String, userNewPW: String){
+        db.updateData(uniqueID, userNewPW)
+    }
+
     fun addData(loginData:LoginData){
         db.insertData(loginData)
         //db.close()

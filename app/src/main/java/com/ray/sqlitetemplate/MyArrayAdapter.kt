@@ -49,8 +49,8 @@ class MyArrayAdapter(context: Context , private val resource:Int, users:ArrayLis
     }
     //refresh activity to display updated data.
 
-    fun updateUserPW(uniqueID: String, userPW: String, userNewPW: String){
-        //db.updatePW(uniqueID,userPW,userNewPW)
+    fun updateUserPW(uniqueID: String, userNewPW: String){
+        db.updateUserPW(uniqueID, userNewPW)
     }
 
     fun refreshListActivity():Boolean{
@@ -118,7 +118,7 @@ class MyArrayAdapter(context: Context , private val resource:Int, users:ArrayLis
                 val userNewPW = edit_text.text.toString()
 
                 if(!userNewPW.isEmpty() || userNewPW !=""){
-                    updateUserPW(uniqueID, userOldPW,userNewPW)
+                    updateUserPW(uniqueID, userNewPW)
 
                     updateLayout.visibility = View.GONE
                     edit_text.text.clear()

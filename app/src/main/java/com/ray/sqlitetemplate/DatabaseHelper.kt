@@ -9,7 +9,9 @@ import android.database.sqlite.SQLiteOpenHelper
 import android.provider.BaseColumns
 import android.webkit.CookieSyncManager.createInstance
 import android.widget.Toast
+import com.ray.sqlitetemplate.DatabaseHelper.FeedEntry.COL_PW
 import com.ray.sqlitetemplate.DatabaseHelper.FeedEntry.TABLE_NAME
+import com.ray.sqlitetemplate.DatabaseHelper.FeedEntry.UniquqID
 import com.ray.sqlitetemplate.DatabaseHelper.FeedEntry.createTable
 import com.ray.sqlitetemplate.DatabaseHelper.FeedEntry.deleteTable
 
@@ -79,6 +81,18 @@ class DatabaseHelper(var context: Context?, var name: String? = FeedEntry.DATABA
         else
             Toast.makeText(context, "Succeeded", Toast.LENGTH_SHORT)
     }
+
+    fun updateData(userUniqueID: String, userNewPW: String):Boolean{
+        val sqlDB = this.writableDatabase
+        val values = ContentValues()
+
+        values.put(COL_PW, userNewPW)
+        val selection: String = FeedEntry.UniquqID + "Like ?"
+        val success = sqlDB.update(TABLE_NAME, values, UniquqID + "=?", arrayOf(userUniqueID))
+
+        return true
+    }
+
     fun deleteData(uniqueID: String):Boolean{
         //Gets the data repository in write mode
         val p0 = this.writableDatabase
