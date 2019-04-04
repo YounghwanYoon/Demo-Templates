@@ -2,9 +2,11 @@
     <string name="app_name">SQLite Template</string>
     <string name="sqlite">SQLite</string>
     <string name="add">Add</string>
-    <string name="remove">Remove</string>
     <string name="log_in_id">Login ID or Email</string>
     <string name="password">Password</string>
     <string name="check_list">Check List</string>
     <string name="popUpView_Warning_Before_Change">Please Verify information below before making changes</string>
+    <string name="remove">Remove</string>
+    <string name="update">Update</string>
+    <string name="update_n_password">Update password</string>
 </resources>

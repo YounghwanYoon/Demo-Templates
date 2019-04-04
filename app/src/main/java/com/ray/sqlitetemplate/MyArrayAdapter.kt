@@ -98,15 +98,16 @@ class MyArrayAdapter(context: Context , private val resource:Int, users:ArrayLis
             val updateLayout = myPopUpView!!.findViewById<LinearLayout>(R.id.update_layout)
             val confirm_button = myPopUpView.findViewById<Button>(R.id.confirm_update_button)
 
-            val userID_TextView = myPopUpView.findViewById<TextView>(R.id.login_id_text)
+            val userID_TextView = myPopUpView.findViewById<TextView>(R.id.user_id_text)
             val userOldPW_TextView = myPopUpView.findViewById<TextView>(R.id.old_password_text)
 
-            Toast.makeText(context, "Is selected Item Empty?: ${itemSelected.second.mLoginID}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Is selected Item Empty?: ${itemSelected!!.second.mLoginID}", Toast.LENGTH_SHORT).show()
+
             //To display user ID and old password to user to verify selected item.
-            if(itemSelected != null){
-                userID_TextView.text = itemSelected!!.second.mLoginID.toString()
-                userOldPW_TextView.text = itemSelected!!.second.mLoginPW.toString()
-            }
+
+            userID_TextView.text = itemSelected.second.mLoginID.toString()
+            userOldPW_TextView.text = itemSelected.second.mLoginPW.toString()
+
 
             updateLayout.visibility = View.VISIBLE
             confirm_button.setOnClickListener(View.OnClickListener {
@@ -144,6 +145,10 @@ class MyArrayAdapter(context: Context , private val resource:Int, users:ArrayLis
             //It also prevent open multiple  popup view whenever touching other row of data.
             popUpWindow.setBackgroundDrawable(ColorDrawable())
             popUpWindow.isOutsideTouchable = true
+
+            //Allowing to display keyboard whenever it hit edit text view
+            popUpWindow.isFocusable = true
+            popUpWindow.update()
 
             //Show the popup window
             //TransitionManager.beginDelayedTransition()
