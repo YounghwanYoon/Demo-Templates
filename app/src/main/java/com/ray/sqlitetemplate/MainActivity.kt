@@ -96,6 +96,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             )
         }
     }
+
     private val clickListener = View.OnClickListener {
     }
 }
