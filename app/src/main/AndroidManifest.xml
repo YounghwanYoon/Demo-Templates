@@ -4,10 +4,18 @@
           xmlns:tools="http://schemas.android.com/tools"
           package="com.ray.sqlitetemplate">
 
+    <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version"/>
+
     <dist:module dist:instant="true"/>
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.USE_CREDENTIALS"/>
 
     <application
             android:allowBackup="true"
@@ -16,6 +24,8 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".AfterLogIn_Activity">
+        </activity>
         <activity android:name=".ListViewActivity">
         </activity>
         <activity android:name=".MainActivity">
