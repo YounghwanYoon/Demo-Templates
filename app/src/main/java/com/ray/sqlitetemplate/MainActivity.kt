@@ -1,6 +1,7 @@
 package com.ray.sqlitetemplate
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -31,6 +32,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     //OAuth 2.0 client IDs
     //92259583712-2bmo4jl4f44r0bjd4gvhge6ik1p4sgbr.apps.googleusercontent.com
 
+    //For Laptop
+    //SHA1: 7B:F8:C3:75:18:8E:7F:68:6B:5B:50:C6:2C:4F:C0:B9:20:CE:6E:33
+    //Client ID: 92259583712-bfk1btls61jn5a4noftkt1mboon5tmaa.apps.googleusercontent.com
+    //Client secret: KeW46KjvD4x5HGgJsku5DhwT
+//Example Video: https://www.youtube.com/watch?v=2PIaGpJMCNs
+
     private lateinit var mLogin_Id: EditText
     private lateinit var mLogin_Pw: EditText
     private lateinit var mAddButton: Button
@@ -58,15 +65,47 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         mCheckListButton= findViewById(R.id.check_sql_button)
 
         dbController = DatabaseController(this)
+        permissionHandler()
         verifyStoragePermissions()
         assignListeners()
         googleSignIn()
+
     }
+
+    private fun permissionHandler(){
+        // The request code used in ActivityCompat.requestPermissions()
+        // and returned in the Activity's onRequestPermissionsResult()
+        val PERMISSION_ALL = 1
+        val PERMISSIONS =
+                arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE,
+                        android.Manifest.permission.INTERNET,
+                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        android.Manifest.permission.GET_ACCOUNTS,
+                        android.Manifest.permission.ACCESS_NETWORK_STATE,
+                        android.Manifest.permission.READ_CONTACTS)
+
+        if (!hasPermissions(this, PERMISSIONS)) {
+            ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL)
+        }
+    }
+    private fun hasPermissions(context: Context?, permissions: Array<String>): Boolean {
+        if (context != null && permissions != null) {
+            for (permission in permissions) {
+                if (ActivityCompat.checkSelfPermission(context!!, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false
+                }
+            }
+        }
+        return true
+    }
+
 
     private fun googleSignIn(){
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//                .requestIdToken(getString(R.string.server_client_id)) //
+
                 .requestEmail()
                 .build()
 
