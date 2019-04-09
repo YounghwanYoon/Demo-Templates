@@ -57,5 +57,4 @@ class AfterLogIn_Activity : AppCompatActivity(), View.OnClickListener {
                     }
                 })
     }
-
 }

@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.support.constraint.ConstraintLayout
 import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
@@ -18,8 +19,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.common.SignInButton
 import com.google.android.gms.auth.api.Auth
 import android.support.v7.app.AlertDialog
+import com.google.android.gms.auth.api.signin.GoogleSignIn.hasPermissions
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 
 
@@ -42,16 +45,18 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var mLogin_Pw: EditText
     private lateinit var mAddButton: Button
     //private lateinit var mRemoveButton: Button
+
     private lateinit var dbController: DatabaseController
     private lateinit var mCheckListButton:Button
-
     private lateinit var signInButton:SignInButton
-
+    private lateinit var signOutButton:Button
     private lateinit var mGoogleSignInClient: GoogleSignInClient
+    private lateinit var before_signin_layout: ConstraintLayout
+    private lateinit var after_signin_layout:ConstraintLayout
 
     companion object {
         //Request code for google sign in button
-        val RC_SIGN_IN = 0;
+        val RC_SIGN_IN = 9001;
 
     }
 
@@ -64,59 +69,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         //mRemoveButton = findViewById(R.id.remove_button)
         mCheckListButton= findViewById(R.id.check_sql_button)
 
+        before_signin_layout = findViewById(R.id.before_login_layout)
+        after_signin_layout = findViewById(R.id.after_login_layout)
+
         dbController = DatabaseController(this)
+
         permissionHandler()
-        verifyStoragePermissions()
         assignListeners()
-        googleSignIn()
+        signOutButtonHandler()
+        googleSignInHandler()
 
-    }
-
-    private fun permissionHandler(){
-        // The request code used in ActivityCompat.requestPermissions()
-        // and returned in the Activity's onRequestPermissionsResult()
-        val PERMISSION_ALL = 1
-        val PERMISSIONS =
-                arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE,
-                        android.Manifest.permission.INTERNET,
-                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                        android.Manifest.permission.GET_ACCOUNTS,
-                        android.Manifest.permission.ACCESS_NETWORK_STATE,
-                        android.Manifest.permission.READ_CONTACTS)
-
-        if (!hasPermissions(this, PERMISSIONS)) {
-            ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL)
-        }
-    }
-    private fun hasPermissions(context: Context?, permissions: Array<String>): Boolean {
-        if (context != null && permissions != null) {
-            for (permission in permissions) {
-                if (ActivityCompat.checkSelfPermission(context!!, permission) != PackageManager.PERMISSION_GRANTED) {
-                    return false
-                }
-            }
-        }
-        return true
-    }
-
-
-    private fun googleSignIn(){
-        // Configure sign-in to request the user's ID, email address, and basic
-        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-//                .requestIdToken(getString(R.string.server_client_id)) //
-
-                .requestEmail()
-                .build()
-
-        // Build a GoogleSignInClient with the options specified by gso.
-        mGoogleSignInClient = GoogleSignIn.getClient(this,gso)
-
-        // Set the dimensions of the sign-in button.
-        signInButton = findViewById<SignInButton>(com.ray.sqlitetemplate.R.id.google_sign_in_btn)
-        signInButton.setSize(SignInButton.SIZE_STANDARD)
-
-        signInButton.setOnClickListener(this)
     }
 
     override fun onStart() {
@@ -138,8 +100,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         when(account){
             //If account is null, it means the use has not yet signed in to the app with google login, then recall the sign-in activity again.
-            null ->refreshListActivity()
+            null ->{
+                before_signin_layout.visibility = View.VISIBLE
+                after_signin_layout.visibility = View.GONE
+                //refreshListActivity()
+            }
             else ->{
+                before_signin_layout.visibility = View.GONE
+                after_signin_layout.visibility = View.VISIBLE
                 startSignInIntent()
                   /*  val startAfterSignIn_Activity = Intent(this, AfterLogIn_Activity::class.java)
                     startActivity(startAfterSignIn_Activity)
@@ -180,21 +148,41 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             R.id.google_sign_in_btn ->{
                 startSignInIntent()
             }
+            R.id.sign_out_button ->{
+                signOut()
+            }
         }
     }
+    private fun googleSignInHandler(){
+        // Configure sign-in to request the user's ID, email address, and basic
+        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//                .requestIdToken(getString(R.string.server_client_id)) //
+                .requestEmail()
+                .build()
 
+        // Build a GoogleSignInClient with the options specified by gso.
+        mGoogleSignInClient = GoogleSignIn.getClient(this,gso)
+
+        // Set the dimensions of the sign-in button.
+        signInButton = findViewById<SignInButton>(R.id.google_sign_in_btn)
+        signInButton.setSize(SignInButton.SIZE_STANDARD)
+        signInButton.setOnClickListener(this)
+
+    }
     private fun startSignInIntent() {
         val signInClient = GoogleSignIn.getClient(this,
                 GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN)
         val intent = signInClient.signInIntent
         startActivityForResult(intent, RC_SIGN_IN)
     }
-
     //After the user signs in, you can get a GoogleSignInAccount object for the user in the activity's onActivityResult method.
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
+            //Once startActivity was successful, it will return GoogleSigninResult object
+            //this object will provide information regarding user accoutn suhc as name, email, and etcs
             val result = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
             if (result.isSuccess) {
                 // The signed in account is stored in the result.
@@ -214,7 +202,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
     }
-
+    private fun signOutButtonHandler(){
+        signOutButton = findViewById(R.id.sign_out_button)
+        signOutButton.setOnClickListener(this)
+    }
     private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
         try {
             val account = completedTask.getResult(ApiException::class.java)
@@ -257,24 +248,34 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         return false
     }
 
-    fun verifyStoragePermissions() {
-        // Check if we have write permission
-        val permission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    private fun hasPermissions(context: Context?, permissions: Array<String>): Boolean {
+        if (context != null && permissions != null) {
+            for (permission in permissions) {
+                if (ActivityCompat.checkSelfPermission(context!!, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false
+                }
+            }
+        }
+        return true
+    }
+    private fun permissionHandler(){
+        // The request code used in ActivityCompat.requestPermissions()
+        // and returned in the Activity's onRequestPermissionsResult()
+        val PERMISSION_ALL = 1
+        val PERMISSIONS =
+                arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE,
+                        android.Manifest.permission.INTERNET,
+                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        android.Manifest.permission.GET_ACCOUNTS,
+                        android.Manifest.permission.ACCESS_NETWORK_STATE,
+                        android.Manifest.permission.READ_CONTACTS)
 
-        if (permission != PackageManager.PERMISSION_GRANTED) {
-            // We don't have permission so prompt the user
-            ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                    0
-            )
+        if (!hasPermissions(this, PERMISSIONS)) {
+            ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL)
         }
     }
 
-    private val clickListener = View.OnClickListener {
-    }
-
-    fun refreshListActivity():Boolean{
+    private fun refreshListActivity():Boolean{
         val refreshIntent:Intent = Intent(this, MainActivity::class.java)
         refreshIntent.flags = Intent.FLAG_ACTIVITY_NO_HISTORY // Adds the FLAG_ACTIVITY_NO_HISTORY flag
 
@@ -282,6 +283,27 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         this.startActivity(refreshIntent)
 
         return true
+    }
+
+    //google sign out user
+    private fun signOut(){
+        mGoogleSignInClient.signOut()
+                .addOnCompleteListener(this, object: OnCompleteListener<Void> {
+                    override fun onComplete(p0: Task<Void>) {
+                        Log.i(Tag, "Signed Out from GG acct")
+                    }
+                })
+    }
+
+    //Disconnect Accounts
+    //To provide users that signed in with Google the ability to disconnect their Google account from your app
+    private fun revokeAccess(){
+        mGoogleSignInClient.revokeAccess()
+                .addOnCompleteListener(this, object: OnCompleteListener<Void> {
+                    override fun onComplete(p0: Task<Void>) {
+                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                    }
+                })
     }
 
 }
