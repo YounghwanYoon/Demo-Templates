@@ -18,6 +18,10 @@ import com.google.android.gms.common.SignInButton
 import com.google.android.gms.auth.api.Auth
 import android.support.v7.app.AlertDialog
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import android.R.attr.data
+import android.support.v4.app.FragmentActivity
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.Task
 
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
@@ -37,9 +41,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var mCheckListButton:Button
 
     private lateinit var signInButton:SignInButton
+
+    private lateinit var mGoogleSignInClient: GoogleSignInClient
+
     companion object {
+        //Request code for google sign in button
         val RC_SIGN_IN = 0;
-        private lateinit var mGoogleSignInClient: GoogleSignInClient
 
     }
 
@@ -69,7 +76,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         mGoogleSignInClient = GoogleSignIn.getClient(this,gso)
 
         // Set the dimensions of the sign-in button.
-        signInButton = findViewById<SignInButton>(com.ray.sqlitetemplate.R.id.sign_in_button)
+        signInButton = findViewById<SignInButton>(com.ray.sqlitetemplate.R.id.google_sign_in_btn)
         signInButton.setSize(SignInButton.SIZE_STANDARD)
 
         signInButton.setOnClickListener(this)
@@ -104,33 +111,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun startSignInIntent() {
-        val signInClient = GoogleSignIn.getClient(this,
-                GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN)
-        val intent = signInClient.signInIntent
-        startActivityForResult(intent, RC_SIGN_IN)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == RC_SIGN_IN) {
-            val result = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
-            if (result.isSuccess) {
-                // The signed in account is stored in the result.
-                val signedInAccount = result.signInAccount
-            } else {
-                var message = result.status.statusMessage
-                if (message == null || message.isEmpty()) {
-                    message = getString(R.string.signin_other_error)
-                }
-                AlertDialog.Builder(this).setMessage(message)
-                        .setNeutralButton(android.R.string.ok, null).show()
-            }
-        }
-    }
-
-
-
     private fun assignListeners() {
         var loginStr:String = mLogin_Id.getText().toString()
         var pwStr:String = mLogin_Pw.getText().toString()
@@ -140,6 +120,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
        // mRemoveButton.setOnClickListener(this)
         mCheckListButton.setOnClickListener(this)
     }
+
     override fun onClick(v: View) {
         Log.i(Tag, "It is inside of onClick()")
         when (v.id) {
@@ -159,8 +140,59 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 listViewActivityIntent.flags = Intent.FLAG_ACTIVITY_NO_HISTORY
                 startActivity(listViewActivityIntent)
             }
+            R.id.google_sign_in_btn ->{
+                startSignInIntent()
+            }
         }
     }
+
+    private fun startSignInIntent() {
+        val signInClient = GoogleSignIn.getClient(this,
+                GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN)
+        val intent = signInClient.signInIntent
+        startActivityForResult(intent, RC_SIGN_IN)
+    }
+
+    //After the user signs in, you can get a GoogleSignInAccount object for the user in the activity's onActivityResult method.
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            val result = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
+            if (result.isSuccess) {
+                // The signed in account is stored in the result.
+                val signedInAccount = result.signInAccount
+
+                // The Task returned from this call is always completed, no need to attach
+                // a listener.
+                val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+                handleSignInResult(task)
+            } else {
+                var message = result.status.statusMessage
+                if (message == null || message.isEmpty()) {
+                    message = getString(R.string.signin_other_error)
+                }
+                AlertDialog.Builder(this).setMessage(message)
+                        .setNeutralButton(android.R.string.ok, null).show()
+            }
+        }
+    }
+
+    private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
+        try {
+            val account = completedTask.getResult(ApiException::class.java)
+
+            // Signed in successfully, show authenticated UI.
+            updateUI(account)
+        } catch (e: ApiException) {
+            // The ApiException status code indicates the detailed failure reason.
+            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+            Log.w(Tag, "signInResult:failed code=" + e.statusCode)
+            updateUI(null)
+        }
+
+    }
+
     private fun validateInputData(button:Int): Boolean{
         when (button){
             R.id.add_button -> {
@@ -177,7 +209,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
         return false
     }
-        fun verifyStoragePermissions() {
+
+    fun verifyStoragePermissions() {
         // Check if we have write permission
         val permission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
