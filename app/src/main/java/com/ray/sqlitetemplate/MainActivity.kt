@@ -18,8 +18,6 @@ import com.google.android.gms.common.SignInButton
 import com.google.android.gms.auth.api.Auth
 import android.support.v7.app.AlertDialog
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import android.R.attr.data
-import android.support.v4.app.FragmentActivity
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 
@@ -184,13 +182,23 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
             // Signed in successfully, show authenticated UI.
             updateUI(account)
+            addGoogleUser(account)
         } catch (e: ApiException) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Log.w(Tag, "signInResult:failed code=" + e.statusCode)
             updateUI(null)
         }
+    }
 
+    //Save Google SignIn Data to DBController
+    private fun addGoogleUser(accountDataSrc:GoogleSignInAccount?){
+        if(accountDataSrc != null){
+            val userLoginEmail:String = accountDataSrc.email!!
+            val googleUserData:LoginData = LoginData(userLoginEmail)
+
+            dbController.addData(googleUserData)
+        }
     }
 
     private fun validateInputData(button:Int): Boolean{

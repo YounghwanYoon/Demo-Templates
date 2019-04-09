@@ -7,6 +7,9 @@ package com.ray.sqlitetemplate
          field=value
      }
 */
+     constructor(ggEmail:String) : this(id = ggEmail, pw = "verifiedByGoogle") {
+   }
+
     var mLoginID:String = id
         get() = field
         set(value) {
@@ -17,4 +20,6 @@ package com.ray.sqlitetemplate
         set(value) {
             field = value
         }
+
+
 }
