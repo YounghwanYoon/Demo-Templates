@@ -29,16 +29,11 @@ import com.google.android.gms.tasks.Task
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private val Tag: String = "MainActivity"
-    //Use this key in your application by passing it with the key=API_KEY parameter.
-    //API KEY = AIzaSyDEx8oMziKZfes-708JANP115BdkGYn09E
-
-    //OAuth 2.0 client IDs
-    //92259583712-2bmo4jl4f44r0bjd4gvhge6ik1p4sgbr.apps.googleusercontent.com
-
+    //For DeskTop
+    //SHA1: 2C:4B:4E:41:45:F6:97:49:35:8E:12:14:9E:89:31:AB:CE:25:7B:33
     //For Laptop
     //SHA1: 7B:F8:C3:75:18:8E:7F:68:6B:5B:50:C6:2C:4F:C0:B9:20:CE:6E:33
-    //Client ID: 92259583712-bfk1btls61jn5a4noftkt1mboon5tmaa.apps.googleusercontent.com
-    //Client secret: KeW46KjvD4x5HGgJsku5DhwT
+
 //Example Video: https://www.youtube.com/watch?v=2PIaGpJMCNs
 
     private lateinit var mLogin_Id: EditText
