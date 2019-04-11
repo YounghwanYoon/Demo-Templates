@@ -29,10 +29,6 @@ import com.google.android.gms.tasks.Task
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private val Tag: String = "MainActivity"
-    //For DeskTop
-    //SHA1: 2C:4B:4E:41:45:F6:97:49:35:8E:12:14:9E:89:31:AB:CE:25:7B:33
-    //For Laptop
-    //SHA1: 7B:F8:C3:75:18:8E:7F:68:6B:5B:50:C6:2C:4F:C0:B9:20:CE:6E:33
 
 //Example Video: https://www.youtube.com/watch?v=2PIaGpJMCNs
 
