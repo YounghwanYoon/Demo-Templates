@@ -6,12 +6,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".MainActivity">
-    <android.support.constraint.ConstraintLayout
 
+    <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id ="@+id/before_login_layout"
-            android:visibility="visible">
+            android:id="@+id/before_login_layout"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintVertical_bias="0.0">
+
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -25,6 +31,7 @@
                 app:layout_constraintTop_toTopOf="parent" app:layout_constraintVertical_bias="0.078"
                 android:id="@+id/textView" android:padding="20dp"/>
 
+
         <EditText
                 android:id="@+id/login_id_edit_text"
                 android:layout_width="match_parent"
@@ -32,7 +39,8 @@
                 android:ems="10"
                 android:singleLine="true"
                 app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="16dp"
-                app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="16dp" android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="16dp"
+                android:layout_marginTop="8dp"
                 app:layout_constraintTop_toBottomOf="@+id/textView" android:layout_marginBottom="8dp"
                 app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintVertical_bias="0.095" android:hint="@string/log_in_id"/>
@@ -48,55 +56,57 @@
                 android:layout_marginBottom="8dp"
                 app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintHorizontal_bias="0.0"
                 android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/login_id_edit_text"
-                app:layout_constraintVertical_bias="0.082" android:hint="@string/password" />
-        <Button
-                android:id="@+id/add_button"
-                android:text="@string/create"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginEnd="8dp" android:layout_marginTop="32dp"
-                app:layout_constraintTop_toBottomOf="@+id/password_edit_text"
-                app:layout_constraintHorizontal_bias="0.502" android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toTopOf="@+id/check_sql_button" app:layout_constraintVertical_bias="0.009"/>
+                app:layout_constraintVertical_bias="0.082" android:hint="@string/password"/>
 
-        <Button
-                android:id="@+id/check_sql_button"
-                android:text="@string/server_side_list"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="8dp" android:layout_marginTop="8dp"
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+                app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp" android:layout_marginTop="64dp"
                 app:layout_constraintTop_toBottomOf="@+id/password_edit_text" android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintHorizontal_bias="0.501"
-                app:layout_constraintVertical_bias="0.831"/>
+                app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintHorizontal_bias="0.492"
+                app:layout_constraintVertical_bias="0.139" android:id="@+id/linearLayout2">
+            <Button
+                    android:id="@+id/add_button"
+                    android:text="@string/create"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="5"/>
 
-        <com.google.android.gms.common.SignInButton
-                android:id="@+id/google_sign_in_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:ignore="MissingConstraints"
-                android:layout_marginTop="8dp"
-                app:layout_constraintTop_toTopOf="@+id/login_button"
-                app:layout_constraintBottom_toBottomOf="@+id/login_button"
-                app:layout_constraintStart_toStartOf="@+id/add_button" android:layout_marginStart="68dp"
-                app:layout_constraintVertical_bias="1.0" app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginEnd="8dp"/>
-        <Button
-                android:text="Login"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/login_button"
-                app:layout_constraintEnd_toStartOf="@+id/google_sign_in_btn"
-                android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="8dp" android:layout_marginTop="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/add_button" android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toTopOf="@+id/check_sql_button"/>
+            <Button
+                    android:id="@+id/check_sql_button"
+                    android:text="@string/server_side_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="5"/>
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+                app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"
+                android:id="@+id/linearLayout" android:layout_marginTop="0dp"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+            <Button
+                    android:text="Login"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/standard_logIn_btn"
+                    android:layout_weight="5"/>
+            <com.google.android.gms.common.SignInButton
+                    android:id="@+id/google_sign_in_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="5"/>
+        </LinearLayout>
 
 
     </android.support.constraint.ConstraintLayout>
+
 
     <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"

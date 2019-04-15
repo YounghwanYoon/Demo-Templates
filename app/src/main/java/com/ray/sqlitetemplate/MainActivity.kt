@@ -46,7 +46,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     companion object {
         //Request code for google sign in button
         val RC_SIGN_IN = 0
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -104,6 +103,19 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    private fun updateUI(signInSuccessful:Boolean){
+        when(signInSuccessful){
+            true ->{
+                before_signin_layout?.visibility = View.GONE
+                after_signin_layout?.visibility = View.VISIBLE
+            }
+            else ->{
+                before_signin_layout?.visibility = View.VISIBLE
+                after_signin_layout?.visibility = View.GONE
+
+            }
+        }
+    }
     private fun assignListeners() {
         var loginStr:String = mLogin_Id.getText().toString()
         var pwStr:String = mLogin_Pw.getText().toString()
@@ -133,8 +145,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 listViewActivityIntent.flags = Intent.FLAG_ACTIVITY_NO_HISTORY
                 startActivity(listViewActivityIntent)
             }
+            R.id.standard_logIn_btn -> {
+
+            }
             R.id.google_sign_in_btn ->{
-                startSignInIntent()
+                startGoogleSignInActivity()
             }
             R.id.sign_out_button ->{
                 signOut()
@@ -152,7 +167,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         mGoogleSignInClient = GoogleSignIn.getClient(this,gso)
     }
 
-    private fun startSignInIntent() {
+    private fun startGoogleSignInActivity() {
 
         val signInIntent: Intent = mGoogleSignInClient!!.getSignInIntent()
         startActivityForResult(signInIntent, RC_SIGN_IN)
@@ -202,7 +217,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             updateUI(null)
         }
     }
-
     //Save Google SignIn Data to DBController
     private fun addGoogleUser(accountDataSrc:GoogleSignInAccount?){
         if(accountDataSrc != null){
@@ -212,7 +226,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             dbController.addData(googleUserData)
         }
     }
-
     private fun validateInputData(button:Int): Boolean{
         when (button){
             R.id.add_button -> {
@@ -226,10 +239,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 }
                 return true
             }
+            R.id.standard_logIn_btn ->{
+
+
+            }
         }
         return false
     }
-
     private fun hasPermissions(context: Context?, permissions: Array<String>): Boolean {
         if (context != null && permissions != null) {
             for (permission in permissions) {
@@ -256,7 +272,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL)
         }
     }
-
     private fun refreshListActivity():Boolean{
         val refreshIntent:Intent = Intent(this, MainActivity::class.java)
         refreshIntent.flags = Intent.FLAG_ACTIVITY_NO_HISTORY // Adds the FLAG_ACTIVITY_NO_HISTORY flag
@@ -266,7 +281,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         return true
     }
-
     //google sign out user
     private fun signOut(){
         mGoogleSignInClient?.signOut()!!
@@ -277,7 +291,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 })
         refreshListActivity()
     }
-
     //Disconnect Accounts
     //To provide users that signed in with Google the ability to disconnect their Google account from your app
     private fun revokeAccess(){

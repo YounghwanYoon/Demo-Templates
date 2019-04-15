@@ -4,7 +4,7 @@
     <string name="create">create</string>
     <string name="log_in_id">Login ID or Email</string>
     <string name="password">Password</string>
-    <string name="server_side_list">Server View\n (SQLite)</string>
+    <string name="server_side_list">Server View</string>
     <string name="popUpView_Warning_Before_Change">Please Verify information below before making changes</string>
     <string name="remove">Remove</string>
     <string name="update">Update</string>
