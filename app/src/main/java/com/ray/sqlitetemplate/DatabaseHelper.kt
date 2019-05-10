@@ -14,10 +14,12 @@ import com.ray.sqlitetemplate.DatabaseHelper.FeedEntry.TABLE_NAME
 import com.ray.sqlitetemplate.DatabaseHelper.FeedEntry.UniquqID
 import com.ray.sqlitetemplate.DatabaseHelper.FeedEntry.createTable
 import com.ray.sqlitetemplate.DatabaseHelper.FeedEntry.deleteTable
+import com.ray.sqlitetemplate.repository.model.LoginData
 
 
 //name variable is the DataBase name
-class DatabaseHelper(var context: Context?, var name: String? = FeedEntry.DATABASE_NAME, factory: SQLiteDatabase.CursorFactory?, var version: Int) : SQLiteOpenHelper(context, name, null, 1) {
+class DatabaseHelper(var context: Context?, var name: String? = FeedEntry.
+        DATABASE_NAME, factory: SQLiteDatabase.CursorFactory?, var version: Int) : SQLiteOpenHelper(context, name, null, 1) {
     private val Tag:String = this.javaClass.name
 
     object FeedEntry : BaseColumns {

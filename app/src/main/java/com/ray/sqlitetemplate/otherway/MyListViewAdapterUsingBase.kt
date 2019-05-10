@@ -10,7 +10,7 @@ import android.widget.TextView
 import android.view.LayoutInflater
 import android.widget.BaseAdapter
 import android.widget.ImageView
-import com.ray.sqlitetemplate.LoginData
+import com.ray.sqlitetemplate.repository.model.LoginData
 import com.ray.sqlitetemplate.R
 
 

@@ -2,9 +2,8 @@ package com.ray.sqlitetemplate
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.database.Cursor
-import android.nfc.Tag
 import android.util.Log
+import com.ray.sqlitetemplate.repository.model.LoginData
 
 class DatabaseController(var context:Context) {
     private var db:DatabaseHelper = DatabaseHelper(context, DatabaseHelper.FeedEntry.DATABASE_NAME, null,1)
@@ -26,7 +25,7 @@ class DatabaseController(var context:Context) {
         db.updateData(uniqueID, userNewPW)
     }
 
-    fun addData(loginData:LoginData){
+    fun addData(loginData: LoginData){
         db.insertData(loginData)
         //db.close()
     }
@@ -36,7 +35,7 @@ class DatabaseController(var context:Context) {
         var uniqueId = mutableListOf<Long>()
         //val userDatas = mutableListOf<LoginData>()
 
-        val outPut= ArrayList<Pair<Long,LoginData>>()
+        val outPut= ArrayList<Pair<Long, LoginData>>()
 
         with(readCursor){
             while(moveToNext()){
@@ -44,7 +43,7 @@ class DatabaseController(var context:Context) {
                 var userID = (readCursor.getString(1))
                 var userPW = (readCursor.getString(2))
 
-                outPut.add(Pair(uniqId, LoginData(userID,userPW)))
+                outPut.add(Pair(uniqId, LoginData(userID, userPW)))
             }
         }
         readCursor.close()
