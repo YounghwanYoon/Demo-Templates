@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import com.bumptech.glide.Glide
 import com.ray.sqlitetemplate.R
 import de.hdodenhof.circleimageview.CircleImageView
 import com.ray.sqlitetemplate.repository.model.LoginData
@@ -20,8 +21,8 @@ public class user_data_recycle_adapter(val userList:List<LoginData>):RecyclerVie
 
     //this method is returning the view for each item in the list
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.activity_user_data_view, parent, false)
-        return ViewHolder(v);
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.activity_user_data_view, parent, false)
+        return ViewHolder(view);
     }
 
     //this method is giving the size of the list
@@ -31,6 +32,7 @@ public class user_data_recycle_adapter(val userList:List<LoginData>):RecyclerVie
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindItems(userList[position])
+        
     }
 
     //it hold each individual data such as image or text
@@ -47,7 +49,7 @@ public class user_data_recycle_adapter(val userList:List<LoginData>):RecyclerVie
             userEmail=itemView.findViewById(R.id.user_email_text);
 
             // data binding
-            image
+
 
         }
     }

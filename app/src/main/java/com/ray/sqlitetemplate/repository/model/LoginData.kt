@@ -4,7 +4,7 @@ package com.ray.sqlitetemplate.repository.model
      constructor(ggEmail:String) : this(id = ggEmail, pw = "verifiedByGoogle") {
    }
      constructor( imageURL: String, id:String, pw:String):this(id, pw){
-
+        mImage = imageURL
      }
 
      var  mImage:String = "Unknown URL"
