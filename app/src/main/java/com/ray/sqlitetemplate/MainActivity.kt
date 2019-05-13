@@ -22,7 +22,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
-import com.ray.sqlitetemplate.repository.model.LoginData
+import com.ray.sqlitetemplate.repository.model.UserData
 
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
@@ -133,7 +133,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             R.id.add_button -> {
                 Log.i(Tag, "It is inside of add_button")
                 if(validateInputData(R.id.add_button)){
-                    var loginData: LoginData = LoginData(mLogin_Id.text.toString(), mLogin_Pw.text.toString())
+                    var loginData: UserData = UserData(mLogin_Id.text.toString(), mLogin_Pw.text.toString())
                     dbController.addData(loginData)
                 }
                 mLogin_Id.text.clear()
@@ -222,7 +222,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private fun addGoogleUser(accountDataSrc:GoogleSignInAccount?){
         if(accountDataSrc != null){
             val userLoginEmail:String = accountDataSrc.email!!
-            val googleUserData: LoginData = LoginData(userLoginEmail)
+            val googleUserData: UserData = UserData(userLoginEmail)
 
             dbController.addData(googleUserData)
         }

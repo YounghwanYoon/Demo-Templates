@@ -9,11 +9,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import com.ray.sqlitetemplate.repository.model.LoginData
+import com.ray.sqlitetemplate.repository.model.UserData
 
 //ArrayAdapter is Binding between listview and each view .
 //resource is the each_row.xml
-class MyArrayAdapter(context: Context, private val resource:Int, users:ArrayList<Pair<Long, LoginData>>, val db:DatabaseController):ArrayAdapter<Pair<Long, LoginData>>(context, resource, users){
+class MyArrayAdapter(context: Context, private val resource:Int, users:ArrayList<Pair<Long, UserData>>, val db:DatabaseController):ArrayAdapter<Pair<Long, UserData>>(context, resource, users){
     val TAG = "MyArrayAdapter.java"
 
     @SuppressLint("ViewHolder")

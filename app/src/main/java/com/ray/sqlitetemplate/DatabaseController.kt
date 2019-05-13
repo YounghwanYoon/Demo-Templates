@@ -3,7 +3,8 @@ package com.ray.sqlitetemplate
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
-import com.ray.sqlitetemplate.repository.model.LoginData
+import com.ray.sqlitetemplate.repository.model.UserData
+
 
 class DatabaseController(var context:Context) {
     private var db:DatabaseHelper = DatabaseHelper(context, DatabaseHelper.FeedEntry.DATABASE_NAME, null,1)
@@ -25,17 +26,17 @@ class DatabaseController(var context:Context) {
         db.updateData(uniqueID, userNewPW)
     }
 
-    fun addData(loginData: LoginData){
+    fun addData(loginData: UserData){
         db.insertData(loginData)
         //db.close()
     }
-    fun getData(): ArrayList<Pair<Long, LoginData>> {
+    fun getData(): ArrayList<Pair<Long, UserData>> {
 
         var readCursor = db.getData()
         var uniqueId = mutableListOf<Long>()
-        //val userDatas = mutableListOf<LoginData>()
+        //val userDatas = mutableListOf<UserData>()
 
-        val outPut= ArrayList<Pair<Long, LoginData>>()
+        val outPut= ArrayList<Pair<Long, UserData>>()
 
         with(readCursor){
             while(moveToNext()){
@@ -43,7 +44,7 @@ class DatabaseController(var context:Context) {
                 var userID = (readCursor.getString(1))
                 var userPW = (readCursor.getString(2))
 
-                outPut.add(Pair(uniqId, LoginData(userID, userPW)))
+                outPut.add(Pair(uniqId, UserData(userID, userPW)))
             }
         }
         readCursor.close()

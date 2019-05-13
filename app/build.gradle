@@ -55,4 +55,8 @@ dependencies {
     //circle imageview
     implementation 'de.hdodenhof:circleimageview:2.2.0'
 
+    implementation "com.google.firebase:firebase-auth:16.2.0"
+    compile "org.jetbrains.kotlin:kotlin-reflect:1.2.50"
+
+
 }

@@ -14,7 +14,7 @@ import com.ray.sqlitetemplate.DatabaseHelper.FeedEntry.TABLE_NAME
 import com.ray.sqlitetemplate.DatabaseHelper.FeedEntry.UniquqID
 import com.ray.sqlitetemplate.DatabaseHelper.FeedEntry.createTable
 import com.ray.sqlitetemplate.DatabaseHelper.FeedEntry.deleteTable
-import com.ray.sqlitetemplate.repository.model.LoginData
+import com.ray.sqlitetemplate.repository.model.UserData
 
 
 //name variable is the DataBase name
@@ -67,7 +67,7 @@ class DatabaseHelper(var context: Context?, var name: String? = FeedEntry.
         onCreate(p0)
     }
 
-    fun insertData(userLoginData: LoginData) {
+    fun insertData(userLoginData: UserData) {
         // Gets the data repository in write mode
         val p0 = this.writableDatabase
 

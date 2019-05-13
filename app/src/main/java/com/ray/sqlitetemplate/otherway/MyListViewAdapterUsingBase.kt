@@ -10,16 +10,16 @@ import android.widget.TextView
 import android.view.LayoutInflater
 import android.widget.BaseAdapter
 import android.widget.ImageView
-import com.ray.sqlitetemplate.repository.model.LoginData
+import com.ray.sqlitetemplate.repository.model.UserData
 import com.ray.sqlitetemplate.R
 
 
-class MyListViewAdapterUsingBase(private val activity: Activity, resource:Int, @NonNull private val users:ArrayList<Pair<Long, LoginData>>):BaseAdapter()/*ArrayAdapter<Pair<Long,LoginData>>(context, 0, users)*/{
+class MyListViewAdapterUsingBase(private val activity: Activity, resource:Int, @NonNull private val users:ArrayList<Pair<Long, UserData>>):BaseAdapter()/*ArrayAdapter<Pair<Long,UserData>>(context, 0, users)*/{
 
     @SuppressLint("ViewHolder", "InflateParams")
     override fun getView(position: Int, convertView: View, parent: ViewGroup?): View {
         // Get the data item for this position
-        var user:Pair<Long, LoginData> = getItem(position)
+        var user:Pair<Long, UserData> = getItem(position)
 
         var listView = convertView as View
 
@@ -41,7 +41,7 @@ class MyListViewAdapterUsingBase(private val activity: Activity, resource:Int, @
         // Return the completed view to render on screen
         return listView
     }
-    override fun getItem(p0: Int): Pair<Long, LoginData> {
+    override fun getItem(p0: Int): Pair<Long, UserData> {
         return users.get(p0)
     }
 
