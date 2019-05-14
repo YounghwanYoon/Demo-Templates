@@ -36,12 +36,14 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
     // Lifecycle components
+    //data types that used in mvvm to observe changes in data sent to the views or activities of fragments
     def archLifecycleVersion = '1.1.1'
     implementation "android.arch.lifecycle:extensions:$archLifecycleVersion"
     annotationProcessor "android.arch.lifecycle:compiler:$archLifecycleVersion"
 
-    // Glide
+    // Glide -- it helps to display URL image data into imageView
     def glideVersion = '4.8.0'
     implementation "com.github.bumptech.glide:glide:$glideVersion"
     annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"
@@ -56,7 +58,4 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:2.2.0'
 
     implementation "com.google.firebase:firebase-auth:16.2.0"
-    compile "org.jetbrains.kotlin:kotlin-reflect:1.2.50"
-
-
 }

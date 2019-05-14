@@ -35,7 +35,7 @@
                 android:windowSoftInputMode="adjustResize">
         </activity>
         <activity
-                android:name=".view.User_data_view"
+                android:name=".view.UserData_view"
                 android:label="@string/title_activity_user_data_view">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
