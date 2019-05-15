@@ -57,5 +57,11 @@ dependencies {
     //circle imageview
     implementation 'de.hdodenhof:circleimageview:2.2.0'
 
+    //To ignore firebased error in Logcat
     implementation "com.google.firebase:firebase-auth:16.2.0"
+
+    //To use Network calls by retrofit
+    //To parse Json file use gson
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.2.0'
 }
