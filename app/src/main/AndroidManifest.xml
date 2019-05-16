@@ -2,13 +2,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:dist="http://schemas.android.com/apk/distribution"
           xmlns:tools="http://schemas.android.com/tools"
-          package="com.ray.sqlitetemplate">
+          package="com.ray.sqlitetemplate"
+        >
 
     <meta-data
             android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version"/>
+            android:value="@integer/google_play_services_version"
+            />
 
     <dist:module dist:instant="true"/>
+
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
     <uses-permission android:name="android.permission.READ_PROFILE"/>
@@ -22,7 +25,8 @@
             android:label="@string/app_name"
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
-            tools:ignore="GoogleAppIndexingWarning">
+            tools:ignore="GoogleAppIndexingWarning"
+            >
         <activity android:name=".AfterLogIn_Activity">
         </activity>
         <activity android:name=".ListViewActivity">
@@ -32,16 +36,23 @@
         <activity
                 android:name=".otherway.List_View_Activity"
                 android:label="ListView"
-                android:windowSoftInputMode="adjustResize">
+                android:windowSoftInputMode="adjustResize"
+                >
         </activity>
         <activity
                 android:name=".view.UserData_view"
-                android:label="@string/title_activity_user_data_view">
+                android:label="@string/title_activity_user_data_view"
+                >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+        </activity>
+        <activity
+                android:name=".view.MovieData_Activity"
+                android:label="@string/title_activity_movie_data_"
+                >
         </activity>
     </application>
 

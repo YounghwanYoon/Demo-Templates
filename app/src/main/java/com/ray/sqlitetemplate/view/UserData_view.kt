@@ -11,7 +11,7 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import com.ray.sqlitetemplate.R
 import com.ray.sqlitetemplate.repository.model.UserData
-import com.ray.sqlitetemplate.view.view_adapter.UserRecycleAdapter
+import com.ray.sqlitetemplate.view.adapter.UserRecycleAdapter
 import com.ray.sqlitetemplate.view_model.UserDataViewModel
 
 class UserData_view : AppCompatActivity() {

@@ -11,4 +11,6 @@
     <string name="update_n_password">Update password</string>
     <string name="signin_other_error">Sign-In with Google Account is not available</string>
     <string name="title_activity_user_data_view">user_data_view</string>
+    <string name="title_activity_movie_data_">MovieData_Activity</string>
+    <string name="action_settings">Settings</string>
 </resources>

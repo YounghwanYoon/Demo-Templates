@@ -14,14 +14,20 @@ data class MovieData(
     @SerializedName("name")
     private var mName:String = name
         get() = field
+
+    @SerializedName("realname")
     private var mRealname:String = realname
         get() = field
+    @SerializedName("firstappearance")
     private var mFirstappearance:String= firstappearance
         get() = field
+    @SerializedName("createdby")
     private var mCreatedby:String= createdby
         get() = field
+    @SerializedName("publisher")
     private var mPublisher:String=publisher
         get() = field
+    @SerializedName("imageurl")
     private var mImageurl:String=imageurl
         get() = field
     private var mBio:String=bio
