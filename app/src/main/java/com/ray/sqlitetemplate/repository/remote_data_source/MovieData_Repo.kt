@@ -20,7 +20,7 @@ object MovieData_Repo {
     private lateinit var mMovieData:ArrayList<MovieData>
     val TAG = "MovieData_Repo"
     init{
-        mMovieData
+        mMovieData = ArrayList<MovieData>()
     }
 
     fun getDataSet(): MutableLiveData<List<MovieData>>{
@@ -54,9 +54,8 @@ object MovieData_Repo {
 
             override fun onResponse(call: Call<List<MovieData>>?, response: Response<List<MovieData>>?) {
                 Log.d(TAG, " Success: ${response.toString()}")
-
+                mMovieData = response!!.body() as ArrayList<MovieData>
             }
-
         })
     }
 }

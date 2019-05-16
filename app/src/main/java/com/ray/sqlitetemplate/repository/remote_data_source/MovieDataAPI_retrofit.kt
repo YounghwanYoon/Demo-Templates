@@ -6,8 +6,10 @@ import retrofit2.Call
 
 interface MovieDataAPI_retrofit {
 
-    val BASE_URL: String
-        get() = "https://simplifiedcoding.net/demos/"
+    companion object {
+        val BASE_URL: String
+            get() = "https://simplifiedcoding.net/demos/"
+    }
 
     @GET("marvel")
     fun getMovieData(): Call<List<MovieData>>

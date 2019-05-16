@@ -3,7 +3,6 @@ package com.ray.sqlitetemplate.repository.server
 import android.arch.lifecycle.MutableLiveData
 import com.ray.sqlitetemplate.repository.model.UserData
 
-
 /*
     Singleton
     Webservice-like data
