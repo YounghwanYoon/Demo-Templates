@@ -30,8 +30,11 @@ class MovieData_RecycleAdapter(private val movieList:ArrayList<MovieData>, priva
         return movieList.size
     }
 
+    @SuppressLint("LongLogTag")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        Log.d(TAG, "onBindViewHolder : ${movieList[position]}")
         holder.bindItems(movieList[position])
+
     }
 
     class ViewHolder(itemView:View, context:Context):RecyclerView.ViewHolder(itemView) {

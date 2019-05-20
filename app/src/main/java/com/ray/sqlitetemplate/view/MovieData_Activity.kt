@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.widget.LinearLayout
 import com.ray.sqlitetemplate.R
 import com.ray.sqlitetemplate.repository.model.MovieData
@@ -36,6 +37,7 @@ class MovieData_Activity : AppCompatActivity() {
         initRecycleView()
     }
     fun getData(){
+        mMovieDataViewModel.getMovieData()
         mMovieData = mMovieDataViewModel.getMovieData().value as ArrayList<MovieData>
     }
 
@@ -44,6 +46,17 @@ class MovieData_Activity : AppCompatActivity() {
         val movieRecycleView:RecyclerView= findViewById(R.id.movie_recycler_view)
         //instantiate custom adapter
         mMovieDataRecycleAdapter = MovieData_RecycleAdapter(mMovieData, this)
+        //assign custom adapter to recycle view
+        movieRecycleView.adapter  = mMovieDataRecycleAdapter
+        //assign a layout and its orientation
+        movieRecycleView.layoutManager= LinearLayoutManager(this, LinearLayout.HORIZONTAL, false)
+    }
+
+     fun updateUI(webData:ArrayList<MovieData>){
+        //select recycle view from Activity Layout
+        val movieRecycleView:RecyclerView= findViewById(R.id.movie_recycler_view)
+        //instantiate custom adapter
+        mMovieDataRecycleAdapter = MovieData_RecycleAdapter(webData, this)
         //assign custom adapter to recycle view
         movieRecycleView.adapter  = mMovieDataRecycleAdapter
         //assign a layout and its orientation
