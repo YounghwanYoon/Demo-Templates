@@ -1,6 +1,8 @@
 package com.ray.sqlitetemplate.view_model
 
 import android.annotation.SuppressLint
+import android.app.Application
+import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
@@ -9,15 +11,26 @@ import com.ray.sqlitetemplate.repository.model.MovieData
 import com.ray.sqlitetemplate.repository.remote_data_source.MovieData_Repo
 import com.ray.sqlitetemplate.view.MovieData_Activity
 
-
-class MovieDataViewModel:ViewModel(){
+class MovieDataViewModel(application: Application): AndroidViewModel(application) {
 
     private val TAG = "MovieDataViewModel"
 
     private lateinit var mAllMovieData:MutableLiveData<List<MovieData>>
 
-    @SuppressLint("StaticFieldLeak")
-    private var activity_View = MovieData_Activity()
+    private val mMovieDataObservable:LiveData<List<MovieData>>
+
+    init{
+        mMovieDataObservable = MovieData_Repo.getDataSet()
+        Log.d(TAG, "MovieDataViewModel - init called")
+    }
+
+    fun getMovieDataObservable():LiveData<List<MovieData>>{
+        return mMovieDataObservable
+        Log.d(TAG, "MovieDataViewModel - getMovieDataObservable() called")
+
+    }
+
+
 /*
     init{
         //Retrieved data from Repository
@@ -35,11 +48,4 @@ class MovieDataViewModel:ViewModel(){
 
     return mAllMovieData
     }
-
-
-    fun updateUserView(webData:List<MovieData>){
-        var arrayListData = ArrayList(webData)
-        activity_View.updateUI(arrayListData)
-    }
-
 }

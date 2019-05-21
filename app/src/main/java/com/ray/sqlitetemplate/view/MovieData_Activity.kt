@@ -13,6 +13,8 @@ import com.ray.sqlitetemplate.repository.model.MovieData
 import com.ray.sqlitetemplate.view.adapter.MovieData_RecycleAdapter
 import com.ray.sqlitetemplate.view_model.MovieDataViewModel
 
+
+//https://proandroiddev.com/mvvm-architecture-viewmodel-and-livedata-part-1-604f50cda1
 class MovieData_Activity : AppCompatActivity() {
 
     private lateinit var mMovieData:ArrayList<MovieData>
@@ -25,17 +27,41 @@ class MovieData_Activity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_movie_data_)
-
+/*
         mMovieDataViewModel = ViewModelProviders.of(this).get(MovieDataViewModel::class.java)
         mMovieDataViewModel.getMovieData().observe(this,object:Observer<List<MovieData>>{
             override fun onChanged(t: List<MovieData>?) {
                 mMovieDataRecycleAdapter.notifyDataSetChanged()
             }
-        })
+        })*/
 
-        getData()
-        initRecycleView()
+        this.mMovieDataViewModel = ViewModelProviders.of(this).get(MovieDataViewModel::class.java)
+        observeViewModel(mMovieDataViewModel)
+        //getData()
+       // initRecycleView()
     }
+    private fun observeViewModel(viewModel:MovieDataViewModel){
+        viewModel.getMovieDataObservable().observe(this, object: Observer<List<MovieData>> {
+            override fun onChanged(t: List<MovieData>?) {
+                initRecycleView()
+            }
+
+        })
+    }
+    private fun initRecycleView(MovieDataList:List<MovieData>){
+        //select recycle view from Activity Layout
+        val movieRecycleView:RecyclerView= findViewById(R.id.movie_recycler_view)
+
+        var mMovieArray = ArrayList (MovieDataList)
+
+        //instantiate custom adapter
+        mMovieDataRecycleAdapter = MovieData_RecycleAdapter(mMovieArray, this)
+        //assign custom adapter to recycle view
+        movieRecycleView.adapter  = mMovieDataRecycleAdapter
+        //assign a layout and its orientation
+        movieRecycleView.layoutManager= LinearLayoutManager(this, LinearLayout.HORIZONTAL, false)
+    }
+
     fun getData(){
         mMovieDataViewModel.getMovieData()
         mMovieData = mMovieDataViewModel.getMovieData().value as ArrayList<MovieData>

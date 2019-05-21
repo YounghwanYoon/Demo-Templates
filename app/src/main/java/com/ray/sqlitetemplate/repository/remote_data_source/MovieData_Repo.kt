@@ -25,8 +25,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 object MovieData_Repo {
 
     private lateinit var mMovieData:List<MovieData>
-    private var mCompositeDisposable = CompositeDisposable()
 
+    private var mCompositeDisposable = CompositeDisposable()
+    private lateinit var mRestService:MovieData_API
 
     val TAG = "MovieData_Repo"
     init{
@@ -34,15 +35,22 @@ object MovieData_Repo {
 
     fun getDataSet(): MutableLiveData<List<MovieData>>{
         var data:MutableLiveData<List<MovieData>> = MutableLiveData()
-        getDataFromRest()
-        //data!!.value = getDataFromRest()
-        Log.d(TAG, "getDataSet(): ${mMovieData.size}")
-        Log.d(TAG, "data.value(): ${ data.value?.size}")
 
+        mRestService.getMovieData().enqueue(object: Callback<List<MovieData>> {
+            override fun onFailure(call: Call<List<MovieData>>, t: Throwable) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onResponse(call: Call<List<MovieData>>, response: Response<List<MovieData>>) {
+                data.value = response.body()
+                Log.d(TAG, "data.value(): ${ data.value?.size}")
+            }
+
+        })
 
         return data
     }
-
+/*
     private fun getDataFromRest() {
 
         var theData : List<MovieData>
@@ -90,4 +98,6 @@ object MovieData_Repo {
         var MVVM:MovieDataViewModel = MovieDataViewModel()
         MVVM.updateUserView(webData)
     }
+
+    */
 }
