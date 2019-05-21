@@ -4,18 +4,10 @@ import android.arch.lifecycle.MutableLiveData
 import android.os.Build.VERSION_CODES.O
 import android.util.Log
 import com.ray.sqlitetemplate.repository.model.MovieData
-import com.ray.sqlitetemplate.view_model.MovieDataViewModel
-import io.reactivex.Observable
-import io.reactivex.Scheduler
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.functions.Consumer
-import io.reactivex.schedulers.Schedulers
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
 /*
@@ -25,8 +17,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 object MovieData_Repo {
 
     private lateinit var mMovieData:List<MovieData>
-
-    private var mCompositeDisposable = CompositeDisposable()
     private lateinit var mRestService:MovieData_API
 
     val TAG = "MovieData_Repo"
@@ -35,6 +25,14 @@ object MovieData_Repo {
 
     fun getDataSet(): MutableLiveData<List<MovieData>>{
         var data:MutableLiveData<List<MovieData>> = MutableLiveData()
+
+        //Retrieve data using Retrofit2 from RESTFUL API
+        var retrofit: Retrofit =
+                Retrofit.Builder()
+                        .baseUrl(MovieData_API.BASE_URL)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build()
+        mRestService = retrofit.create(MovieData_API::class.java)
 
         mRestService.getMovieData().enqueue(object: Callback<List<MovieData>> {
             override fun onFailure(call: Call<List<MovieData>>, t: Throwable) {

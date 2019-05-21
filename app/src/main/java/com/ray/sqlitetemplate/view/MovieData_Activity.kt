@@ -43,12 +43,12 @@ class MovieData_Activity : AppCompatActivity() {
     private fun observeViewModel(viewModel:MovieDataViewModel){
         viewModel.getMovieDataObservable().observe(this, object: Observer<List<MovieData>> {
             override fun onChanged(t: List<MovieData>?) {
-                initRecycleView()
+                initRecycleView(ArrayList(t))
             }
 
         })
     }
-    private fun initRecycleView(MovieDataList:List<MovieData>){
+    private fun initRecycleView(MovieDataList:ArrayList<MovieData>){
         //select recycle view from Activity Layout
         val movieRecycleView:RecyclerView= findViewById(R.id.movie_recycler_view)
 
@@ -68,6 +68,7 @@ class MovieData_Activity : AppCompatActivity() {
     }
 
     private fun initRecycleView(){
+
         //select recycle view from Activity Layout
         val movieRecycleView:RecyclerView= findViewById(R.id.movie_recycler_view)
         //instantiate custom adapter
