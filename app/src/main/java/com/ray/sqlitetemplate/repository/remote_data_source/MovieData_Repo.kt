@@ -20,8 +20,6 @@ object MovieData_Repo {
     private lateinit var mRestService:MovieData_API
 
     val TAG = "MovieData_Repo"
-    init{
-    }
 
     fun getDataSet(): MutableLiveData<List<MovieData>>{
         var data:MutableLiveData<List<MovieData>> = MutableLiveData()
@@ -43,7 +41,6 @@ object MovieData_Repo {
                 data.value = response.body()
                 Log.d(TAG, "data.value(): ${ data.value?.size}")
             }
-
         })
 
         return data

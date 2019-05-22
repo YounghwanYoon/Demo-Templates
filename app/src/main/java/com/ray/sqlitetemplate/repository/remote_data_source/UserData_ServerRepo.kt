@@ -1,4 +1,4 @@
-package com.ray.sqlitetemplate.repository.server
+package com.ray.sqlitetemplate.repository.remote_data_source
 
 import android.arch.lifecycle.MutableLiveData
 import com.ray.sqlitetemplate.repository.model.UserData
@@ -19,7 +19,7 @@ object UserData_ServerRepo{
     //Pretend to get data from a webservice or online source
     //This is how we retrieve data from ViewModel
        fun getDataSet(): MutableLiveData<List<UserData>> {
-            setUserData()
+        setUserData()
 
             var data:MutableLiveData<List<UserData>> = MutableLiveData()
             data.setValue(mUserData)

@@ -14,7 +14,7 @@ import com.ray.sqlitetemplate.repository.model.UserData
 import com.ray.sqlitetemplate.view.adapter.UserRecycleAdapter
 import com.ray.sqlitetemplate.view_model.UserDataViewModel
 
-class UserData_view : AppCompatActivity() {
+class UserData_Activity : AppCompatActivity() {
     //UserData
     private lateinit var mUserData:ArrayList<UserData>
     private lateinit var mUserRecyclerAdapter: UserRecycleAdapter
@@ -22,8 +22,8 @@ class UserData_view : AppCompatActivity() {
     private lateinit var mUserDataViewModel:UserDataViewModel
 
     companion object {
-        // private val TAG = UserData_view::class!!.simpleName
-        private val TAG = "UserData_view"
+        // private val TAG = UserData_Activity::class!!.simpleName
+        private val TAG = "UserData_Activity"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {1

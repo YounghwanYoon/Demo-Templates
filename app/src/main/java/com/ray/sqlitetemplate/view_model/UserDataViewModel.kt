@@ -3,9 +3,8 @@ package com.ray.sqlitetemplate.view_model
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import com.bumptech.glide.Glide.init
 import com.ray.sqlitetemplate.repository.model.UserData
-import com.ray.sqlitetemplate.repository.server.UserData_ServerRepo
+import com.ray.sqlitetemplate.repository.remote_data_source.UserData_ServerRepo
 
 class UserDataViewModel: ViewModel() {
 

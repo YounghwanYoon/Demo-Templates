@@ -40,7 +40,7 @@
                 >
         </activity>
         <activity
-                android:name=".view.UserData_view"
+                android:name=".view.UserData_Activity"
                 android:label="@string/title_activity_user_data_view"
                 >
         </activity>
