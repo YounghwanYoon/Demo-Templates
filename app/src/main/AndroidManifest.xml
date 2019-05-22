@@ -47,6 +47,7 @@
         <activity
                 android:name=".view.MovieData_Activity"
                 android:label="@string/title_activity_movie_data_"
+                android:theme="@style/AppTheme"
                 >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
