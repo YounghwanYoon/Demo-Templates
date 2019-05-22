@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
+import android.view.Window
+import android.view.WindowManager
 import android.widget.LinearLayout
 import com.ray.sqlitetemplate.R
 import com.ray.sqlitetemplate.repository.model.MovieData
@@ -26,7 +28,15 @@ class MovieData_Activity : AppCompatActivity() {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //Remove Title
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        //set up full screen
+        getWindow()
+                .setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_movie_data_)
+
 /*
         mMovieDataViewModel = ViewModelProviders.of(this).get(MovieDataViewModel::class.java)
         mMovieDataViewModel.getMovieData().observe(this,object:Observer<List<MovieData>>{
