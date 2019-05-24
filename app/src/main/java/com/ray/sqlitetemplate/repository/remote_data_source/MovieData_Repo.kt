@@ -3,7 +3,10 @@ package com.ray.sqlitetemplate.repository.remote_data_source
 import android.arch.lifecycle.MutableLiveData
 import android.os.Build.VERSION_CODES.O
 import android.util.Log
+import com.ray.sqlitetemplate.BuildConfig
 import com.ray.sqlitetemplate.repository.model.MovieData
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -16,16 +19,27 @@ import retrofit2.converter.gson.GsonConverterFactory
  */
 object MovieData_Repo {
 
-    private lateinit var mMovieData:List<MovieData>
     private lateinit var mRestService:MovieData_API
 
     val TAG = "MovieData_Repo"
 
     fun getDataSet(): MutableLiveData<List<MovieData>>{
-        var data:MutableLiveData<List<MovieData>> = MutableLiveData()
+        //create OkHTTP client
+        val okhttpClientBuilder = OkHttpClient.Builder()
+
+        val logging = HttpLoggingInterceptor()
+        //logging.setLevel(HttpLoggingInterceptor.Level.BODY)
+
+        //It runs only in development mode
+        //Must be avoid its usage for image/video since it give you lots of byte codes which slows application
+        if(BuildConfig.DEBUG){
+            //okhttpClientBuilder.addInterceptor(logging)
+        }
+
+        val data:MutableLiveData<List<MovieData>> = MutableLiveData()
 
         //Retrieve data using Retrofit2 from RESTFUL API
-        var retrofit: Retrofit =
+        val retrofit: Retrofit =
                 Retrofit.Builder()
                         .baseUrl(MovieData_API.BASE_URL)
                         .addConverterFactory(GsonConverterFactory.create())
