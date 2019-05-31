@@ -1,7 +1,8 @@
 # Template/Demo for future references
 
 Contains followings: 
-- MVVM 
+
+-MVVM 
 -REST API
 -SQLITE
 -LISTVIEW/Recycler View
