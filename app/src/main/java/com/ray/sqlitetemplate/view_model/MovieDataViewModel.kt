@@ -24,19 +24,12 @@ class MovieDataViewModel(application: Application): AndroidViewModel(application
         Log.d(TAG, "MovieDataViewModel - init called")
     }
 
+
     fun getMovieDataObservable():LiveData<List<MovieData>>{
         return mMovieDataObservable
         Log.d(TAG, "MovieDataViewModel - getMovieDataObservable() called")
 
     }
-
-
-/*
-    init{
-        //Retrieved data from Repository
-        mAllMovieData= MovieData_Repo.getDataSet()
-    }
-*/
     //LiverData will not be changed directly but only indirectly.
     //This prevent data change in such case where user leave
     // smart phone for a period of time and come back, data still won't change

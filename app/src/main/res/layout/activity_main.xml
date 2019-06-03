@@ -5,7 +5,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MainActivity">
+        tools:context=".view.MainActivity">
 
     <ImageView
         android:layout_width="match_parent"
@@ -79,6 +79,25 @@
                 android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/login_id_edit_text"
                 app:layout_constraintVertical_bias="0.082" android:hint="@string/password"/>
 
+
+        <Button
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:text="Create Account"
+                android:id="@+id/create_account_btn"
+                android:layout_marginBottom="8dp"
+                android:padding="8dp"
+                android:textColor="@android:color/black"
+                android:background="@android:color/white"
+                app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/password_edit_text"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintVertical_bias="1.0">
+
+        </Button>
+
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
@@ -110,7 +129,6 @@
                     android:layout_marginRight="8dp"
                     android:background="@drawable/bg_buttons"/>/>
         </LinearLayout>
-
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
@@ -119,7 +137,7 @@
                 app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"
                 android:id="@+id/linearLayout" android:layout_marginTop="0dp"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+                >
             <Button
                     android:text="Login"
                     android:layout_width="wrap_content"

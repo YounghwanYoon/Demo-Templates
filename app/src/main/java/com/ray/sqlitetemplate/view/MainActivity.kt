@@ -1,4 +1,4 @@
-package com.ray.sqlitetemplate
+package com.ray.sqlitetemplate.view
 
 import android.content.Context
 import android.content.Intent
@@ -22,6 +22,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
+import com.ray.sqlitetemplate.DatabaseController
+import com.ray.sqlitetemplate.ListViewActivity
+import com.ray.sqlitetemplate.R
 import com.ray.sqlitetemplate.repository.model.UserData
 
 
@@ -141,7 +144,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
                     Toast.makeText(this, "Current ID is ${mLogin_Id.text} added", Toast.LENGTH_SHORT).show()
             }
-            R.id.check_sql_button->{
+            R.id.check_sql_button ->{
                 val listViewActivityIntent: Intent = Intent(this@MainActivity, ListViewActivity::class.java)
                 listViewActivityIntent.flags = Intent.FLAG_ACTIVITY_NO_HISTORY
                 startActivity(listViewActivityIntent)

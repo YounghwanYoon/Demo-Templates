@@ -1,5 +1,6 @@
 package com.ray.sqlitetemplate.repository.remote_data_source
 
+import android.app.AlertDialog
 import android.arch.lifecycle.MutableLiveData
 import android.os.Build.VERSION_CODES.O
 import android.util.Log
@@ -48,7 +49,8 @@ object MovieData_Repo {
 
         mRestService.getMovieData().enqueue(object: Callback<List<MovieData>> {
             override fun onFailure(call: Call<List<MovieData>>, t: Throwable) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                data.value= null
+                Log.d(TAG,"Something went wrong: Problem calling RestfulAPI",t)
             }
 
             override fun onResponse(call: Call<List<MovieData>>, response: Response<List<MovieData>>) {

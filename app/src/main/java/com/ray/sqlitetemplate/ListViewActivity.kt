@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Window
 import android.view.WindowManager
 import android.widget.*
+import com.ray.sqlitetemplate.view.adapter.MyArrayAdapter
 
 class ListViewActivity : AppCompatActivity() {
     private val Tag:String = this.javaClass.name

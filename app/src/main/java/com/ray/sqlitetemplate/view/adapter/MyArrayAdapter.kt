@@ -1,4 +1,4 @@
-package com.ray.sqlitetemplate
+package com.ray.sqlitetemplate.view.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -9,11 +9,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import com.ray.sqlitetemplate.DatabaseController
+import com.ray.sqlitetemplate.ListViewActivity
+import com.ray.sqlitetemplate.R
 import com.ray.sqlitetemplate.repository.model.UserData
 
 //ArrayAdapter is Binding between listview and each view .
 //resource is the each_row.xml
-class MyArrayAdapter(context: Context, private val resource:Int, users:ArrayList<Pair<Long, UserData>>, val db:DatabaseController):ArrayAdapter<Pair<Long, UserData>>(context, resource, users){
+class MyArrayAdapter(context: Context, private val resource:Int, users:ArrayList<Pair<Long, UserData>>, val db: DatabaseController):ArrayAdapter<Pair<Long, UserData>>(context, resource, users){
     val TAG = "MyArrayAdapter.java"
 
     @SuppressLint("ViewHolder")
@@ -28,10 +31,10 @@ class MyArrayAdapter(context: Context, private val resource:Int, users:ArrayList
              eachView = LayoutInflater.from(context).inflate(resource, parent, false) as View
 
         // Lookup view for data population
-        val userUniqueID: TextView? = eachView?.findViewById(com.ray.sqlitetemplate.R.id.unique_id_text) as TextView
-        val userImage: ImageView? = eachView?.findViewById(com.ray.sqlitetemplate.R.id.each_image) as ImageView
-        val userID: TextView?= eachView?.findViewById(com.ray.sqlitetemplate.R.id.login_id_text) as TextView
-        val userPW: TextView? = eachView?.findViewById(com.ray.sqlitetemplate.R.id.login_pw_text)as TextView
+        val userUniqueID: TextView? = eachView?.findViewById(R.id.unique_id_text) as TextView
+        val userImage: ImageView? = eachView?.findViewById(R.id.each_image) as ImageView
+        val userID: TextView?= eachView?.findViewById(R.id.login_id_text) as TextView
+        val userPW: TextView? = eachView?.findViewById(R.id.login_pw_text)as TextView
 
         // Populate the data into the template view using the data object
         userUniqueID!!.text = user.first.toString()
