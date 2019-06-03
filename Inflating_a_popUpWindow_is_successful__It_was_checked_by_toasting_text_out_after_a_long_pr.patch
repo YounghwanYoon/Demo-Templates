@@ -1,0 +1,18 @@
+Index: app/src/androidTest/java/com/ray/sqlitetemplate/ExampleInstrumentedTest.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/androidTest/java/com/ray/sqlitetemplate/ExampleInstrumentedTest.kt	(revision 9a3258e39fee8f0cac4f3e2be9de4098c429685f)
++++ app/src/androidTest/java/com/ray/sqlitetemplate/ExampleInstrumentedTest.kt	(date 1553638127145)
+@@ -1,8 +1,7 @@
+ package com.ray.sqlitetemplate
+ 
+-import androidx.test.InstrumentationRegistry
+-import androidx.test.runner.AndroidJUnit4
+-
++import android.support.test.InstrumentationRegistry
++import android.support.test.runner.AndroidJUnit4
+ import org.junit.Test
+ import org.junit.runner.RunWith
+ 
