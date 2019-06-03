@@ -1,3 +1,14 @@
-# Demo_MVVM_REST API_SQLITE_LISTVIEW_GOOGLE LOGIN API_
+# Template/Demo for future references
 
-Demo for MVVM_REST API_SQLITE_LISTVIEW_GOOGLE LOGIN API_
+Language used: 
+- Kotlin
+
+Contains followings: 
+
+-MVVM 
+-REST API
+-SQLITE
+-LISTVIEW/Recycler View
+-GOOGLE-LOGIN-API
+-Fragments
+
