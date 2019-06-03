@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">SQLite Template</string>
+    <string name="log_in">SQLite Log-In Page</string>
+    <string name="create">create</string>
+    <string name="log_in_id">Login ID or Email</string>
+    <string name="password">Password</string>
+    <string name="server_side_list">Server View</string>
+    <string name="popUpView_Warning_Before_Change">Please Verify information below before making changes</string>
+    <string name="remove">Remove</string>
+    <string name="update">Update</string>
+    <string name="update_n_password">Update password</string>
+    <string name="signin_other_error">Sign-In with Google Account is not available</string>
+    <string name="title_activity_user_data_view">user_data_view</string>
+    <string name="title_activity_movie_data_">MovieData_Activity</string>
+    <string name="action_settings">Settings</string>
+</resources>
