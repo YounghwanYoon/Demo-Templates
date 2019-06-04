@@ -1,7 +1,8 @@
 package com.ray.fragment
 
-import android.support.test.rule.ActivityTestRule
-import android.support.test.runner.AndroidJUnit4
+import android.app.Instrumentation
+import androidx.test.rule.ActivityTestRule
+import androidx.test.runner.AndroidJUnit4
 import android.view.View
 import android.widget.RelativeLayout
 import androidx.test.InstrumentationRegistry.getInstrumentation
@@ -17,10 +18,9 @@ import org.junit.Test
 class Home_FragmentTest {
 
     //Create rule to launch Activity
-    @Rule
-    var mActivityTestRule:ActivityTestRule<TestActivity>? = ActivityTestRule<TestActivity>(TestActivity::class.java)
-
-    var mActivity:TestActivity? = null
+    @get:Rule
+    public var mActivityTestRule:ActivityTestRule<TestActivity>? = ActivityTestRule<TestActivity>(TestActivity::class.java)
+    public var mActivity:TestActivity? = null
 
 
     @Before
@@ -44,7 +44,7 @@ class Home_FragmentTest {
         var fragmentManager = mActivity!!.supportFragmentManager
         fragmentManager.beginTransaction().add(rlContainer.id, homeFragment).commitAllowingStateLoss()
 
-        InstrumentationRegistry.getInstrumentation().targetContext
+        InstrumentationRegistry.getInstrumentation().waitForIdleSync()
 
         //is my view visible
         var view: View? = homeFragment.view?.findViewById(R.id.home_text)

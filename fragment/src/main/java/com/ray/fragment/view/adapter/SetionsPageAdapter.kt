@@ -1,8 +1,8 @@
 package com.ray.fragment.view.adapter
 
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentPagerAdapter
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
 
 class SectionsPageAdapter(fm: FragmentManager): FragmentPagerAdapter(fm){
 
@@ -20,7 +20,7 @@ class SectionsPageAdapter(fm: FragmentManager): FragmentPagerAdapter(fm){
     }
 
     //add Fragment method
-    fun addFragment(fragment:Fragment){
+    fun addFragment(fragment: Fragment){
         mFragmentList.add(fragment)
     }
 }

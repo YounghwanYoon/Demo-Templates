@@ -1,7 +1,7 @@
 package com.ray.fragment.view
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import com.ray.fragment.R
 
 class TestActivity:AppCompatActivity(){

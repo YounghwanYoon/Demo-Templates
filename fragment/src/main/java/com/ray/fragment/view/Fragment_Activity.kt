@@ -1,16 +1,16 @@
 package com.ray.fragment.view
 
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.support.design.widget.BottomNavigationView
-import android.support.v4.view.ViewPager
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import androidx.viewpager.widget.ViewPager
 import android.view.MenuItem
 import com.ray.fragment.R
 import com.ray.fragment.view.adapter.SectionsPageAdapter
 
 class Fragment_Activity : AppCompatActivity() {
 
-    private val navListener = object:BottomNavigationView.OnNavigationItemSelectedListener{
+    private val navListener = object: BottomNavigationView.OnNavigationItemSelectedListener{
         override fun onNavigationItemSelected(p0: MenuItem): Boolean {
 
             when(p0.itemId){
@@ -21,7 +21,7 @@ class Fragment_Activity : AppCompatActivity() {
             return true
         }
     }
-    private val pageChangeListener = object:ViewPager.OnPageChangeListener{
+    private val pageChangeListener = object: ViewPager.OnPageChangeListener{
         override fun onPageScrollStateChanged(p0: Int) {
         }
 
@@ -35,7 +35,7 @@ class Fragment_Activity : AppCompatActivity() {
 
     lateinit var mAdapter: SectionsPageAdapter
     lateinit var mViewPager: ViewPager
-    lateinit var bottomNav:BottomNavigationView
+    lateinit var bottomNav: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
