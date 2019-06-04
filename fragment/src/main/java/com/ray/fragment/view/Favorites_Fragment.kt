@@ -1,16 +1,16 @@
-package com.ray.fragment
+package com.ray.fragment.view
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.ray.fragment.R
 
-
-class Home_Fragment: Fragment() {
+class Favorites_Fragment: Fragment(){
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view:View = inflater.inflate(R.layout.fragment_home, container, false)
+        val view:View = inflater.inflate(R.layout.fragment_fav, container, false)
         return view
     }
 }

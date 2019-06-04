@@ -43,3 +43,6 @@ whenever user change fragment using swipe instead of bottom_navigation item
 Source:
 https://developer.android.com/reference/android/support/v4/app/FragmentStatePagerAdapter
 
+
+Testing
+

@@ -1,10 +1,12 @@
-package com.ray.fragment
+package com.ray.fragment.view
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.view.ViewPager
 import android.view.MenuItem
+import com.ray.fragment.R
+import com.ray.fragment.view.adapter.SectionsPageAdapter
 
 class Fragment_Activity : AppCompatActivity() {
 
@@ -31,7 +33,7 @@ class Fragment_Activity : AppCompatActivity() {
         }
     }
 
-    lateinit var mAdapter:SectionsPageAdapter
+    lateinit var mAdapter: SectionsPageAdapter
     lateinit var mViewPager: ViewPager
     lateinit var bottomNav:BottomNavigationView
 
@@ -53,7 +55,7 @@ class Fragment_Activity : AppCompatActivity() {
     }
 
 
-    fun setupViewPager(viewPager: ViewPager, adapter:SectionsPageAdapter){
+    fun setupViewPager(viewPager: ViewPager, adapter: SectionsPageAdapter){
         adapter.addFragment(Home_Fragment())
         adapter.addFragment(Favorites_Fragment())
         adapter.addFragment(People_Fragment())

@@ -1,4 +1,4 @@
-package com.ray.fragment
+package com.ray.fragment.view.adapter
 
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
