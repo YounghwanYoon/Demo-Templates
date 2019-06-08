@@ -23,8 +23,8 @@ import android.widget.TextView
 
 import java.util.ArrayList
 import android.Manifest.permission.READ_CONTACTS
-import android.support.v4.view.ViewPager
-import android.support.v7.app.AppCompatActivity
+import androidx.viewpager.widget.ViewPager
+import androidx.appcompat.app.AppCompatActivity
 import com.ray.sqlitetemplate.R
 import com.ray.sqlitetemplate.R.id.*
 import com.ray.sqlitetemplate.view.adapter.SectionStatePagerAdapter
@@ -38,7 +38,7 @@ class LoginActivity : AppCompatActivity(){
 
     private val TAG = "LoginActivity.kt"
     private lateinit var mSectionStatePagerAdapter:SectionStatePagerAdapter
-    private lateinit var mViewPager:ViewPager
+    private lateinit var mViewPager: androidx.viewpager.widget.ViewPager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,7 +51,7 @@ class LoginActivity : AppCompatActivity(){
         setupViewPager(mViewPager, mSectionStatePagerAdapter)
     }
 
-    private fun setupViewPager(viewPager:ViewPager, pagerAdapter: SectionStatePagerAdapter){
+    private fun setupViewPager(viewPager: androidx.viewpager.widget.ViewPager, pagerAdapter: SectionStatePagerAdapter){
         val adapter = pagerAdapter
         //val adapter =  SectionStatePagerAdapter(getSupportFragmentManager())
         adapter.addFragment(Login_Fragment(),"LoginPage_Fragment")

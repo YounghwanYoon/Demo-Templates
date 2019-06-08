@@ -1,6 +1,6 @@
 package com.ray.sqlitetemplate.repository.remote_data_source
 
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.MutableLiveData
 import com.ray.sqlitetemplate.repository.model.UserData
 
 /*

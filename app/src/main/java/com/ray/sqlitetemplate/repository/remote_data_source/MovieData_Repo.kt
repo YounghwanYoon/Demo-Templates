@@ -1,7 +1,7 @@
 package com.ray.sqlitetemplate.repository.remote_data_source
 
 import android.app.AlertDialog
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.MutableLiveData
 import android.os.Build.VERSION_CODES.O
 import android.util.Log
 import com.ray.sqlitetemplate.BuildConfig

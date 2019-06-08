@@ -2,7 +2,7 @@ package com.ray.sqlitetemplate.view
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +12,7 @@ import android.widget.Toast
 import com.google.android.gms.common.SignInButton
 import com.ray.sqlitetemplate.R
 
-class Login_Fragment: Fragment(){
+class Login_Fragment: androidx.fragment.app.Fragment(){
 
     private lateinit var btnCreate: Button
     private lateinit var btnEmailLogin:Button

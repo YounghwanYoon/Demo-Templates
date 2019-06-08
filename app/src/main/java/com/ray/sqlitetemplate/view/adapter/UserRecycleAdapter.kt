@@ -1,7 +1,7 @@
 package com.ray.sqlitetemplate.view.adapter
 
 import android.content.Context
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +15,7 @@ import de.hdodenhof.circleimageview.CircleImageView
 import com.ray.sqlitetemplate.repository.model.UserData
 
 
-class UserRecycleAdapter(private val userList:ArrayList<UserData>, private val mContext: Context):RecyclerView.Adapter<UserRecycleAdapter.ViewHolder>(){
+class UserRecycleAdapter(private val userList:ArrayList<UserData>, private val mContext: Context): RecyclerView.Adapter<UserRecycleAdapter.ViewHolder>(){
 
     companion object {
         private var TAG="UserRecycleAdapter"
@@ -38,7 +38,7 @@ class UserRecycleAdapter(private val userList:ArrayList<UserData>, private val m
     }
 
     //it hold each individual data such as image or text
-    class ViewHolder(itemView:View, context:Context):RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(itemView:View, context:Context): RecyclerView.ViewHolder(itemView) {
         private var image: CircleImageView = itemView.findViewById<CircleImageView>(com.ray.sqlitetemplate.R.id.image)
             get() = field
             set(value) {

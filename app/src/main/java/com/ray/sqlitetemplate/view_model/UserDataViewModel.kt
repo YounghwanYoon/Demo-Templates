@@ -1,8 +1,8 @@
 package com.ray.sqlitetemplate.view_model
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.ray.sqlitetemplate.repository.model.UserData
 import com.ray.sqlitetemplate.repository.remote_data_source.UserData_ServerRepo
 

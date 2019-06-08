@@ -1,16 +1,16 @@
 package com.ray.sqlitetemplate.view
 
 import android.app.AlertDialog
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.net.ConnectivityManager
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.util.Log
 import android.view.Window
 import android.view.WindowManager
@@ -104,7 +104,7 @@ class MovieData_Activity : AppCompatActivity() {
 
     private fun initRecycleView(MovieDataList:ArrayList<MovieData>){
         //select recycle view from Activity Layout
-        val movieRecycleView:RecyclerView= findViewById(R.id.movie_recycler_view)
+        val movieRecycleView: RecyclerView = findViewById(R.id.movie_recycler_view)
 
         var mMovieArray = ArrayList (MovieDataList)
 
@@ -124,7 +124,7 @@ class MovieData_Activity : AppCompatActivity() {
     private fun initRecycleView(){
 
         //select recycle view from Activity Layout
-        val movieRecycleView:RecyclerView= findViewById(R.id.movie_recycler_view)
+        val movieRecycleView: RecyclerView = findViewById(R.id.movie_recycler_view)
         //instantiate custom adapter
         mMovieDataRecycleAdapter = MovieData_RecycleAdapter(mMovieData, this)
         //assign custom adapter to recycle view
@@ -135,7 +135,7 @@ class MovieData_Activity : AppCompatActivity() {
 
      fun updateUI(webData:ArrayList<MovieData>){
         //select recycle view from Activity Layout
-        val movieRecycleView:RecyclerView= findViewById(R.id.movie_recycler_view)
+        val movieRecycleView: RecyclerView = findViewById(R.id.movie_recycler_view)
         //instantiate custom adapter
         mMovieDataRecycleAdapter = MovieData_RecycleAdapter(webData, this)
         //assign custom adapter to recycle view

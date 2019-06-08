@@ -2,7 +2,7 @@ package com.ray.sqlitetemplate.view.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +14,7 @@ import com.bumptech.glide.Glide.init
 import com.ray.sqlitetemplate.R
 import com.ray.sqlitetemplate.repository.model.MovieData
 
-class MovieData_RecycleAdapter(private val movieList:ArrayList<MovieData>, private val mContext:Context):RecyclerView.Adapter<MovieData_RecycleAdapter.ViewHolder>(){
+class MovieData_RecycleAdapter(private val movieList:ArrayList<MovieData>, private val mContext:Context): RecyclerView.Adapter<MovieData_RecycleAdapter.ViewHolder>(){
 
     companion object {
         private val TAG = "MovieData_RecycleAdapter"
@@ -37,7 +37,7 @@ class MovieData_RecycleAdapter(private val movieList:ArrayList<MovieData>, priva
 
     }
 
-    class ViewHolder(itemView:View, context:Context):RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(itemView:View, context:Context): RecyclerView.ViewHolder(itemView) {
 
         private lateinit var mMovieTitle_View:TextView
         private lateinit var mMovieImage_View: ImageView
