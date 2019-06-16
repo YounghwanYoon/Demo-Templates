@@ -3,34 +3,29 @@ package com.ray.srt_smi_converter.view
 import android.os.Bundle
 import android.widget.Button
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager.widget.ViewPager
 import com.ray.srt_smi_converter.R
 import com.ray.srt_smi_converter.view.adapter.StatePagerAdapter
+import com.ray.srt_smi_converter.viewmodel.SharedViewModel
 
 class MainActivity : FragmentActivity() {
-    private var mViewAdapter= StatePagerAdapter(supportFragmentManager)
-    lateinit var mViewPager:ViewPager
-    val selectBtn = findViewById<Button>(R.id.select_file_button)
+    private var TAG:String = this.javaClass.simpleName.toString()
+
+private var mViewAdapter= StatePagerAdapter(supportFragmentManager)
+    private lateinit var mViewPager:ViewPager
+    private lateinit var mSharedVM:SharedViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        mSharedVM = ViewModelProviders.of(this).get(SharedViewModel::class.java)
         mViewPager = findViewById(R.id.container_viewpager)
         setupViewPager(mViewPager, mViewAdapter)
-        button_setup()
     }
 
     fun setupViewPager(viewPager: ViewPager, adapter: StatePagerAdapter){
-        adapter.addFragment(Select_Type_Fragment())
-        adapter.addFragment(List_Of_Files())
-        viewPager.adapter = adapter
-    }
-
-    fun button_setup(){
-        selectBtn.setOnClickListener {
-            mViewPager.currentItem = 1
-        }
-
+        mSharedVM.setupViewPager(viewPager, adapter)
     }
 }

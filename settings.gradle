@@ -1,1 +1,1 @@
-include ':app', ':test', ':fragment', ':mvc_login'
+include ':MVVM_Retrofit', ':test', ':fragment', ':mvc_login', ':srt_smi_converter'
