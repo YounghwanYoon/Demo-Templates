@@ -74,7 +74,7 @@ class ReadData {
             firstCall = false
         }
         else{
-            //First Item of itemInCurrentPath is previous directory
+            //First Item in itemInCurrentPath is previous directory
             itemsInCurrentPath.add(currentPath)
         }
 
