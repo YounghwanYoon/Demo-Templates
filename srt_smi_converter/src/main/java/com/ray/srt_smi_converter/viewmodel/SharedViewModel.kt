@@ -3,6 +3,7 @@ package com.ray.srt_smi_converter.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.viewpager.widget.ViewPager
 import com.ray.srt_smi_converter.view.ListofFiles
 import com.ray.srt_smi_converter.view.Select_Type_Fragment
 import com.ray.srt_smi_converter.view.adapter.StatePagerAdapter
@@ -11,7 +12,7 @@ import java.io.File
 class SharedViewModel: ViewModel(){
     private val TAG = this.javaClass.simpleName.toString()
     private val directory : MutableLiveData<String> = MutableLiveData()
-    private lateinit var mViewPager:ViewPager
+    private lateinit var mViewPager: ViewPager
     private lateinit var mAdapter:StatePagerAdapter
     private lateinit var mReadData:ReadData
 

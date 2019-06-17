@@ -59,7 +59,6 @@ class ReadData {
         }
 
         rootDir = rootFile.path
-
         return rootFile
     }
 
