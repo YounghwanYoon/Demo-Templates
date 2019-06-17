@@ -3,9 +3,6 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion 28
-
-
-
     defaultConfig {
         applicationId "com.ray.fragment"
         minSdkVersion 23
@@ -30,8 +27,7 @@ dependencies {
     def compatVersion = '1.0.0-beta01'
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation "androidx.appcompat:appcompat:$compatVersion"
     implementation 'com.google.android.material:material:1.0.0-beta01'
 

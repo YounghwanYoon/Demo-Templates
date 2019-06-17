@@ -1,12 +1,10 @@
 package com.ray.fragment
 
 import android.app.Instrumentation
-import androidx.test.rule.ActivityTestRule
-import androidx.test.runner.AndroidJUnit4
 import android.view.View
 import android.widget.RelativeLayout
-import androidx.test.InstrumentationRegistry.getInstrumentation
 import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.rule.ActivityTestRule
 import com.ray.fragment.view.Home_Fragment
 import com.ray.fragment.view.TestActivity
 import org.junit.After
@@ -14,6 +12,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Assert.*
 import org.junit.Test
+
 
 class Home_FragmentTest {
 
