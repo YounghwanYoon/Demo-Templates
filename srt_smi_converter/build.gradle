@@ -30,11 +30,18 @@ dependencies {
     def constraint_version = '2.0.0-alpha3'
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    //view pager
+    implementation "com.android.support:viewpager"
+
+    def lifecycle_version = "2.0.0"
+    // ViewModel and LiveData
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+    implementation"androidx.lifecycle:lifecycle-livedata-core:2.2.0-alpha01"
     implementation "androidx.constraintlayout:constraintlayout:$constraint_version"
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
-    def lifecycle_version = "1.1.1"
-    implementation "android.arch.lifecycle:extensions:$lifecycle_version"
+
 }

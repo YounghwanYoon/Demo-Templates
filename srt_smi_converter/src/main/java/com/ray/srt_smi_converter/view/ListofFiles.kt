@@ -12,9 +12,7 @@ import android.view.*
 import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
-import androidx.core.app.ShareCompat.getCallingActivity
 import androidx.fragment.app.ListFragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
@@ -26,9 +24,8 @@ import java.util.ArrayList
 
 class ListofFiles: ListFragment() {
 
-    private lateinit var mSharedVM:SharedViewModel
-
     private var TAG:String = this.javaClass.simpleName.toString()
+    private lateinit var mSharedVM:SharedViewModel
 
     protected var itemsInCurrentPath: MutableList<String>? = null
     protected var currentPath: MutableList<String>? = null
@@ -67,112 +64,15 @@ class ListofFiles: ListFragment() {
         //Verify Permission for Storage
         activity?.let { verifyStoragePermissions(it)}
 
-
-        recyclerView = mView.findViewById(R.id.list_of_items_recycleview)
-        val resource = R.layout.each_file
-        val adapter: CustomedAdapter = this.context?.let { CustomedAdapter(it, resource, ) }
-
-
         mSharedVM = ViewModelProviders.of(this).get(SharedViewModel::class.java)
         mSharedVM.setDirectory("Testing Directory")
 
-        //adHandler();
-        start()
-    }
+        var list =mSharedVM.getListOfCurrentDirectory()
 
-    /*  protected void adHandler(){
-        MobileAds.initialize(this, "ca-app-pub-5028162253404928~6582777309");
-        AdRequest request = new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
-        AdView mAdView = (AdView)findViewById(R.id.adView);
-        mAdView.loadAd(request);
-    }
-*/
-    protected fun start() {
-        myPath = view?.findViewById(R.id.path) as TextView
+        recyclerView = mView.findViewById(R.id.list_of_items_recycleview)
+        val resource = R.layout.each_file
+        val adapter: CustomedAdapter? = this.context?.let { CustomedAdapter(it, resource, list) }
 
-        //If there was previously selected path, it will start from the selected path;
-        if (mPreviousSelectedPath != null) {
-            rootFile = File(mPreviousSelectedPath!!)
-            getDir(rootFile)
-        } else {
-
-            //"/storage/" path will open directory in between Internal and External SD Cards within the device.
-            //String secStore = System.getenv("SECONDARY_STORAGE");
-            //not with s5
-            //String secStore = getBaseContext().getFilesDir().getAbsolutePath();
-            //"/storage/" works with note2 not with s5
-            //Environment.getExternalStorageDirectory().getPath()
-            // rootFile = new File(secStore);
-
-            val testingRootFile = Environment.getRootDirectory().parentFile
-            val parentFile = Environment.getExternalStorageDirectory()
-            val samsungExSDPath = Environment.getExternalStorageDirectory().path
-            val samsungFile: File// = new File(samsungExSDPath + "/external_sd/");;
-
-            //Log.i(Tag, " currentRootFile is : " +testingRootFile.toString());
-            // Log.i(Tag, " getExternalStorageDirectory() is : " +Environment.getExternalStorageDirectory().toString());
-            //   Log.i(Tag, " Environment.getRootDirectory().getParentFile() is : " +Environment.getRootDirectory().getParentFile().toString());
-            //  Log.i(Tag, " getExternalFilesDir(null)is : " +getExternalFilesDir(null).toString());
-
-            if (android.os.Build.DEVICE.contains("Samsung") || android.os.Build.MANUFACTURER.contains("Samsung") || android.os.Build.DEVICE.contains("samsung") || android.os.Build.MANUFACTURER.contains("samsung")) {
-                //Toast.makeText(this, "MANUFACTURER Name: " + Build.MANUFACTURER, Toast.LENGTH_SHORT).show();
-
-                samsungFile = Environment.getRootDirectory().parentFile
-                rootFile = samsungFile
-                //                rootFile = new File("\"/storage/\"");
-            } else {
-                //Toast.makeText(this, "Non_SamSung_MANUFACTURER Name: " + Build.MANUFACTURER, Toast.LENGTH_SHORT).show();
-                rootFile = testingRootFile
-            }
-
-            //rootFile = samsungFile;
-
-            getDir(rootFile)
-        }//If this is first time of selecting file.
-    }
-
-    protected fun getDir(startingFilePath: File) {
-
-        itemsInCurrentPath = ArrayList()
-        currentPath = ArrayList()
-
-        //Display current directory location
-        myPath.text = "Current Location: " + startingFilePath.path
-
-        //files now has list of files in the current folder(directory)
-        files = startingFilePath.listFiles()
-
-        if (startingFilePath != rootFile) {
-            if (startingFilePath.path !== "/storage/") {
-                Log.v(TAG, "What the hell am i Doing here")
-                //A folder that will redirect to previous path;
-                itemsInCurrentPath!!.add(startingFilePath.parent)
-
-                currentPath!!.add(rootFile.parent)
-                currentPath!!.add(startingFilePath.parent)
-            }
-        }
-        //Log.v("SourceListActivty.java", "Length of files:" +  files.length);
-
-        try {
-            if (files!!.size == 0) {
-                Log.d(TAG, "Length of files is empty")
-            } else {
-                //Add all of files in the current Path/Folder to list
-                for (i in files!!.indices) {
-                    if (!files!![i].isHidden || files!![i].canRead()) {
-                        itemsInCurrentPath!!.add(files!![i].parent + "/" + files!![i].name + "/")
-                    }
-                }
-            }
-        } catch (e: NullPointerException) {
-            e.stackTrace
-        }
-
-        //R.layout.row_each_directory R.id.individual_file,itemsInCurrentPath
-        //ArrayAdapter<String> fileList = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, itemsInCurrentPath);
-        val fileList = CustomedAdapter(mView.context, android.R.layout.simple_list_item_1, itemsInCurrentPath, startingFilePath)
-        listAdapter = fileList
     }
 
     override fun onListItemClick(l: ListView, v: View, position: Int, id: Long) {

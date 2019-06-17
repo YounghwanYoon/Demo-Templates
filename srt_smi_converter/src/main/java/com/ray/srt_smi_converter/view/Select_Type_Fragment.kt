@@ -12,6 +12,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.ray.srt_smi_converter.R
 import com.ray.srt_smi_converter.viewmodel.SharedViewModel
+import java.util.Observer
 
 
 class Select_Type_Fragment : Fragment() {

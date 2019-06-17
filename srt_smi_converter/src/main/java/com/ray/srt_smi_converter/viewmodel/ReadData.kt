@@ -64,7 +64,7 @@ class ReadData {
     }
 
     //Return list of given URL and user will recursively call this method until non-directory file such as mp3,or srt is selected
-    protected fun returnListInPath(filePath: File):MutableList<String> {
+    fun returnListInPath(filePath: File):MutableList<String> {
         itemsInCurrentPath = mutableListOf()
         //Display current directory location
         currentPath = filePath.path
