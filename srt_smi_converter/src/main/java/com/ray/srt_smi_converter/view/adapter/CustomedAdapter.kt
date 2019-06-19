@@ -9,13 +9,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.ray.srt_smi_converter.R
 
-class CustomedAdapter(context: Context, resource:Int, list: MutableList<String>) : ArrayAdapter<String>(context,resource,list){
+class CustomedAdapter(context: Context, val singleLayout:Int, list: MutableList<String>) : ArrayAdapter<String>(context,singleLayout,list){
     private var TAG:String = this.javaClass.simpleName.toString()
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {
         var eachView = convertView
         if(eachView== null){
-            eachView = LayoutInflater.from(context).inflate(R.layout.each_file, parent, false) as View
+            eachView = LayoutInflater.from(context).inflate(singleLayout, parent, false) as View
         }
 
         val image = eachView.findViewById<ImageView>(R.id.imageView)
@@ -34,11 +34,12 @@ class CustomedAdapter(context: Context, resource:Int, list: MutableList<String>)
 
         //Choose Image based on directory type.
         when(dirType){
-            "mp3" -> imageChoice = 1 //return Image
-            "mp4" -> imageChoice = 2
-            "avi" -> imageChoice = 2
-            "smi" -> imageChoice = 3
-            "srt" -> imageChoice = 3
+            "mp3" -> imageChoice = R.drawable.ic_music//return Image
+            "mp4" -> imageChoice = R.drawable.ic_video
+            "avi" -> imageChoice = R.drawable.ic_video
+            "smi" -> imageChoice = R.drawable.ic_file
+            "srt" -> imageChoice = R.drawable.ic_file
+
         }
 
         return imageChoice
