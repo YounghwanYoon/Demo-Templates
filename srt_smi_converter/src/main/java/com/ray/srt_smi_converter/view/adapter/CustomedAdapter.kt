@@ -27,10 +27,34 @@ class CustomedAdapter(context: Context, resource:Int, list: MutableList<String>)
         directory.text = data
         return eachView
     }
+
     fun chooseImage(directory:String): Int{
-        when(directory.contain){
-            ".mp3" -> return 1 //return Image
+        val dirType = checkTypeOfFile(directory)
+        var imageChoice:Int = 0
+
+        //Choose Image based on directory type.
+        when(dirType){
+            "mp3" -> imageChoice = 1 //return Image
+            "mp4" -> imageChoice = 2
+            "avi" -> imageChoice = 2
+            "smi" -> imageChoice = 3
+            "srt" -> imageChoice = 3
         }
+
+        return imageChoice
+    }
+
+    fun checkTypeOfFile(directory:String):String{
+        var fileType:String
+        if(directory.endsWith(".mp3")) {fileType = "mp3"}
+        else if(directory.endsWith(".mp4")){fileType = "avi"}
+        else if(directory.endsWith(".avi")){fileType = "mp4"}
+        else if(directory.endsWith(".smi")){fileType = "smi"}
+        else if(directory.endsWith(".srt")){fileType = "srt"}
+        else{
+            fileType="unknown"
+        }
+        return fileType
     }
 
     override fun getItem(position: Int): String? {
