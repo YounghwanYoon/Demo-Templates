@@ -33,26 +33,26 @@ class CustomedAdapter(private val context: Context?, val singleLayout:Int, var l
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         Log.d(TAG, "CustomedAdapter class -  onBindViewHolder() is called")
 
-        holder.eachView(list[position].path)
+        holder.eachView(list[position])
     }
 
     class MyViewHolder(private var eachView:View): RecyclerView.ViewHolder(eachView), View.OnClickListener{
 
         private var TAG:String = this.javaClass.simpleName.toString()
 
-        fun eachView(dir: String){
+        fun eachView(dir: File){
             Log.d(TAG, "MyViewHolder innerclass -  eachView() is called")
 
             val image = eachView.findViewById<ImageView>(R.id.imageView)
             val directory = eachView.findViewById<TextView>(R.id.resource_dir_textview)
 
             //Set directory
-            directory.text = dir
-            image.setImageResource(chooseImage(dir))
+            directory.text = dir.absolutePath
+            image.setImageResource(chooseImage(dir.absolutePath))
 
             directory.setOnClickListener(this)
         }
-
+//https://stackoverflow.com/questions/45555897/pass-item-position-clicked-from-a-recyclerview-to-the-fragment-father
         override fun onClick(p0: View?) {
             Log.d(TAG, "MyViewHolder innerclass -  onClick() is called")
 
@@ -60,7 +60,7 @@ class CustomedAdapter(private val context: Context?, val singleLayout:Int, var l
 
         private fun chooseImage(directory:String): Int{
             Log.d(TAG, "MyViewHolder innerclass -  chooseImage() is called")
-
+            Log.d(TAG, "MyViewHolder innerclass -  directory is ${directory}")
             val dirType = checkTypeOfFile(directory)
             val imageChoice: Int
 
