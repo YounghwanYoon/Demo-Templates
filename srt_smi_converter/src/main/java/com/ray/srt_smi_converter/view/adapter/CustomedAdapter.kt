@@ -9,16 +9,17 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.ray.srt_smi_converter.R
+import com.ray.srt_smi_converter.view.ListofFiles
 import java.io.File
 
-class CustomedAdapter(val context: Context?, val singleLayout:Int, var list: MutableList<File>) : RecyclerView.Adapter<CustomedAdapter.MyViewHolder>(){
+class CustomedAdapter(private val context: Context?, val singleLayout:Int, var list: MutableList<File>) : RecyclerView.Adapter<CustomedAdapter.MyViewHolder>(){
 
     private var TAG:String = this.javaClass.simpleName.toString()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         Log.d(TAG, "CustomedAdapter class -  onCreateViewHolder() is called")
 
-        var eachView = LayoutInflater.from(context).inflate(singleLayout, parent, false) as View
+        val eachView = LayoutInflater.from(context).inflate(singleLayout, parent, false) as View
         val myViewHolder = MyViewHolder(eachView)
 
         return myViewHolder
@@ -35,7 +36,8 @@ class CustomedAdapter(val context: Context?, val singleLayout:Int, var list: Mut
         holder.eachView(list[position].path)
     }
 
-    class MyViewHolder(private var eachView:View): RecyclerView.ViewHolder(eachView){
+    class MyViewHolder(private var eachView:View): RecyclerView.ViewHolder(eachView), View.OnClickListener{
+
         private var TAG:String = this.javaClass.simpleName.toString()
 
         fun eachView(dir: String){
@@ -47,13 +49,20 @@ class CustomedAdapter(val context: Context?, val singleLayout:Int, var list: Mut
             //Set directory
             directory.text = dir
             image.setImageResource(chooseImage(dir))
+
+            directory.setOnClickListener(this)
+        }
+
+        override fun onClick(p0: View?) {
+            Log.d(TAG, "MyViewHolder innerclass -  onClick() is called")
+
         }
 
         private fun chooseImage(directory:String): Int{
             Log.d(TAG, "MyViewHolder innerclass -  chooseImage() is called")
 
             val dirType = checkTypeOfFile(directory)
-            var imageChoice:Int = 0
+            val imageChoice: Int
 
             //Choose Image based on directory type.
             imageChoice = when(dirType){
@@ -72,7 +81,7 @@ class CustomedAdapter(val context: Context?, val singleLayout:Int, var list: Mut
         fun checkTypeOfFile(directory:String):String{
             Log.d(TAG, "MyViewHolder innerclass -  checkTypeOfFile() is called")
 
-            var fileType:String
+             val fileType:String
             if(directory.endsWith(".mp3")) {fileType = "mp3"}
             else if(directory.endsWith(".mp4")){fileType = "avi"}
             else if(directory.endsWith(".avi")){fileType = "mp4"}
