@@ -1,4 +1,4 @@
-package com.ray.sqlitetemplate.otherway
+package com.ray.mvc_login.otherway
 
 import android.annotation.SuppressLint
 import android.app.Activity

@@ -1,4 +1,4 @@
-package com.ray.sqlitetemplate.otherway
+package com.ray.mvc_login.otherway
 
 import android.Manifest
 import android.app.Activity
@@ -9,8 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import android.widget.ListView
 import android.widget.Toast
+import com.ray.mvc_login.R
 import com.ray.sqlitetemplate.DatabaseController
-import com.ray.sqlitetemplate.R
+
 
 class List_View_Activity() :AppCompatActivity()/*, AsyncTask<String, String, String>()  */{
     var PERMISSIONS_STORAGE = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)

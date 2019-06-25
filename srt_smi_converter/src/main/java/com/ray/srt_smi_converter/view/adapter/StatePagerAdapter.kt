@@ -6,9 +6,10 @@ import androidx.fragment.app.FragmentStatePagerAdapter
 
 class StatePagerAdapter(fm: FragmentManager): FragmentStatePagerAdapter(fm){
 
-    private var fragmentList = mutableListOf<Fragment>()
+     private var fragmentList = mutableListOf<Fragment>()
+
     override fun getItem(position: Int): Fragment {
-        return fragmentList.get(position)
+        return fragmentList[position]
     }
 
     override fun getCount(): Int {

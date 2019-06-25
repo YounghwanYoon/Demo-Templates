@@ -15,12 +15,16 @@
                   android:id="@+id/path"
                   tools:text= "Current Address: "
                   android:text="Current Address:"/>
-
+     <ScrollView
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content">
           <androidx.recyclerview.widget.RecyclerView
                   android:layout_width="match_parent"
                   android:layout_height="match_parent"
-                  android:id="@+id/list_of_items_recycleview"
+                  android:id="@+id/recycle_view"
                   android:layout_below="@+id/path"/>
+
+     </ScrollView>
 
      </RelativeLayout>
 

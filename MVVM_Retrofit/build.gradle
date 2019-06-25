@@ -26,53 +26,53 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'androidx.appcompat:appcompat:1.0.0-beta01'
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0-beta01'
-    implementation 'androidx.media:media:1.0.0-beta01'
-    implementation 'com.google.android.material:material:1.0.0-beta01'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.2'
-    implementation 'com.google.android.gms:play-services-auth:16.0.1'
-    implementation 'androidx.annotation:annotation:1.0.0-beta01'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
+    implementation 'androidx.appcompat:appcompat:1.1.0-beta01'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.media:media:1.1.0-rc01'
+    implementation 'com.google.android.material:material:1.1.0-alpha07'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta2'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta2'
+    implementation 'com.google.android.gms:play-services-auth:17.0.0'
+    implementation 'androidx.annotation:annotation:1.1.0'
+    testImplementation 'junit:junit:4.13-beta-3'
+    androidTestImplementation 'androidx.test:runner:1.3.0-alpha01'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0-alpha01'
 
     // Lifecycle components
     //data types that used in mvvm to observe changes in data sent to the views or activities of fragments
-    def archLifecycleVersion = '2.0.0-beta01'
+    def archLifecycleVersion = '2.2.0-alpha01'
     implementation "androidx.lifecycle:lifecycle-extensions:$archLifecycleVersion"
     annotationProcessor "androidx.lifecycle:lifecycle-compiler:$archLifecycleVersion"
 
     // Glide -- it helps to display URL image data into imageView
-    def glideVersion = '4.8.0'
+    def glideVersion = '4.9.0'
     implementation "com.github.bumptech.glide:glide:$glideVersion"
     annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"
 
     //RecyclerView
-    implementation 'androidx.recyclerview:recyclerview:1.0.0-beta01'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha06'
 
     //Support Design for Coordinator layout
-    implementation 'com.google.android.material:material:1.0.0-beta01'
+    implementation 'com.google.android.material:material:1.1.0-alpha07'
 
     //circle imageview
-    implementation 'de.hdodenhof:circleimageview:2.2.0'
+    implementation 'de.hdodenhof:circleimageview:3.0.0'
 
     //To ignore firebased error in Logcat
-    implementation "com.google.firebase:firebase-auth:16.2.0"
+    implementation 'com.google.firebase:firebase-auth:18.0.0'
 
     //To use Network calls by retrofit
     //To parse Json file use gson
-    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.6.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.6.0'
 
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
 // Because RxAndroid releases are few and far between, it is recommended you also
 // explicitly depend on RxJava's latest version for bug fixes and new features.
 // (see https://github.com/ReactiveX/RxJava/releases for latest 2.x.x version)
     implementation 'io.reactivex.rxjava2:rxjava:2.x.x'
-    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.6.0'
 
     //http logging interceptor
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.5.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.0.0-alpha02'
 }

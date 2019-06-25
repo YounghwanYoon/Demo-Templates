@@ -1,72 +1,87 @@
 package com.ray.srt_smi_converter.view.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import com.ray.srt_smi_converter.R
+import java.io.File
 
-class CustomedAdapter(context: Context, val singleLayout:Int, list: MutableList<String>) : ArrayAdapter<String>(context,singleLayout,list){
+class CustomedAdapter(val context: Context?, val singleLayout:Int, var list: MutableList<File>) : RecyclerView.Adapter<CustomedAdapter.MyViewHolder>(){
+
     private var TAG:String = this.javaClass.simpleName.toString()
 
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {
-        var eachView = convertView
-        if(eachView== null){
-            eachView = LayoutInflater.from(context).inflate(singleLayout, parent, false) as View
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+        Log.d(TAG, "CustomedAdapter class -  onCreateViewHolder() is called")
+
+        var eachView = LayoutInflater.from(context).inflate(singleLayout, parent, false) as View
+        val myViewHolder = MyViewHolder(eachView)
+
+        return myViewHolder
+    }
+
+    override fun getItemCount(): Int {
+        Log.d(TAG, "CustomedAdapter class -  getItemCount() is called")
+        return list.size
+    }
+
+    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+        Log.d(TAG, "CustomedAdapter class -  onBindViewHolder() is called")
+
+        holder.eachView(list[position].path)
+    }
+
+    class MyViewHolder(private var eachView:View): RecyclerView.ViewHolder(eachView){
+        private var TAG:String = this.javaClass.simpleName.toString()
+
+        fun eachView(dir: String){
+            Log.d(TAG, "MyViewHolder innerclass -  eachView() is called")
+
+            val image = eachView.findViewById<ImageView>(R.id.imageView)
+            val directory = eachView.findViewById<TextView>(R.id.resource_dir_textview)
+
+            //Set directory
+            directory.text = dir
+            image.setImageResource(chooseImage(dir))
         }
 
-        val image = eachView.findViewById<ImageView>(R.id.imageView)
-        val directory = eachView.findViewById<TextView>(R.id.resource_dir_textview)
-        val data = getItem(position)
-        //Set Image based on directory type
+        private fun chooseImage(directory:String): Int{
+            Log.d(TAG, "MyViewHolder innerclass -  chooseImage() is called")
 
-        //Set directory
-        directory.text = data
-        return eachView
-    }
+            val dirType = checkTypeOfFile(directory)
+            var imageChoice:Int = 0
 
-    fun chooseImage(directory:String): Int{
-        val dirType = checkTypeOfFile(directory)
-        var imageChoice:Int = 0
+            //Choose Image based on directory type.
+            imageChoice = when(dirType){
+                "mp3" -> R.drawable.ic_music//return Image
+                "mp4" -> R.drawable.ic_video
+                "avi" -> R.drawable.ic_video
+                "smi" -> R.drawable.ic_file
+                "srt" -> R.drawable.ic_file
+                else
+                -> R.drawable.ic_folder
+            }
 
-        //Choose Image based on directory type.
-        when(dirType){
-            "mp3" -> imageChoice = R.drawable.ic_music//return Image
-            "mp4" -> imageChoice = R.drawable.ic_video
-            "avi" -> imageChoice = R.drawable.ic_video
-            "smi" -> imageChoice = R.drawable.ic_file
-            "srt" -> imageChoice = R.drawable.ic_file
-
+            return imageChoice
         }
 
-        return imageChoice
-    }
+        fun checkTypeOfFile(directory:String):String{
+            Log.d(TAG, "MyViewHolder innerclass -  checkTypeOfFile() is called")
 
-    fun checkTypeOfFile(directory:String):String{
-        var fileType:String
-        if(directory.endsWith(".mp3")) {fileType = "mp3"}
-        else if(directory.endsWith(".mp4")){fileType = "avi"}
-        else if(directory.endsWith(".avi")){fileType = "mp4"}
-        else if(directory.endsWith(".smi")){fileType = "smi"}
-        else if(directory.endsWith(".srt")){fileType = "srt"}
-        else{
-            fileType="unknown"
+            var fileType:String
+            if(directory.endsWith(".mp3")) {fileType = "mp3"}
+            else if(directory.endsWith(".mp4")){fileType = "avi"}
+            else if(directory.endsWith(".avi")){fileType = "mp4"}
+            else if(directory.endsWith(".smi")){fileType = "smi"}
+            else if(directory.endsWith(".srt")){fileType = "srt"}
+            else{
+                fileType="unknown"
+            }
+            return fileType
         }
-        return fileType
-    }
-
-    override fun getItem(position: Int): String? {
-        return super.getItem(position)
-    }
-
-    override fun getCount(): Int {
-        return super.getCount()
-    }
-
-    override fun getPosition(item: String?): Int {
-        return super.getPosition(item)
     }
 }
