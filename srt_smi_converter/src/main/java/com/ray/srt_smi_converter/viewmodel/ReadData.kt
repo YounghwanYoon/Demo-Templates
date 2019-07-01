@@ -20,8 +20,9 @@ class ReadData {
         fun checkTypeOfFile(directory:String):String{
             val fileType:String
             if(directory.endsWith(".mp3")) {fileType = "mp3"}
-            else if(directory.endsWith(".mp4")){fileType = "avi"}
-            else if(directory.endsWith(".avi")){fileType = "mp4"}
+            else if(directory.endsWith(".mp4")){fileType = "mp4"}
+            else if(directory.endsWith(".avi")){fileType = "avi"}
+            else if(directory.endsWith(".mkv")){fileType = "mkv"}
             else if(directory.endsWith(".smi")){fileType = "smi"}
             else if(directory.endsWith(".srt")){fileType = "srt"}
             else{
@@ -123,7 +124,7 @@ class ReadData {
         val dirType = checkTypeOfFile(file.path)
         if(!file.isHidden || file.canRead()){
 
-            if(dirType == "srt" || dirType == "smi" || file.isDirectory)
+            if(dirType == "srt" || dirType == "smi" || file.isDirectory && !file.name[0].equals('.'))
                 isFiltered = true
             else
                 isFiltered = false

@@ -45,7 +45,6 @@ class CustomedAdapter(private val context: Context?, val singleLayout:Int, var l
     //Intead, declear click listener under MyViewHolder. eachView()
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         Log.d(TAG, "CustomedAdapter class -  onBindViewHolder() is called")
-
         holder.eachView(list[position], position)
     }
 
@@ -58,20 +57,11 @@ class CustomedAdapter(private val context: Context?, val singleLayout:Int, var l
 
             val image = eachView.findViewById<ImageView>(R.id.imageView)
             val directory = eachView.findViewById<TextView>(R.id.resource_dir_textview)
-/*
-            if(position == 0){
-                if(ReadData.isRootDir(file)){
-                    //Set directory
-                    directory.text = file.name
-                }else{
-                    directory.text = previousFolder
-                }
-            }
-*/
 
             directory.text = file.name
             image.setImageResource(chooseImage(file.absolutePath))
             eachView.setOnClickListener(this)
+
         }
         private fun chooseImage(directory:String): Int{
             Log.d(TAG, "MyViewHolder innerclass -  chooseImage() is called")
@@ -82,8 +72,7 @@ class CustomedAdapter(private val context: Context?, val singleLayout:Int, var l
             //Choose Image based on directory type.
             imageChoice = when(dirType){
                 "mp3" -> R.drawable.ic_music//return Image
-                "mp4" -> R.drawable.ic_video
-                "avi" -> R.drawable.ic_video
+                "mp4","mkv","avi" -> R.drawable.ic_video
                 "smi" -> R.drawable.ic_file
                 "srt" -> R.drawable.ic_file
                 else
