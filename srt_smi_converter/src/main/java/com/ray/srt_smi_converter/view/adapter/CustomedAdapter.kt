@@ -46,23 +46,31 @@ class CustomedAdapter(private val context: Context?, val singleLayout:Int, var l
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         Log.d(TAG, "CustomedAdapter class -  onBindViewHolder() is called")
 
-        holder.eachView(list[position])
+        holder.eachView(list[position], position)
     }
 
     inner class MyViewHolder(private var eachView:View): RecyclerView.ViewHolder(eachView), View.OnClickListener{
-
         private var TAG:String = this.javaClass.simpleName.toString()
+        private var previousFolder:String = "Previous Folder"
 
-        fun eachView(dir: File){
+        fun eachView(file: File, position:Int){
             Log.d(TAG, "MyViewHolder innerclass -  eachView() is called")
 
             val image = eachView.findViewById<ImageView>(R.id.imageView)
             val directory = eachView.findViewById<TextView>(R.id.resource_dir_textview)
+/*
+            if(position == 0){
+                if(ReadData.isRootDir(file)){
+                    //Set directory
+                    directory.text = file.name
+                }else{
+                    directory.text = previousFolder
+                }
+            }
+*/
 
-            //Set directory
-            directory.text = dir.name
-            image.setImageResource(chooseImage(dir.absolutePath))
-
+            directory.text = file.name
+            image.setImageResource(chooseImage(file.absolutePath))
             eachView.setOnClickListener(this)
         }
         private fun chooseImage(directory:String): Int{
@@ -81,25 +89,9 @@ class CustomedAdapter(private val context: Context?, val singleLayout:Int, var l
                 else
                 -> R.drawable.ic_folder
             }
-
             return imageChoice
         }
-/*
-        fun checkTypeOfFile(directory:String):String{
-            Log.d(TAG, "MyViewHolder innerclass -  checkTypeOfFile() is called")
 
-             val fileType:String
-            if(directory.endsWith(".mp3")) {fileType = "mp3"}
-            else if(directory.endsWith(".mp4")){fileType = "avi"}
-            else if(directory.endsWith(".avi")){fileType = "mp4"}
-            else if(directory.endsWith(".smi")){fileType = "smi"}
-            else if(directory.endsWith(".srt")){fileType = "srt"}
-            else{
-                fileType="unknown"
-            }
-            return fileType
-        }
-*/
         private fun filterText(text:String):String{
             val tempText =text
 

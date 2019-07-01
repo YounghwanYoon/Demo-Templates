@@ -23,12 +23,6 @@ import androidx.core.app.ActivityCompat
 
 
 class ListofFiles: Fragment(), RecyclerViewOnClickListener {
-
-    // Storage Permissions
-    protected val REQUEST_EXTERNAL_STORAGE = 1
-    protected var PERMISSIONS_STORAGE =
-            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-
     private var TAG:String = this.javaClass.simpleName.toString()
 
     private lateinit var mSharedVM:SharedViewModel
@@ -93,17 +87,5 @@ class ListofFiles: Fragment(), RecyclerViewOnClickListener {
         list = mSharedVM.updatedList(file)
         myAdapter.updateList(list)
         myAdapter.notifyDataSetChanged()
-    }
-
-    //This method save most recent path that user looked.
-    protected fun previouslySelectedPath(previousPath: File) {
-        if (previousPath.path.endsWith(".mp3"))
-            mPreviousSelectedPath = previousPath.parent
-        else
-            mPreviousSelectedPath = previousPath.toString()
-    }
-
-    override fun onConfigurationChanged(newConfig: Configuration) {
-        super.onConfigurationChanged(newConfig)
     }
 }

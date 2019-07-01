@@ -42,7 +42,7 @@ class Select_Type_Fragment : Fragment() {
         Log.d(TAG, "Select_Type_Fragment onActivityCreated() is called")
         super.onActivityCreated(savedInstanceState)
 
-        var mSelectedTextView = view?.findViewById<TextView>(R.id.selected_file_textview)
+        val mSelectedTextView = view?.findViewById<TextView>(R.id.selected_file_textview)
 
         mSharedVM = ViewModelProviders.of(this).get(SharedViewModel::class.java)
         mSharedVM.getDirectory().observe(this, androidx.lifecycle.Observer<String> {

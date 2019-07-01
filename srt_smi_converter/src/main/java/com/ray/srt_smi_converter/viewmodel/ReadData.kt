@@ -11,11 +11,11 @@ class ReadData {
     private lateinit var itemsInCurrentPath: MutableList<File>
     private lateinit var currentPath: File
     private var mPreviousSelectedPath: String? = null
-    private lateinit var rootFile: File
     lateinit  var files: MutableList<File>
 
     companion object{
         var firstCall: Boolean= true
+        private lateinit var rootFile: File
         private lateinit var startingDir: String
         fun checkTypeOfFile(directory:String):String{
             val fileType:String
@@ -29,7 +29,10 @@ class ReadData {
             }
             return fileType
         }
-
+        fun isRootDir(file:File):Boolean{
+            val isRootDir:Boolean = file == rootFile
+            return isRootDir
+        }
     }
 
     //Set Starting Point of URL which will be called only once
@@ -68,21 +71,30 @@ class ReadData {
             itemsInCurrentPath.add(currentFile.parentFile)
             Log.d(TAG, "returnListInPath() - itemsInCurrentPath first file is ${itemsInCurrentPath[0].path}")
             //list of selected file
-            itemsInCurrentPath.addAll(currentFile.listFiles().toMutableList())//filterFiles(currentFile.listFiles().toMutableList())
+            itemsInCurrentPath.addAll(currentFile.listFiles().toMutableList())
             itemsInCurrentPath = sortFiles(itemsInCurrentPath)
 
             firstCall = false
         } else{
             Log.d(TAG, "returnListInPath() - else is called")
             //list of selected file
-            itemsInCurrentPath.addAll(currentFile.listFiles().toMutableList())//filterFiles(currentFile.listFiles().toMutableList())
+            itemsInCurrentPath.addAll(rootFileFilter(currentFile.listFiles().toMutableList()))
             itemsInCurrentPath = sortFiles(itemsInCurrentPath)
         }
         Log.d(TAG, "returnListInPath() - itemsInCurrentPath first file is ${itemsInCurrentPath[0].path}")
 
         return itemsInCurrentPath
     }
-    private fun filterFiles(files:MutableList<File>): MutableList<File> {
+    private fun rootFileFilter(files:MutableList<File>): MutableList<File> {
+        val filteredList:MutableList<File> = mutableListOf()
+        for(file in files){
+            if(file.name.contains("sdcard")|| file.name.contains("extSdCard"))
+                filteredList.add(file)
+        }
+        return filteredList
+    }
+
+        private fun filterFiles(files:MutableList<File>): MutableList<File> {
         try {
             if (files.size == 0) {
                 Log.d(TAG, "Length of files is empty")
