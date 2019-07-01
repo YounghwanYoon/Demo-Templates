@@ -1,5 +1,7 @@
 package com.ray.srt_smi_converter.view
 
+import android.Manifest
+import android.app.Activity
 import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
@@ -16,10 +18,16 @@ import java.io.File
 import android.view.MotionEvent
 import android.view.GestureDetector
 import android.content.Context
+import android.content.pm.PackageManager
+import androidx.core.app.ActivityCompat
 
 
 class ListofFiles: Fragment(), RecyclerViewOnClickListener {
 
+    // Storage Permissions
+    protected val REQUEST_EXTERNAL_STORAGE = 1
+    protected var PERMISSIONS_STORAGE =
+            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
     private var TAG:String = this.javaClass.simpleName.toString()
 
@@ -32,6 +40,8 @@ class ListofFiles: Fragment(), RecyclerViewOnClickListener {
 
     private lateinit var myAdapter: CustomedAdapter
     val resource = com.ray.srt_smi_converter.R.layout.each_file
+
+    private lateinit var list:MutableList<File>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         Log.d(TAG, "ListofFiles class -  onCreateView() is called")
@@ -48,7 +58,7 @@ class ListofFiles: Fragment(), RecyclerViewOnClickListener {
         mSharedVM = ViewModelProviders.of(this).get(SharedViewModel::class.java)
         mSharedVM.setDirectory("Testing Directory")
 
-        val list = getListOfDirectory() as MutableList<File>
+        list = getListOfDirectory()
         Log.d(TAG, "ListofFiles class -  list size is ${list.size}")
 
         recyclerView = mView.findViewById(com.ray.srt_smi_converter.R.id.recycle_view)
@@ -68,9 +78,9 @@ class ListofFiles: Fragment(), RecyclerViewOnClickListener {
     //from interface
     override fun onItemClickListener(position: Int) {
         Log.d(TAG, "ListofFiles class -  onItemClickListener() is called")
-        Log.d(TAG, "ListofFiles class -  path of clicked item is ${(getListOfDirectory()[position] as File).absolutePath}")
+        Log.d(TAG, "ListofFiles class -  path of clicked item is ${(list[position] ).absolutePath}")
         Toast.makeText(activity,"One of list is clicked $position" , Toast.LENGTH_SHORT).show()
-        var tempFile = (getListOfDirectory()[position])
+        val tempFile = (list[position])
 
         if(tempFile.isDirectory && tempFile.canRead())
             updateList(tempFile)
@@ -80,8 +90,8 @@ class ListofFiles: Fragment(), RecyclerViewOnClickListener {
     }
 
     fun updateList(file:File){
-        var updatedList:MutableList<File> = mSharedVM.updatedList(file) as MutableList<File>
-        myAdapter.updateList(updatedList)
+        list = mSharedVM.updatedList(file)
+        myAdapter.updateList(list)
         myAdapter.notifyDataSetChanged()
     }
 

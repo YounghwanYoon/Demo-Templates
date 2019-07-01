@@ -16,7 +16,7 @@ class ReadData {
 
     companion object{
         var firstCall: Boolean= true
-        private lateinit var rootDir: String
+        private lateinit var startingDir: String
         fun checkTypeOfFile(directory:String):String{
             val fileType:String
             if(directory.endsWith(".mp3")) {fileType = "mp3"}
@@ -48,27 +48,38 @@ class ReadData {
             Log.d(TAG, "MANUFACTURER Name: " + manufacturer)
             rootFile = testingRootFile
         }
-        //Save rootDir
-        rootDir = rootFile.path
+
+        //Save startingDir
+        startingDir = rootFile.path
         return rootFile
     }
 
     //Return list of given URL and user will recursively call this method until non-directory file such as mp3,or srt is selected
     fun returnListInPath(currentFile: File): MutableList<File> {
+        Log.d(TAG, "returnListInPath() - current file is ${currentFile.path}")
+
         itemsInCurrentPath = mutableListOf()
         itemsInCurrentPath.removeAll(itemsInCurrentPath)
 
         //if selected directory is same
-        if(rootDir != currentFile.path){
-            itemsInCurrentPath.add(currentFile)
+        if(currentFile.path != startingDir){
+            Log.d(TAG, "returnListInPath() - if is called")
+            //return to parent file
+            itemsInCurrentPath.add(currentFile.parentFile)
+            Log.d(TAG, "returnListInPath() - itemsInCurrentPath first file is ${itemsInCurrentPath[0].path}")
+            //list of selected file
             itemsInCurrentPath.addAll(currentFile.listFiles().toMutableList())//filterFiles(currentFile.listFiles().toMutableList())
             itemsInCurrentPath = sortFiles(itemsInCurrentPath)
 
             firstCall = false
         } else{
+            Log.d(TAG, "returnListInPath() - else is called")
+            //list of selected file
             itemsInCurrentPath.addAll(currentFile.listFiles().toMutableList())//filterFiles(currentFile.listFiles().toMutableList())
             itemsInCurrentPath = sortFiles(itemsInCurrentPath)
         }
+        Log.d(TAG, "returnListInPath() - itemsInCurrentPath first file is ${itemsInCurrentPath[0].path}")
+
         return itemsInCurrentPath
     }
     private fun filterFiles(files:MutableList<File>): MutableList<File> {

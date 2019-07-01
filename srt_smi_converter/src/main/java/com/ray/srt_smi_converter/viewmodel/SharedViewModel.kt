@@ -56,8 +56,9 @@ class SharedViewModel: ViewModel(){
 
     fun updatedList(newDir: File):MutableList<File>{
         Log.d(TAG, "inside SharedViewModel's updatedList ()")
+        Log.d(TAG, "inside SharedViewModel's newDir is ${newDir.path}")
 
-        var files = mReadData.returnListInPath(newDir)
+        val files = mReadData.returnListInPath(newDir)
         return files
     }
 }

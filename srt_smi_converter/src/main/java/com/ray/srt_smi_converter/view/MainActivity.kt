@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.Window
 import android.view.WindowManager
 import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProviders
@@ -15,8 +16,8 @@ import androidx.viewpager.widget.ViewPager
 import com.ray.srt_smi_converter.R
 import com.ray.srt_smi_converter.view.adapter.StatePagerAdapter
 import com.ray.srt_smi_converter.viewmodel.SharedViewModel
-
-class MainActivity : FragmentActivity() {
+//FragmentActivity()
+class MainActivity :  AppCompatActivity(){
     private var TAG:String = this.javaClass.simpleName.toString()
 
 private var mViewAdapter= StatePagerAdapter(supportFragmentManager)
@@ -37,7 +38,6 @@ private var mViewAdapter= StatePagerAdapter(supportFragmentManager)
         mSharedVM = ViewModelProviders.of(this).get(SharedViewModel::class.java)
         mViewPager = findViewById(R.id.container_viewpager)
         setupViewPager(mViewPager, mViewAdapter)
-
     }
 
     fun setupViewPager(viewPager: ViewPager, adapter: StatePagerAdapter){
@@ -52,18 +52,9 @@ private var mViewAdapter= StatePagerAdapter(supportFragmentManager)
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         //Remove Notification Bar
         getWindow()?.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
-
-    }
-
-    fun layoutHandler(){
-        //Remove Title Bar
-        requestWindowFeature(Window.FEATURE_NO_TITLE)
-        //Remove Notification Bar
-        getWindow()?.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         //Verify Permission for Storage
         let { verifyStoragePermissions(it)}
     }
-
 
     /**
      * Checks if the app has permission to write to device storage
