@@ -9,12 +9,22 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.ray.srt_smi_converter.R
-import com.ray.srt_smi_converter.view.ListofFiles
+import com.ray.srt_smi_converter.view.interfaces.RecyclerViewOnClickListener
+import com.ray.srt_smi_converter.viewmodel.ReadData
 import java.io.File
 
 class CustomedAdapter(private val context: Context?, val singleLayout:Int, var list: MutableList<File>) : RecyclerView.Adapter<CustomedAdapter.MyViewHolder>(){
 
     private var TAG:String = this.javaClass.simpleName.toString()
+    lateinit var mListener: RecyclerViewOnClickListener
+
+    fun setOnItemClickListener(listener:RecyclerViewOnClickListener){
+        mListener = listener
+    }
+
+    fun updateList(updatedList:MutableList<File>){
+        this.list = updatedList
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         Log.d(TAG, "CustomedAdapter class -  onCreateViewHolder() is called")
@@ -30,13 +40,16 @@ class CustomedAdapter(private val context: Context?, val singleLayout:Int, var l
         return list.size
     }
 
+    //Declaring onClick Listener here will be wasteful
+    //Each Scroll will call this onBindViewHolder() and will be wasteful
+    //Intead, declear click listener under MyViewHolder. eachView()
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         Log.d(TAG, "CustomedAdapter class -  onBindViewHolder() is called")
 
         holder.eachView(list[position])
     }
 
-    class MyViewHolder(private var eachView:View): RecyclerView.ViewHolder(eachView), View.OnClickListener{
+    inner class MyViewHolder(private var eachView:View): RecyclerView.ViewHolder(eachView), View.OnClickListener{
 
         private var TAG:String = this.javaClass.simpleName.toString()
 
@@ -47,21 +60,15 @@ class CustomedAdapter(private val context: Context?, val singleLayout:Int, var l
             val directory = eachView.findViewById<TextView>(R.id.resource_dir_textview)
 
             //Set directory
-            directory.text = dir.absolutePath
+            directory.text = dir.name
             image.setImageResource(chooseImage(dir.absolutePath))
 
-            directory.setOnClickListener(this)
+            eachView.setOnClickListener(this)
         }
-//https://stackoverflow.com/questions/45555897/pass-item-position-clicked-from-a-recyclerview-to-the-fragment-father
-        override fun onClick(p0: View?) {
-            Log.d(TAG, "MyViewHolder innerclass -  onClick() is called")
-
-        }
-
         private fun chooseImage(directory:String): Int{
             Log.d(TAG, "MyViewHolder innerclass -  chooseImage() is called")
             Log.d(TAG, "MyViewHolder innerclass -  directory is ${directory}")
-            val dirType = checkTypeOfFile(directory)
+            val dirType = ReadData.checkTypeOfFile(directory)
             val imageChoice: Int
 
             //Choose Image based on directory type.
@@ -77,7 +84,7 @@ class CustomedAdapter(private val context: Context?, val singleLayout:Int, var l
 
             return imageChoice
         }
-
+/*
         fun checkTypeOfFile(directory:String):String{
             Log.d(TAG, "MyViewHolder innerclass -  checkTypeOfFile() is called")
 
@@ -91,6 +98,20 @@ class CustomedAdapter(private val context: Context?, val singleLayout:Int, var l
                 fileType="unknown"
             }
             return fileType
+        }
+*/
+        private fun filterText(text:String):String{
+            val tempText =text
+
+            return tempText
+        }
+
+        override fun onClick(p0: View?) {
+            val mPosition = adapterPosition
+            //Checking whether this position is valid
+            if(mPosition != RecyclerView.NO_POSITION){
+                mListener.onItemClickListener(mPosition)
+            }
         }
     }
 }

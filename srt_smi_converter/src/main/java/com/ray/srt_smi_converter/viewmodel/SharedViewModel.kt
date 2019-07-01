@@ -45,16 +45,18 @@ class SharedViewModel: ViewModel(){
         mViewPager.adapter = adapter
     }
 
-    fun getListOfCurrentDirectory(): MutableList<Any> {
+    fun getListOfCurrentDirectory(): MutableList<File> {
         Log.d(TAG, "inside SharedViewModel's getListOfCurrentDirectory method")
 
         mReadData = ReadData()
-        var file = mReadData.setStartingURLByManufacturer(android.os.Build.MANUFACTURER)
-        var files =  mReadData.returnListInPath(file)
+        val file = mReadData.setStartingURLByManufacturer(android.os.Build.MANUFACTURER)
+        val files =  mReadData.returnListInPath(file)
         return files
     }
 
-    fun updatedList(newDir: File):MutableList<Any>{
+    fun updatedList(newDir: File):MutableList<File>{
+        Log.d(TAG, "inside SharedViewModel's updatedList ()")
+
         var files = mReadData.returnListInPath(newDir)
         return files
     }

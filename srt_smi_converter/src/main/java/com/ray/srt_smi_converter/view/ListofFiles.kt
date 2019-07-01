@@ -1,28 +1,25 @@
 package com.ray.srt_smi_converter.view
 
-import android.Manifest
-import android.app.Activity
-import android.content.Intent.getIntent
-import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.ListView
-import android.widget.TextView
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.ListFragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.ray.srt_smi_converter.R
 import com.ray.srt_smi_converter.view.adapter.CustomedAdapter
+import com.ray.srt_smi_converter.view.interfaces.RecyclerViewOnClickListener
 import com.ray.srt_smi_converter.viewmodel.SharedViewModel
 import java.io.File
+import android.view.MotionEvent
+import android.view.GestureDetector
+import android.content.Context
 
-class ListofFiles: Fragment() {
+
+class ListofFiles: Fragment(), RecyclerViewOnClickListener {
+
 
     private var TAG:String = this.javaClass.simpleName.toString()
 
@@ -34,12 +31,13 @@ class ListofFiles: Fragment() {
     private lateinit var recyclerView:RecyclerView
 
     private lateinit var myAdapter: CustomedAdapter
-    val resource = R.layout.each_file
+    val resource = com.ray.srt_smi_converter.R.layout.each_file
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         Log.d(TAG, "ListofFiles class -  onCreateView() is called")
 
-        mView = inflater.inflate(R.layout.fragment_list__of__files,container, false)
+        mView = inflater.inflate(com.ray.srt_smi_converter.R.layout.fragment_list__of__files,container, false)
+
         return mView
     }
 
@@ -53,45 +51,38 @@ class ListofFiles: Fragment() {
         val list = getListOfDirectory() as MutableList<File>
         Log.d(TAG, "ListofFiles class -  list size is ${list.size}")
 
-        recyclerView = mView.findViewById(R.id.recycle_view)
+        recyclerView = mView.findViewById(com.ray.srt_smi_converter.R.id.recycle_view)
         myAdapter = CustomedAdapter(context, resource, list)
 
         Log.d(TAG, "ListofFiles class - context is ${context.toString()}")
 
+        //recyclerView.addOnItemTouchListener(object: RecyclerViewTouchListener(context, recyclerView, this){})
         recyclerView.adapter = myAdapter
+        myAdapter.setOnItemClickListener(this)
         recyclerView.layoutManager = LinearLayoutManager(activity)
     }
-    private fun getListOfDirectory(): MutableList<Any>{
+    private fun getListOfDirectory(): MutableList<File>{
         return mSharedVM.getListOfCurrentDirectory()
     }
 
-     fun onListItemClick(l: ListView, v: View, position: Int, id: Long) {
-         Log.d(TAG, "ListofFiles class -  onListItemClick() is called")
+    //from interface
+    override fun onItemClickListener(position: Int) {
+        Log.d(TAG, "ListofFiles class -  onItemClickListener() is called")
+        Log.d(TAG, "ListofFiles class -  path of clicked item is ${(getListOfDirectory()[position] as File).absolutePath}")
+        Toast.makeText(activity,"One of list is clicked $position" , Toast.LENGTH_SHORT).show()
+        var tempFile = (getListOfDirectory()[position])
 
-        Toast.makeText(activity,"ONe of list is clicked", Toast.LENGTH_SHORT).show()
-      /*
-        //One of item in the current folder is selected
-        val selected_file = File(itemsInCurrentPath!![position])
+        if(tempFile.isDirectory && tempFile.canRead())
+            updateList(tempFile)
+        else{
+            Toast.makeText(activity,"Desired FIle is clicked ${tempFile.path}" , Toast.LENGTH_SHORT).show()
+        }
+    }
 
-        if (selected_file.isDirectory) {
-            if (selected_file.canRead()) {
-                //Calling previouslySelectedPath() to store most recently visited folder
-                //previouslySelectedPath(selected_file);
-                //Log.v("SourceListActivity.java", "Last saved music fold was:" + mPreviousSelectedPath);
-                getDir(selected_file)
-            } else
-            //Double caution for selecting non-readable file (which was sorted in getDir();
-                Toast.makeText(this@SourceListActivity, "It cannot be read", Toast.LENGTH_SHORT)
-
-        } else if (selected_file.path.endsWith(".mp3") || selected_file.path.endsWith(".mp4") || selected_file.path.endsWith(".mkv") ||
-                selected_file.path.endsWith(".avi") || selected_file.path.endsWith(".wmv") || selected_file.path.endsWith(".mpg")) {
-            val returnIntent = getIntent()//new Intent();
-            returnIntent.putExtra("resultMediaFile", selected_file.path)
-            setResult(Activity.RESULT_OK, returnIntent)
-            finish()
-        } else
-            Toast.makeText(this@SourceListActivity, "It is not a directory", Toast.LENGTH_SHORT)//Once selected file is a media file, then it return to parent activity.
-    */
+    fun updateList(file:File){
+        var updatedList:MutableList<File> = mSharedVM.updatedList(file) as MutableList<File>
+        myAdapter.updateList(updatedList)
+        myAdapter.notifyDataSetChanged()
     }
 
     //This method save most recent path that user looked.
@@ -105,6 +96,4 @@ class ListofFiles: Fragment() {
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
     }
-
-
 }
