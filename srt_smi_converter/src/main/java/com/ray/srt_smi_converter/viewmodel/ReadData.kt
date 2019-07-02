@@ -30,7 +30,7 @@ class ReadData {
             }
             return fileType
         }
-        fun isRootDir(file:File):Boolean{
+        fun isRootDir (file:File):Boolean{
             val isRootDir:Boolean = file == rootFile
             return isRootDir
         }
@@ -65,14 +65,15 @@ class ReadData {
         itemsInCurrentPath = mutableListOf()
         itemsInCurrentPath.removeAll(itemsInCurrentPath)
 
-        //if selected directory is same
+        //if selected directory is not same as starting directory
         if(currentFile.path != startingDir){
             Log.d(TAG, "returnListInPath() - if is called")
             //return to parent file
             itemsInCurrentPath.add(currentFile.parentFile)
             Log.d(TAG, "returnListInPath() - itemsInCurrentPath first file is ${itemsInCurrentPath[0].path}")
-            //list of selected file
-            itemsInCurrentPath.addAll(currentFile.listFiles().toMutableList())
+            val filteredList = filterFiles(currentFile.listFiles().toMutableList())
+            //add list of filtered files
+            itemsInCurrentPath.addAll(filteredList)
             itemsInCurrentPath = sortFiles(itemsInCurrentPath)
 
             firstCall = false
@@ -96,6 +97,7 @@ class ReadData {
     }
 
         private fun filterFiles(files:MutableList<File>): MutableList<File> {
+            val filteredFiles:MutableList<File> = mutableListOf()
         try {
             if (files.size == 0) {
                 Log.d(TAG, "Length of files is empty")
@@ -103,9 +105,9 @@ class ReadData {
                 //Add all of files in the current Path/Folder to list
                 for (i in files.indices) {
                     //Filter files with None-hidden and readableFiles
-                    if (directoryFilter(files[i]))
+                    if (filterTypes(files[i]))
                     {
-                        itemsInCurrentPath.add(files[i])
+                        filteredFiles.add(files[i])
                     }
                 }
             }
@@ -113,13 +115,13 @@ class ReadData {
         } catch (e: NullPointerException) {
             e.stackTrace
         }
-        return itemsInCurrentPath
+        return filteredFiles
     }
 
     private fun sortFiles(files:MutableList<File>):MutableList<File>{
         return files.sorted() as MutableList<File>
     }
-    private fun directoryFilter(file:File):Boolean{
+    private fun filterTypes(file:File):Boolean{
         val isFiltered: Boolean
         val dirType = checkTypeOfFile(file.path)
         if(!file.isHidden || file.canRead()){
@@ -132,22 +134,6 @@ class ReadData {
         else
             isFiltered = false
 
-
-       // !file.isHidden &&
-
-       // isFiltered = file.canRead()
-        /*
-        if( file.canRead()){
-            /*//Choose Image based on directory type.
-            isFiltered = when(dirType){
-                "mp3", "mp4","avi","smi","srt" -> true
-                else
-                -> false
-            }||file.isDirectory*/
-        }
-        else
-            isFiltered = false
-*/
         return isFiltered
     }
 
