@@ -4,7 +4,7 @@ import android.os.Environment
 import android.util.Log
 import java.io.File
 
-class ReadData {
+class FileHandler {
 
     private var TAG:String = this.javaClass.simpleName.toString()
 

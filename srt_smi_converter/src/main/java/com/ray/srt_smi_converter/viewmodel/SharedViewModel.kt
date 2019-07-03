@@ -14,7 +14,7 @@ import java.io.File
 class SharedViewModel: ViewModel(){
     private val TAG = this.javaClass.simpleName.toString()
     private val directory : MutableLiveData<String> = MutableLiveData()
-    private lateinit var mReadData:ReadData
+    private lateinit var mFileHandler:FileHandler
     private lateinit var mAdapter:StatePagerAdapter
 
     object viewpager{
@@ -48,9 +48,9 @@ class SharedViewModel: ViewModel(){
     fun getListOfCurrentDirectory(): MutableList<File> {
         Log.d(TAG, "inside SharedViewModel's getListOfCurrentDirectory method")
 
-        mReadData = ReadData()
-        val file = mReadData.setStartingURLByManufacturer(android.os.Build.MANUFACTURER)
-        val files =  mReadData.returnListInPath(file)
+        mFileHandler = FileHandler()
+        val file = mFileHandler.setStartingURLByManufacturer(android.os.Build.MANUFACTURER)
+        val files =  mFileHandler.returnListInPath(file)
         return files
     }
 
@@ -58,7 +58,7 @@ class SharedViewModel: ViewModel(){
         Log.d(TAG, "inside SharedViewModel's updatedList ()")
         Log.d(TAG, "inside SharedViewModel's newDir is ${newDir.path}")
 
-        val files = mReadData.returnListInPath(newDir)
+        val files = mFileHandler.returnListInPath(newDir)
         return files
     }
 }

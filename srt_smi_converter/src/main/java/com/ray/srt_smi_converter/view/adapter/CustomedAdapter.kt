@@ -10,7 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.ray.srt_smi_converter.R
 import com.ray.srt_smi_converter.view.interfaces.RecyclerViewOnClickListener
-import com.ray.srt_smi_converter.viewmodel.ReadData
+import com.ray.srt_smi_converter.viewmodel.FileHandler
 import java.io.File
 
 class CustomedAdapter(private val context: Context?, val singleLayout:Int, var list: MutableList<File>) : RecyclerView.Adapter<CustomedAdapter.MyViewHolder>(){
@@ -66,7 +66,7 @@ class CustomedAdapter(private val context: Context?, val singleLayout:Int, var l
         private fun chooseImage(directory:String): Int{
             Log.d(TAG, "MyViewHolder innerclass -  chooseImage() is called")
             Log.d(TAG, "MyViewHolder innerclass -  directory is ${directory}")
-            val dirType = ReadData.checkTypeOfFile(directory)
+            val dirType = FileHandler.checkTypeOfFile(directory)
             val imageChoice: Int
 
             //Choose Image based on directory type.
