@@ -1,19 +1,41 @@
 package com.ray.srt_smi_converter.model
 
-data class BasedSubtitleData(val ListOfLines: MutableList<String>, val StartingTime: String, val EndingTime:String ){
-    private var mListOfLines:MutableList<String> = ListOfLines
+class BasedSubtitleData(){
+    constructor(LineNumber:Int, ListOfLines: MutableList<String>, StartingTime: Int, EndingTime:Int ) : this(){
+        mListOfLines = ListOfLines
+        mStartingTime = StartingTime
+        mEndingTime = EndingTime
+    }
+
+    companion object{
+        private var mTotalLines: Int = 0
+        fun counting(){
+            mTotalLines += 1
+        }
+    }
+    var mCurrentLine:Int =0
+        get() =field
+        set(value){
+            field=value
+        }
+    var mListOfLines: MutableList<String>? = null
         get() = field
         set(value) {
             field = value
         }
-    private var mStartingTime:String = StartingTime
+    var mStartingTime:Int = 0
         get() = field
         set(value) {
             field = value
         }
-    private var mEndingTime:String = EndingTime
+    var mEndingTime:Int= 0
         get() = field
         set(value) {
             field = value
         }
+    init{
+        counting()
+        mCurrentLine = mTotalLines
+    }
+
 }

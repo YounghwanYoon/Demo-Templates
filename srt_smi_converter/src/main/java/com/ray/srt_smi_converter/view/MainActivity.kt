@@ -16,6 +16,9 @@ import androidx.viewpager.widget.ViewPager
 import com.ray.srt_smi_converter.R
 import com.ray.srt_smi_converter.view.adapter.StatePagerAdapter
 import com.ray.srt_smi_converter.viewmodel.SharedViewModel
+import com.ray.srt_smi_converter.viewmodel.SubtitleHandler
+import java.io.File
+
 //FragmentActivity()
 class MainActivity :  AppCompatActivity(){
     private var TAG:String = this.javaClass.simpleName.toString()
@@ -34,12 +37,22 @@ private var mViewAdapter= StatePagerAdapter(supportFragmentManager)
         super.onCreate(savedInstanceState)
         screenLayoutHandler()
         setContentView(R.layout.activity_main)
-
         mSharedVM = ViewModelProviders.of(this).get(SharedViewModel::class.java)
         mViewPager = findViewById(R.id.container_viewpager)
         setupViewPager(mViewPager, mViewAdapter)
     }
+//srt_smi_converter/subtitles/arctic.srt
+    //srt_smi_converter/subtitles/arctic.smi
+    //        var tempFile = File("C:\\Users\\Ray\\Desktop\\Android_Projects\\Demo-Templates\\srt_smi_converter\\subtitles\\arctic.smi")
+   /* fun test(){
+    Log.d(TAG, "Under test method")
 
+    var tempFile = File("C:\\Users\\Ray\\Desktop\\Android_Projects\\Demo-Templates\\srt_smi_converter\\src\\main\\asset\\subtitles\\arctic.smi")
+        var texts = SubtitleHandler.parseData(  tempFile, this)
+        for(i in texts.indices)
+            Log.d(TAG, texts[i].toString())
+    }
+*/
     fun setupViewPager(viewPager: ViewPager, adapter: StatePagerAdapter){
         Log.d(TAG, "MainActivity setupViewPager() is called")
 

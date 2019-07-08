@@ -20,6 +20,9 @@ import android.view.GestureDetector
 import android.content.Context
 import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
+import com.ray.srt_smi_converter.model.BasedSubtitleData
+import com.ray.srt_smi_converter.viewmodel.SubtitleHandler
+import org.w3c.dom.Text
 
 
 class ListofFiles: Fragment(), RecyclerViewOnClickListener {
@@ -80,6 +83,7 @@ class ListofFiles: Fragment(), RecyclerViewOnClickListener {
             updateList(tempFile)
         else{
             Toast.makeText(activity,"Desired FIle is clicked ${tempFile.path}" , Toast.LENGTH_SHORT).show()
+            var ListOfAllTexts: MutableList<BasedSubtitleData>? = context?.let { SubtitleHandler.parseData(tempFile, it) }
         }
     }
 
