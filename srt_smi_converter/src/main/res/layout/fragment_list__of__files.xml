@@ -5,27 +5,57 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context="view.ListofFiles">
-     <RelativeLayout
+     <LinearLayout
              android:layout_width="match_parent"
-             android:layout_height="match_parent">
-
+             android:layout_height="match_parent"
+             android:id="@+id/container_relative_layout"
+             android:orientation="vertical">
           <TextView
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:id="@+id/path"
                   tools:text= "Current Address: "
-                  android:text="Current Address:"/>
-     <ScrollView
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content">
-          <androidx.recyclerview.widget.RecyclerView
+                  android:text="Current Address:"
+                  android:layout_weight="1"/>
+          <ScrollView
                   android:layout_width="match_parent"
                   android:layout_height="match_parent"
-                  android:id="@+id/recycle_view"
-                  android:layout_below="@+id/path"/>
+                  android:id="@+id/scroll_view"
+                  android:layout_weight="8">
+               <androidx.recyclerview.widget.RecyclerView
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:id="@+id/recyclerView"/>
+          </ScrollView>.
+          <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_alignBottom="@+id/scroll_view"
+                  android:id="@+id/common_folder"
+                  android:layout_weight="1"
+                  android:weightSum="3">
+               <ImageView
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:id="@+id/download_folder"
+                       android:src="@drawable/ic_folder"
+                       android:layout_weight="1"/>
+               <ImageView
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:id="@+id/movie_folder"
+                       android:src="@drawable/ic_folder"
+                       android:layout_weight="1"/>
+               <ImageView
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:id="@+id/photo_folder"
+                       android:src="@drawable/ic_folder"
+                       android:layout_weight="1"/>
 
-     </ScrollView>
+          </LinearLayout>
 
-     </RelativeLayout>
+
+     </LinearLayout>
 
 </FrameLayout>

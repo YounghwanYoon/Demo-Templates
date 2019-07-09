@@ -14,9 +14,12 @@ class FileHandler {
     lateinit  var files: MutableList<File>
 
     companion object{
-        var firstCall: Boolean= true
+        var commonFolderCall: Boolean= false
         private lateinit var rootFile: File
         private lateinit var startingDir: String
+        fun commonFolderCall(){
+            commonFolderCall = true
+        }
         fun checkTypeOfFile(directory:String):String{
             val fileType:String
             if(directory.endsWith(".mp3")) {fileType = "mp3"}
@@ -66,7 +69,7 @@ class FileHandler {
         itemsInCurrentPath.removeAll(itemsInCurrentPath)
 
         //if selected directory is not same as starting directory
-        if(currentFile.path != startingDir){
+        if(currentFile.path != startingDir && !commonFolderCall){
             Log.d(TAG, "returnListInPath() - if is called")
             //return to parent file
             itemsInCurrentPath.add(currentFile.parentFile)
@@ -76,8 +79,21 @@ class FileHandler {
             itemsInCurrentPath.addAll(filteredList)
             itemsInCurrentPath = sortFiles(itemsInCurrentPath)
 
-            firstCall = false
-        } else{
+        }
+        //common folder is selected
+        else if (currentFile.path != startingDir && commonFolderCall){
+            Log.d(TAG, "returnListInPath() - if is called")
+            //return to parent file
+            itemsInCurrentPath.add(rootFile)
+            Log.d(TAG, "returnListInPath() - itemsInCurrentPath first file is ${itemsInCurrentPath[0].path}")
+            val filteredList = filterFiles(currentFile.listFiles().toMutableList())
+            //add list of filtered files
+            itemsInCurrentPath.addAll(filteredList)
+            itemsInCurrentPath = sortFiles(itemsInCurrentPath)
+
+            commonFolderCall = false
+        }
+        else{
             Log.d(TAG, "returnListInPath() - else is called")
             //list of selected file
             itemsInCurrentPath.addAll(rootFileFilter(currentFile.listFiles().toMutableList()))

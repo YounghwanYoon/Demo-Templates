@@ -32,6 +32,35 @@ class SubtitleHandler(){
             val data: MutableList<BasedSubtitleData> = mutableListOf()
             var index:Int = 0
             var tempData = BasedSubtitleData()
+            var firstSYNPassed:Boolean = false
+            file.forEachLine{
+                if(it.contains("<SYNC Start=") && !(it.contains("nbsp")|| it.contains("NBSP"))){
+                    tempData.mStartingTime=it.substringAfter("Start=").substringBefore("><P").toInt()
+                    Log.d(TAG, "mStartingTime is: ${tempData.mStartingTime}")
+                    firstSYNPassed= true
+                }
+                if(it.contains("<SYNC Start=") && it.contains("nbsp")||it.contains("NBSP")){
+                    tempData.mEndingTime = it.substringAfter("Start=").substringBefore("><P").toInt()
+                    Log.d(TAG, "mEndingTime is: ${tempData.mEndingTime}")
+                }
+                if(firstSYNPassed && !it.contains("SYNC")){
+                   if(it.contains("<") || it.contains(">")) {
+                     tempData.mLinesOfTexts?.add(  it.replace("\\<.*?\\>", " "))
+                   } else tempData.mLinesOfTexts?.add(it)
+                    Log.d(TAG, "mLinesOfTexts is: ${ it.replace("\\<.*?\\>", " ")}")
+                }
+            }
+            data.add(tempData)
+            Log.d(TAG, "total lines of data is ${BasedSubtitleData.mTotalLines}")
+
+            return data
+        }
+
+        fun parseSRTData(file:File):MutableList<BasedSubtitleData>{
+            val textsFromSMI:MutableList<String>
+            val data: MutableList<BasedSubtitleData> = mutableListOf()
+            var index:Int = 0
+            var tempData = BasedSubtitleData()
             file.forEachLine{
                 if(it.contains("<SYNC")){
                     Log.d(TAG, "Inside Contains")
@@ -45,21 +74,5 @@ class SubtitleHandler(){
             data.add(tempData)
             return data
         }
-
-        fun parseSRTData(file:File):MutableList<BasedSubtitleData>{
-            val textsFromSRT:MutableList<String>
-            val data: MutableList<BasedSubtitleData> = mutableListOf()
-            var index:Int = 0
-            file.forEachLine{
-                if(it.contains("<SYNC")){
-                    data[index] =  BasedSubtitleData()
-                    data[index].mStartingTime =it.substringAfterLast("Start=",">").toInt()
-                }
-            }
-            Log.d(TAG, "Inside parseSMIData and starting time is: ${data[0].mStartingTime}")
-
-            return data
-        }
-
     }
 }

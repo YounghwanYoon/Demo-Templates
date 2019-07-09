@@ -1,9 +1,7 @@
 package com.ray.srt_smi_converter.view
 
-import android.Manifest
-import android.app.Activity
-import android.content.res.Configuration
 import android.os.Bundle
+import android.os.Environment
 import android.util.Log
 import android.view.*
 import android.widget.Toast
@@ -15,17 +13,31 @@ import com.ray.srt_smi_converter.view.adapter.CustomedAdapter
 import com.ray.srt_smi_converter.view.interfaces.RecyclerViewOnClickListener
 import com.ray.srt_smi_converter.viewmodel.SharedViewModel
 import java.io.File
-import android.view.MotionEvent
-import android.view.GestureDetector
-import android.content.Context
-import android.content.pm.PackageManager
-import androidx.core.app.ActivityCompat
 import com.ray.srt_smi_converter.model.BasedSubtitleData
+import com.ray.srt_smi_converter.viewmodel.FileHandler
 import com.ray.srt_smi_converter.viewmodel.SubtitleHandler
-import org.w3c.dom.Text
+import kotlinx.android.synthetic.main.fragment_list__of__files.*
 
 
-class ListofFiles: Fragment(), RecyclerViewOnClickListener {
+class ListofFiles: Fragment(), RecyclerViewOnClickListener,View.OnClickListener {
+    private var baseDirectory: String = Environment.getRootDirectory().parentFile.path +  "/mnt/sdcard"
+    override fun onClick(p0: View?) {
+        when(p0){
+            download_folder -> {
+                FileHandler.commonFolderCall()
+                updateList(File(baseDirectory+"/Download"))
+            }
+            movie_folder -> {
+                FileHandler.commonFolderCall()
+                updateList(File(baseDirectory+"/Movies"))
+            }
+            photo_folder -> {
+                FileHandler.commonFolderCall()
+                updateList(File(baseDirectory + "/DCIM"))
+            }
+        }
+    }
+
     private var TAG:String = this.javaClass.simpleName.toString()
 
     private lateinit var mSharedVM:SharedViewModel
@@ -33,7 +45,7 @@ class ListofFiles: Fragment(), RecyclerViewOnClickListener {
 
     //RecyclerView Related variables
     private lateinit var mView:View
-    private lateinit var recyclerView:RecyclerView
+    //private lateinit var recyclerView:RecyclerView
 
     private lateinit var myAdapter: CustomedAdapter
     val resource = com.ray.srt_smi_converter.R.layout.each_file
@@ -58,7 +70,7 @@ class ListofFiles: Fragment(), RecyclerViewOnClickListener {
         list = getListOfDirectory()
         Log.d(TAG, "ListofFiles class -  list size is ${list.size}")
 
-        recyclerView = mView.findViewById(com.ray.srt_smi_converter.R.id.recycle_view)
+        //recyclerView = mView.findViewById(com.ray.srt_smi_converter.R.id.recyclerView)
         myAdapter = CustomedAdapter(context, resource, list)
 
         Log.d(TAG, "ListofFiles class - context is ${context.toString()}")
@@ -67,10 +79,17 @@ class ListofFiles: Fragment(), RecyclerViewOnClickListener {
         recyclerView.adapter = myAdapter
         myAdapter.setOnItemClickListener(this)
         recyclerView.layoutManager = LinearLayoutManager(activity)
+
+        //common_folder set on click listener
+        download_folder.setOnClickListener(this)
+        movie_folder.setOnClickListener(this)
+        movie_folder.setOnClickListener(this)
+
     }
     private fun getListOfDirectory(): MutableList<File>{
         return mSharedVM.getListOfCurrentDirectory()
     }
+
 
     //from interface
     override fun onItemClickListener(position: Int) {
