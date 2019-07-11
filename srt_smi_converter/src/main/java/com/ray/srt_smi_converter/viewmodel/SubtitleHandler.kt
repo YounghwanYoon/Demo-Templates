@@ -33,6 +33,7 @@ class SubtitleHandler(){
             var index:Int = 0
             var tempData = BasedSubtitleData()
             var firstSYNPassed:Boolean = false
+            val reg:Regex = Regex("<.*?>")
             file.forEachLine{
                 if(it.contains("<SYNC Start=") && !(it.contains("nbsp")|| it.contains("NBSP"))){
                     tempData.mStartingTime=it.substringAfter("Start=").substringBefore("><P").toInt()
@@ -45,9 +46,9 @@ class SubtitleHandler(){
                 }
                 if(firstSYNPassed && !it.contains("SYNC")){
                    if(it.contains("<") || it.contains(">")) {
-                     tempData.mLinesOfTexts?.add(  it.replace("\\<.*?\\>", " "))
+                     tempData.mLinesOfTexts?.add(  it.replace(reg,""))
+                   Log.d(TAG, "mLinesOfTexts is: ${ it.replace(reg, "")}")
                    } else tempData.mLinesOfTexts?.add(it)
-                    Log.d(TAG, "mLinesOfTexts is: ${ it.replace("\\<.*?\\>", " ")}")
                 }
             }
             data.add(tempData)
@@ -55,6 +56,11 @@ class SubtitleHandler(){
 
             return data
         }
+        fun convertToSRT(data:MutableList<BasedSubtitleData>, savingDir:String){
+
+
+        }
+
 
         fun parseSRTData(file:File):MutableList<BasedSubtitleData>{
             val textsFromSMI:MutableList<String>
@@ -64,10 +70,8 @@ class SubtitleHandler(){
             file.forEachLine{
                 if(it.contains("<SYNC")){
                     Log.d(TAG, "Inside Contains")
-
                     tempData.mStartingTime=it.substringAfter("Start=").substringBefore("><P").toInt()
                     Log.d(TAG, "subStrings are: ${it.substringAfter("Start=").substringBefore("><P")}")
-
                 }
             }
 
