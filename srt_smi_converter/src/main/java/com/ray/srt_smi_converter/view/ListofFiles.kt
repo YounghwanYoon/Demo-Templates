@@ -102,7 +102,8 @@ class ListofFiles: Fragment(), RecyclerViewOnClickListener,View.OnClickListener 
             updateList(tempFile)
         else{
             Toast.makeText(activity,"Desired FIle is clicked ${tempFile.path}" , Toast.LENGTH_SHORT).show()
-            var ListOfAllTexts: MutableList<BasedSubtitleData>? = context?.let { SubtitleHandler.parseData(tempFile, it) }
+            var ListOfAllTexts: MutableList<BasedSubtitleData> = context?.let { SubtitleHandler.parseData(tempFile, it) }!!
+            SubtitleHandler.createSRT(ListOfAllTexts, tempFile)
         }
     }
 
