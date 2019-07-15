@@ -6,8 +6,6 @@ import android.util.Log
 import com.ray.srt_smi_converter.model.BasedSubtitleData
 import java.io.*
 
-
-
 class SubtitleHandler(){
     companion object{
         val TAG = javaClass.simpleName
@@ -16,7 +14,7 @@ class SubtitleHandler(){
 
         fun parseData(file: File, context:Context):MutableList<BasedSubtitleData>{
             Log.d(TAG, "parseData is called")
-            var tempList: MutableList<BasedSubtitleData>
+            val tempList: MutableList<BasedSubtitleData>
             if(file.path.contains(".smi")){
                 tempList = parseSMIData(file)
             }
@@ -53,31 +51,34 @@ class SubtitleHandler(){
 
             return data
         }
-        fun createSRT(contents:MutableList<BasedSubtitleData>, selectedFile:File){
+        fun createSRT(contents:MutableList<BasedSubtitleData>, selectedFile:File,appContext:Context){
             Log.d(TAG, "sizer of contents is ${contents.size}")
             val SavingFolder = selectedFile.parentFile
-            var newSMIFile = File(SavingFolder, selectedFile.name +".srt")
+            var newSMIFile = File(SavingFolder, selectedFile.nameWithoutExtension +".srt")
+            //Check whether file with the path name exists or not. If so, delete it before creating a new file.
             if(newSMIFile.exists()){
+                Log.d(TAG, "Directory exist!")
                 newSMIFile.delete()
             }
             try{
                 newSMIFile.createNewFile()
-                for(content in contents){
-                    Log.d(TAG, "Contents mStartingTime is ${content.mStartingTime}")
-                    Log.d(TAG, "Contents mEndingTime is ${content.mEndingTime}")
-
-                    newSMIFile.writeText(content.mCurrentLine.toString() +"\n")
-                    newSMIFile.writeText("${millisecToReadableTime(content.mStartingTime)}-->${millisecToReadableTime(content.mEndingTime)}+\n")
-                    if(content.mLinesOfTexts != null){
-                        var tempText:String = ""
-                        for(line in content.mLinesOfTexts!!){
-                            tempText = tempText + line +"\n"
+                newSMIFile.writeText("Test with writeText")
+                
+                appContext.openFileOutput(newSMIFile.name, Context.MODE_PRIVATE).use{
+                    for(content in contents){
+                        it.write((content.mCurrentLine.toString() +"\n").toByteArray())
+                        it.write(("${millisecToReadableTime(content.mStartingTime)}-->${millisecToReadableTime(content.mEndingTime)}+\n").toByteArray())
+                        if(content.mLinesOfTexts != null){
+                            var tempText:String = ""
+                            for(line in content.mLinesOfTexts!!){
+                                tempText = tempText + line +"\n"
+                            }
+                            //newSMIFile.writeText(tempText)
+                            it.write((tempText).toByteArray())
                         }
-                        newSMIFile.writeText(tempText)
-                        Log.d(TAG, "Contents mEndingTime is ${tempText}")
-                    }
-                    else{
-                        newSMIFile.writeText("\n")
+                        else{
+                            it.write(("\n").toByteArray())
+                        }
                     }
                 }
             }catch (e:Exception){
