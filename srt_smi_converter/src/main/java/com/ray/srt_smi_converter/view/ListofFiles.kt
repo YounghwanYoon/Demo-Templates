@@ -1,5 +1,8 @@
 package com.ray.srt_smi_converter.view
 
+import android.app.ProgressDialog
+import android.content.Context
+import android.os.AsyncTask
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
@@ -102,8 +105,10 @@ class ListofFiles: Fragment(), RecyclerViewOnClickListener,View.OnClickListener 
             updateList(tempFile)
         else{
             Toast.makeText(activity,"Desired FIle is clicked ${tempFile.path}" , Toast.LENGTH_SHORT).show()
+
             var ListOfAllTexts: MutableList<BasedSubtitleData> = context?.let { SubtitleHandler.parseData(tempFile, it) }!!
-            SubtitleHandler.createSRT(ListOfAllTexts, tempFile, context!!)
+            val bg_work = Background_Work(ListOfAllTexts,tempFile, context!!).execute();
+
         }
     }
 
@@ -111,5 +116,15 @@ class ListofFiles: Fragment(), RecyclerViewOnClickListener,View.OnClickListener 
         list = mSharedVM.updatedList(file)
         myAdapter.updateList(list)
         myAdapter.notifyDataSetChanged()
+    }
+
+    private class Background_Work(val mListOfAllTexts:MutableList<BasedSubtitleData>, val mCurrentFile: File, val mContext: Context): AsyncTask<Void, Void, String>() {
+        override fun doInBackground(vararg p0: Void?): String {
+            SubtitleHandler.createSRT(mListOfAllTexts, mCurrentFile, mContext)
+            return "Completed"
+        }
+        override fun onPostExecute(result: String) {
+            Toast.makeText(mContext, "Downloaded " + result + " bytes", Toast.LENGTH_SHORT).show()
+        }
     }
 }

@@ -52,7 +52,7 @@ class SubtitleHandler(){
             return data
         }
         fun createSRT(contents:MutableList<BasedSubtitleData>, selectedFile:File,appContext:Context){
-            Log.d(TAG, "sizer of contents is ${contents.size}")
+            Log.d(TAG, "size of contents is ${contents.size}")
             val SavingFolder = selectedFile.parentFile
             var newSMIFile = File(SavingFolder, selectedFile.nameWithoutExtension +".srt")
             //Check whether file with the path name exists or not. If so, delete it before creating a new file.
@@ -63,7 +63,7 @@ class SubtitleHandler(){
             try{
                 newSMIFile.createNewFile()
                 newSMIFile.writeText("Test with writeText")
-                
+
                 appContext.openFileOutput(newSMIFile.name, Context.MODE_PRIVATE).use{
                     for(content in contents){
                         it.write((content.mCurrentLine.toString() +"\n").toByteArray())
@@ -74,7 +74,7 @@ class SubtitleHandler(){
                                 tempText = tempText + line +"\n"
                             }
                             //newSMIFile.writeText(tempText)
-                            it.write((tempText).toByteArray())
+                            it.write((tempText + "with Byte").toByteArray())
                         }
                         else{
                             it.write(("\n").toByteArray())
