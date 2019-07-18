@@ -45,45 +45,58 @@ class SubtitleHandler(){
                    Log.d(TAG, "mLinesOfTexts is: ${ it.replace(reg, "")}")
                    } else tempData.mLinesOfTexts?.add(it)
                 }
+                Log.d(TAG, "tempData mStarting time is ${tempData.mStartingTime}")
+                Log.d(TAG, "tempData mEndingTime time is ${tempData.mEndingTime}")
                 data.add(tempData)
+                Log.d(TAG, "data mStarting time is ${data[0].mStartingTime}")
+                Log.d(TAG, "data mStarting time is ${data[0].mEndingTime}")
             }
-            Log.d(TAG, "Size of data is ${data.size}")
-
+            Log.d(TAG, "data mStarting time is ${data[0].mLinesOfTexts}")
             return data
         }
         fun createSRT(contents:MutableList<BasedSubtitleData>, selectedFile:File,appContext:Context){
             Log.d(TAG, "size of contents is ${contents.size}")
+
+            var tempText:String = ""
             val SavingFolder = selectedFile.parentFile
-            var newSMIFile = File(SavingFolder, selectedFile.nameWithoutExtension +".srt")
+            var newSMIFile = File(SavingFolder, selectedFile.nameWithoutExtension +".txt")
             //Check whether file with the path name exists or not. If so, delete it before creating a new file.
             if(newSMIFile.exists()){
                 Log.d(TAG, "Directory exist!")
                 newSMIFile.delete()
             }
-            try{
-                newSMIFile.createNewFile()
-                newSMIFile.writeText("Test with writeText")
+            Log.d(TAG, "Inside Try!!")
+            newSMIFile.createNewFile()
+            newSMIFile.writeText("Test with write Text ")
+            newSMIFile.appendText("\n\r")
 
-                appContext.openFileOutput(newSMIFile.name, Context.MODE_PRIVATE).use{
-                    for(content in contents){
-                        it.write((content.mCurrentLine.toString() +"\n").toByteArray())
-                        it.write(("${millisecToReadableTime(content.mStartingTime)}-->${millisecToReadableTime(content.mEndingTime)}+\n").toByteArray())
-                        if(content.mLinesOfTexts != null){
-                            var tempText:String = ""
-                            for(line in content.mLinesOfTexts!!){
-                                tempText = tempText + line +"\n"
-                            }
-                            //newSMIFile.writeText(tempText)
-                            it.write((tempText + "with Byte").toByteArray())
-                        }
-                        else{
-                            it.write(("\n").toByteArray())
-                        }
+            var i = 0
+            contents.forEach{
+                //Adding Index
+                newSMIFile.appendText("$i")
+                newSMIFile.appendText("\n\r")
+                //newSMIFile.appendText("${it.mCurrentLine}")
+                //newSMIFile.appendText("\n\r")
+
+                //Adding Time Frame
+                newSMIFile.appendText("${millisecToReadableTime(it.mStartingTime)}-->${millisecToReadableTime(it.mEndingTime)} ")
+                newSMIFile.appendText("\n\r")
+
+                //Adding Subtitle/Text
+                if(it.mLinesOfTexts != null){
+                    it.mLinesOfTexts!!.forEach {
+                        tempText = tempText + it + "\n"
                     }
+                    newSMIFile.appendText((tempText ))
+                    newSMIFile.appendText("\n\r")
+                }else{
+                    newSMIFile.appendText("\n\r")
                 }
-            }catch (e:Exception){
-                Log.d(TAG, e.printStackTrace().toString())
+                tempText = ""
+                i++
             }
+
+            newSMIFile.forEachLine { Log.d(TAG, "Checking CurrentLine : $it") }
         }
         fun millisecToReadableTime(milliseconds:Int):String{
             var remainMilisec:Int =(milliseconds%1000)
