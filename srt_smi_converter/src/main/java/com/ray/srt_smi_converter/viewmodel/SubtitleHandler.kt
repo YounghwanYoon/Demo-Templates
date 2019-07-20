@@ -5,6 +5,7 @@ import android.content.Context
 import android.util.Log
 import com.ray.srt_smi_converter.model.BasedSubtitleData
 import java.io.*
+import java.nio.charset.Charset
 
 class SubtitleHandler(){
     companion object{
@@ -25,8 +26,8 @@ class SubtitleHandler(){
         }
 
         fun parseSMIData(file:File):MutableList<BasedSubtitleData>{
-            val data: MutableList<BasedSubtitleData> = mutableListOf()
-            val tempData = BasedSubtitleData()
+            val data: ArrayList<BasedSubtitleData> = ArrayList<BasedSubtitleData>()
+            var tempData =  BasedSubtitleData()
             var firstSYNPassed:Boolean = false
             val reg = Regex("<.*?>")
             file.forEachLine{
@@ -40,18 +41,22 @@ class SubtitleHandler(){
                     Log.d(TAG, "mEndingTime is: ${tempData.mEndingTime}")
                 }
                 if(firstSYNPassed && !it.contains("SYNC")){
+                    //Remove Tag
                    if(it.contains("<") || it.contains(">")) {
-                     tempData.mLinesOfTexts?.add(  it.replace(reg,""))
-                   Log.d(TAG, "mLinesOfTexts is: ${ it.replace(reg, "")}")
+                       tempData.mLinesOfTexts?.add(
+                               String(it
+                                       .replace(reg,"")
+                                       .toByteArray(Charset.forName("x-windows-949"))))
+
+                       Log.d(TAG, "mLinesOfTexts is: ${ it.replace(reg, "")}")
+                       Log.d(TAG, "tempData.mLinesOfTexts is: ${tempData.mLinesOfTexts?.get(0)?.toString()}")
+
                    } else tempData.mLinesOfTexts?.add(it)
                 }
-                Log.d(TAG, "tempData mStarting time is ${tempData.mStartingTime}")
-                Log.d(TAG, "tempData mEndingTime time is ${tempData.mEndingTime}")
-                data.add(tempData)
-                Log.d(TAG, "data mStarting time is ${data[0].mStartingTime}")
-                Log.d(TAG, "data mStarting time is ${data[0].mEndingTime}")
+                if(tempData.mEndingTime !=0 && tempData.mEndingTime > tempData.mStartingTime){
+                    data.add(BasedSubtitleData(tempData.mLinesOfTexts, tempData.mStartingTime, tempData.mEndingTime))
+                }
             }
-            Log.d(TAG, "data mStarting time is ${data[0].mLinesOfTexts}")
             return data
         }
         fun createSRT(contents:MutableList<BasedSubtitleData>, selectedFile:File,appContext:Context){
@@ -59,7 +64,7 @@ class SubtitleHandler(){
 
             var tempText:String = ""
             val SavingFolder = selectedFile.parentFile
-            var newSMIFile = File(SavingFolder, selectedFile.nameWithoutExtension +".txt")
+            var newSMIFile = File(SavingFolder, selectedFile.nameWithoutExtension +".srt")
             //Check whether file with the path name exists or not. If so, delete it before creating a new file.
             if(newSMIFile.exists()){
                 Log.d(TAG, "Directory exist!")
@@ -67,25 +72,22 @@ class SubtitleHandler(){
             }
             Log.d(TAG, "Inside Try!!")
             newSMIFile.createNewFile()
-            newSMIFile.writeText("Test with write Text ")
-            newSMIFile.appendText("\n\r")
 
             var i = 0
             contents.forEach{
                 //Adding Index
-                newSMIFile.appendText("$i")
-                newSMIFile.appendText("\n\r")
-                //newSMIFile.appendText("${it.mCurrentLine}")
-                //newSMIFile.appendText("\n\r")
+                newSMIFile.appendText(String("$i \n\r".toByteArray(), Charset.forName("EUC-KR")))
 
                 //Adding Time Frame
-                newSMIFile.appendText("${millisecToReadableTime(it.mStartingTime)}-->${millisecToReadableTime(it.mEndingTime)} ")
+                newSMIFile.appendText(
+                        String("${millisecToReadableTime(it.mStartingTime)}-->${millisecToReadableTime(it.mEndingTime)}"
+                                .toByteArray(Charset.forName("EUC-KR"))))
                 newSMIFile.appendText("\n\r")
 
                 //Adding Subtitle/Text
                 if(it.mLinesOfTexts != null){
                     it.mLinesOfTexts!!.forEach {
-                        tempText = tempText + it + "\n"
+                        tempText = String((tempText + it + "\n").toByteArray(Charset.forName("EUC-KR")))
                     }
                     newSMIFile.appendText((tempText ))
                     newSMIFile.appendText("\n\r")

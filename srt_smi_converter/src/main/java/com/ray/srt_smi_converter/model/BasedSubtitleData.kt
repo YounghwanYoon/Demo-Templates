@@ -1,23 +1,27 @@
 package com.ray.srt_smi_converter.model
 
 class BasedSubtitleData(){
-    constructor(LineNumber:Int, ListOfLines: MutableList<String>, StartingTime: Int, EndingTime:Int ) : this(){
-        mLinesOfTexts = ListOfLines
-        mStartingTime = StartingTime
-        mEndingTime = EndingTime
+    companion object{
+        var trackingNumber = 0
+    }
+    constructor(mBasedSubtitleData: BasedSubtitleData):this(){
+        mLinesOfTexts = mBasedSubtitleData.mLinesOfTexts
+        mStartingTime = mBasedSubtitleData.mStartingTime
+        mEndingTime = mBasedSubtitleData.mEndingTime
     }
 
-    companion object{
-        var mTotalLines: Int = 0
-        fun counting(){
-            mTotalLines += 1
-        }
+    constructor(LinesOfTexts: MutableList<String>?, StartingTime: Int, EndingTime:Int ) : this(){
+        mLinesOfTexts = LinesOfTexts
+        mStartingTime = StartingTime
+        mEndingTime = EndingTime
+        trackingNumber++
     }
-    var mCurrentLine:Int =0
-        get() =field
-        set(value){
-            field=value
+    var mDataNumber: Int = trackingNumber
+        get() = field
+        set(value) {
+            field = value
         }
+
     var mLinesOfTexts: MutableList<String>? = null
         get() = field
         set(value) {
@@ -33,9 +37,4 @@ class BasedSubtitleData(){
         set(value) {
             field = value
         }
-    init{
-        counting()
-        mCurrentLine = mTotalLines
-    }
-
 }
