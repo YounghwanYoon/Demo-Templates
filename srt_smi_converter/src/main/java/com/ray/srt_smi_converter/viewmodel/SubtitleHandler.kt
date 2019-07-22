@@ -46,7 +46,7 @@ class SubtitleHandler(){
                        tempData.mLinesOfTexts?.add(
                                String(it
                                        .replace(reg,"")
-                                       .toByteArray(Charset.forName("x-windows-949"))))
+                                       .toByteArray(Charset.forName("MS949"))))
 
                        Log.d(TAG, "mLinesOfTexts is: ${ it.replace(reg, "")}")
                        Log.d(TAG, "tempData.mLinesOfTexts is: ${tempData.mLinesOfTexts?.get(0)?.toString()}")
@@ -64,7 +64,18 @@ class SubtitleHandler(){
 
             var tempText:String = ""
             val SavingFolder = selectedFile.parentFile
-            var newSMIFile = File(SavingFolder, selectedFile.nameWithoutExtension +".srt")
+            var newSMIFile = File(SavingFolder, selectedFile.nameWithoutExtension +".txt")
+
+/*
+            TesterSMIFile.appendText("\n\r =================using readLines==========\n\r ")
+            selectedFile.readLines(charset("MS949")).forEach {
+                TesterSMIFile.appendText(it + "\n\r")
+            }
+
+            TesterSMIFile.readLines().forEach {
+                Log.d(TAG, "TesterSMIFile is: ${it.toString()}")
+            }
+*/
             //Check whether file with the path name exists or not. If so, delete it before creating a new file.
             if(newSMIFile.exists()){
                 Log.d(TAG, "Directory exist!")
@@ -74,20 +85,22 @@ class SubtitleHandler(){
             newSMIFile.createNewFile()
 
             var i = 0
-            contents.forEach{
+            /*
+            selectedFile.readLines(charset("MS949")).forEach{
+            //contents.forEach{
                 //Adding Index
-                newSMIFile.appendText(String("$i \n\r".toByteArray(), Charset.forName("EUC-KR")))
+                newSMIFile.appendText(String("$i \n\r".toByteArray(), Charset.forName("MS949")))
 
                 //Adding Time Frame
                 newSMIFile.appendText(
                         String("${millisecToReadableTime(it.mStartingTime)}-->${millisecToReadableTime(it.mEndingTime)}"
-                                .toByteArray(Charset.forName("EUC-KR"))))
+                                .toByteArray(Charset.forName("MS949"))))
                 newSMIFile.appendText("\n\r")
 
                 //Adding Subtitle/Text
                 if(it.mLinesOfTexts != null){
                     it.mLinesOfTexts!!.forEach {
-                        tempText = String((tempText + it + "\n").toByteArray(Charset.forName("EUC-KR")))
+                        tempText = String((tempText + it + "\n").toByteArray(Charset.forName("MS949")))
                     }
                     newSMIFile.appendText((tempText ))
                     newSMIFile.appendText("\n\r")
@@ -97,7 +110,45 @@ class SubtitleHandler(){
                 tempText = ""
                 i++
             }
+*/
+            var firstSYNPassed = false
+            var tempData:BasedSubtitleData = BasedSubtitleData()
+            val reg = Regex("<.*?>")
+            selectedFile.readLines(charset("MS949")).forEach {
 
+                if(it.contains("<SYNC Start=") && !(it.contains("nbsp") || it.contains("NBSP"))) {
+                    tempData.mStartingTime = it.substringAfter("Start=").substringBefore("><P").toInt()
+                    Log.d(TAG, "mStartingTime is: ${tempData.mStartingTime}")
+                    firstSYNPassed = true
+                }
+
+
+                if (it.contains("<SYNC Start=") && it.contains("nbsp") || it.contains("NBSP")) {
+                    tempData.mEndingTime = it.substringAfter("Start=").substringBefore("><P").toInt()
+                    Log.d(TAG, "mEndingTime is: ${tempData.mEndingTime}")
+                }
+                if (firstSYNPassed && !it.contains("SYNC")) {
+                    //Remove Tag
+                    if (it.contains("<") || it.contains(">")) {
+                        tempData.mLinesOfTexts?.add(
+                                String(it
+                                        .replace(reg, "")
+                                        .toByteArray(Charset.forName("MS949"))))
+
+                    }
+                }
+                //Adding Index
+                newSMIFile.appendText("$i \n\r")
+
+                //Adding Time Frame
+                newSMIFile.appendText(
+                        String("${millisecToReadableTime(it.mStartingTime)}-->${millisecToReadableTime(it.mEndingTime)}"
+                                .toByteArray(Charset.forName("MS949"))))
+                newSMIFile.appendText("\n\r")
+
+
+
+            }
             newSMIFile.forEachLine { Log.d(TAG, "Checking CurrentLine : $it") }
         }
         fun millisecToReadableTime(milliseconds:Int):String{
