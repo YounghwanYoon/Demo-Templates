@@ -33,12 +33,12 @@ class SubtitleHandler(){
             file.forEachLine{
                 if(it.contains("<SYNC Start=") && !(it.contains("nbsp")|| it.contains("NBSP"))){
                     tempData.mStartingTime=it.substringAfter("Start=").substringBefore("><P").toInt()
-                    Log.d(TAG, "mStartingTime is: ${tempData.mStartingTime}")
+                    //Log.d(TAG, "mStartingTime is: ${tempData.mStartingTime}")
                     firstSYNPassed= true
                 }
                 if(it.contains("<SYNC Start=") && it.contains("nbsp")||it.contains("NBSP")){
                     tempData.mEndingTime = it.substringAfter("Start=").substringBefore("><P").toInt()
-                    Log.d(TAG, "mEndingTime is: ${tempData.mEndingTime}")
+                    //Log.d(TAG, "mEndingTime is: ${tempData.mEndingTime}")
                 }
                 if(firstSYNPassed && !it.contains("SYNC")){
                     //Remove Tag
@@ -48,8 +48,8 @@ class SubtitleHandler(){
                                        .replace(reg,"")
                                        .toByteArray(Charset.forName("MS949"))))
 
-                       Log.d(TAG, "mLinesOfTexts is: ${ it.replace(reg, "")}")
-                       Log.d(TAG, "tempData.mLinesOfTexts is: ${tempData.mLinesOfTexts?.get(0)?.toString()}")
+                       //Log.d(TAG, "mLinesOfTexts is: ${ it.replace(reg, "")}")
+                      // Log.d(TAG, "tempData.mLinesOfTexts is: ${tempData.mLinesOfTexts?.get(0)?.toString()}")
 
                    } else tempData.mLinesOfTexts?.add(it)
                 }
@@ -60,7 +60,7 @@ class SubtitleHandler(){
             return data
         }
         fun createSRT(contents:MutableList<BasedSubtitleData>, selectedFile:File,appContext:Context){
-            Log.d(TAG, "size of contents is ${contents.size}")
+            //Log.d(TAG, "size of contents is ${contents.size}")
 
             var tempText:String = ""
             val SavingFolder = selectedFile.parentFile
@@ -118,35 +118,37 @@ class SubtitleHandler(){
 
                 if(it.contains("<SYNC Start=") && !(it.contains("nbsp") || it.contains("NBSP"))) {
                     tempData.mStartingTime = it.substringAfter("Start=").substringBefore("><P").toInt()
-                    Log.d(TAG, "mStartingTime is: ${tempData.mStartingTime}")
+                    //Log.d(TAG, "mStartingTime is: ${tempData.mStartingTime}")
                     firstSYNPassed = true
                 }
 
-
-                if (it.contains("<SYNC Start=") && it.contains("nbsp") || it.contains("NBSP")) {
-                    tempData.mEndingTime = it.substringAfter("Start=").substringBefore("><P").toInt()
-                    Log.d(TAG, "mEndingTime is: ${tempData.mEndingTime}")
-                }
                 if (firstSYNPassed && !it.contains("SYNC")) {
                     //Remove Tag
                     if (it.contains("<") || it.contains(">")) {
                         tempData.mLinesOfTexts?.add(
-                                String(it
+                                /*String(*/it
                                         .replace(reg, "")
-                                        .toByteArray(Charset.forName("MS949"))))
-
+                                        /*.toByteArray(Charset.forName("MS949")))*/)
                     }
                 }
-                //Adding Index
-                newSMIFile.appendText("$i \n\r")
-
-                //Adding Time Frame
-                newSMIFile.appendText(
-                        String("${millisecToReadableTime(it.mStartingTime)}-->${millisecToReadableTime(it.mEndingTime)}"
-                                .toByteArray(Charset.forName("MS949"))))
-                newSMIFile.appendText("\n\r")
-
-
+                if (it.contains("<SYNC Start=") && it.contains("nbsp") || it.contains("NBSP")) {
+                    tempData.mEndingTime = it.substringAfter("Start=").substringBefore("><P").toInt()
+                   // Log.d(TAG, "mEndingTime is: ${tempData.mEndingTime}")
+                }
+                //Once it is reached Ending Time, all the texts and time frame should be ready to store
+                if(tempData.mEndingTime !=0 && tempData.mEndingTime > tempData.mStartingTime){
+                    //Adding Index
+                    newSMIFile.appendText(/*String(*/"$i \n\r"/*.toByteArray(charset("MS949")))*/)
+                    //Adding Time Frame
+                    newSMIFile.appendText(
+                            /*String(*/"${millisecToReadableTime(tempData.mStartingTime)}-->${millisecToReadableTime(tempData.mEndingTime)}"
+                                    /*.toByteArray(Charset.forName("MS949")))*/)
+                    newSMIFile.appendText(/*String(*/"\n\r"/*.toByteArray(charset("MS949")))*/)
+                    tempData.mLinesOfTexts?.forEach {
+                        newSMIFile.appendText(/*String(*/it/*.toByteArray(charset("MS949")))*/)
+                        newSMIFile.appendText(/*String(*/"\n\r"/*.toByteArray(charset("MS949")))*/)                    }
+                    i++
+                }
 
             }
             newSMIFile.forEachLine { Log.d(TAG, "Checking CurrentLine : $it") }
