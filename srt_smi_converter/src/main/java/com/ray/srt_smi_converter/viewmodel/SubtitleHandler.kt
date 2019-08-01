@@ -2,6 +2,7 @@ package com.ray.srt_smi_converter.viewmodel
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.drm.DrmStore
 import android.util.Log
 import com.ray.srt_smi_converter.model.BasedSubtitleData
 import java.io.*
@@ -51,7 +52,9 @@ class SubtitleHandler(){
                        //Log.d(TAG, "mLinesOfTexts is: ${ it.replace(reg, "")}")
                       // Log.d(TAG, "tempData.mLinesOfTexts is: ${tempData.mLinesOfTexts?.get(0)?.toString()}")
 
-                   } else tempData.mLinesOfTexts?.add(it)
+                   } else{
+                       tempData.mLinesOfTexts?.add(it)
+                   }
                 }
                 if(tempData.mEndingTime !=0 && tempData.mEndingTime > tempData.mStartingTime){
                     data.add(BasedSubtitleData(tempData.mLinesOfTexts, tempData.mStartingTime, tempData.mEndingTime))
@@ -59,12 +62,68 @@ class SubtitleHandler(){
             }
             return data
         }
+
+        fun testReadingAndConverting(file:File, charset:String){
+            var listOfArray = mutableListOf<ByteArray> ()
+            var listOfText = mutableListOf<String>()
+           /* file.forEachLine(Charset.forName(InputStreamReader(FileInputStream(file), charset).encoding)) {
+                run {
+                    listOfArray.add(it.toByteArray())
+                    listOfText.add(it)
+                    Log.d(TAG, "Each ByteArray is  ${listOfArray.last()}")
+                    Log.d(TAG, "Each File is  ${it}")
+                    Log.d(TAG, "Each File is  ${listOfText.last()}")
+                }
+            }*/
+        }
         fun createSRT(contents:MutableList<BasedSubtitleData>, selectedFile:File,appContext:Context){
             //Log.d(TAG, "size of contents is ${contents.size}")
+            Log.d(TAG, "Type of Encoder is ${InputStreamReader(FileInputStream(selectedFile)).encoding}")
+            Log.d(TAG, "Path of selectedFile is ${selectedFile.path}")
 
             var tempText:String = ""
+            var typeOfEncoder = InputStreamReader(FileInputStream(selectedFile)).encoding
             val SavingFolder = selectedFile.parentFile
-            var newSMIFile = File(SavingFolder, selectedFile.nameWithoutExtension +".txt")
+            val newLine = "\n\r"
+
+/*
+            newSMIFile.appendText("<============================ readLines with charset==============>")
+            selectedFile.readLines(charset("MS949")).forEach{
+                Log.d(TAG, it)
+                newSMIFile.appendText(it + newLine)
+            }
+
+            newSMIFile.appendText("<============================ readLines without charset==============>")
+            selectedFile.readLines().forEach{
+                Log.d(TAG, it)
+                newSMIFile.appendText(it + newLine)
+            }
+            newSMIFile.appendText(newLine + "<============================ ReadText==============>")
+
+            selectedFile.readLines(charset("MS949")).forEach{
+                Log.d(TAG, it.toByteArray().toString())
+                newSMIFile.appendText(it.toByteArray().toString() + newLine)
+            }
+*/
+            var CopyFile = File(SavingFolder,"Copy_${selectedFile.nameWithoutExtension}.txt")
+            if(CopyFile.exists()){
+                CopyFile.delete()
+            }
+            CopyFile.createNewFile()
+
+            CopyFile = selectedFile.copyTo(CopyFile, true)
+
+            Log.d(TAG, "CopyFile is ${CopyFile.name}")
+            val newSRTFile = sortTextLines(SavingFolder, CopyFile).createNewFile()
+/*
+            if(newSRTFile.exists()){
+                Log.d(TAG, "Directory exist!")
+            }
+            newSRTFile.createNewFile()
+*/
+
+
+
 
 /*
             TesterSMIFile.appendText("\n\r =================using readLines==========\n\r ")
@@ -77,44 +136,33 @@ class SubtitleHandler(){
             }
 */
             //Check whether file with the path name exists or not. If so, delete it before creating a new file.
-            if(newSMIFile.exists()){
+/*
+           if(newSMIFile.exists()){
                 Log.d(TAG, "Directory exist!")
                 newSMIFile.delete()
             }
-            Log.d(TAG, "Inside Try!!")
             newSMIFile.createNewFile()
 
-            var i = 0
-            /*
             selectedFile.readLines(charset("MS949")).forEach{
-            //contents.forEach{
-                //Adding Index
-                newSMIFile.appendText(String("$i \n\r".toByteArray(), Charset.forName("MS949")))
-
-                //Adding Time Frame
-                newSMIFile.appendText(
-                        String("${millisecToReadableTime(it.mStartingTime)}-->${millisecToReadableTime(it.mEndingTime)}"
-                                .toByteArray(Charset.forName("MS949"))))
-                newSMIFile.appendText("\n\r")
-
-                //Adding Subtitle/Text
-                if(it.mLinesOfTexts != null){
-                    it.mLinesOfTexts!!.forEach {
-                        tempText = String((tempText + it + "\n").toByteArray(Charset.forName("MS949")))
-                    }
-                    newSMIFile.appendText((tempText ))
-                    newSMIFile.appendText("\n\r")
-                }else{
-                    newSMIFile.appendText("\n\r")
-                }
-                tempText = ""
-                i++
+                newSMIFile.appendText(it)
             }
+            newSMIFile.forEachLine {             Log.d(TAG, "For Each Line $it") }
 */
+/*
+            var i = 0
+
+            val FOS = FileOutputStream(selectedFile.path)
+            val OutputStreamWriter = OutputStreamWriter(FOS, "MS949")
+            var bfWriter = BufferedWriter(OutputStreamWriter)
+
+
             var firstSYNPassed = false
+            var newLine = "\n\r"
             var tempData:BasedSubtitleData = BasedSubtitleData()
             val reg = Regex("<.*?>")
-            selectedFile.readLines(charset("MS949")).forEach {
+            selectedFile.readLines(
+                Charset.forName(InputStreamReader(FileInputStream(selectedFile)).encoding)).forEach {
+                 //Log.d(TAG, "Each Line  is: $it")
 
                 if(it.contains("<SYNC Start=") && !(it.contains("nbsp") || it.contains("NBSP"))) {
                     tempData.mStartingTime = it.substringAfter("Start=").substringBefore("><P").toInt()
@@ -126,9 +174,24 @@ class SubtitleHandler(){
                     //Remove Tag
                     if (it.contains("<") || it.contains(">")) {
                         tempData.mLinesOfTexts?.add(
-                                /*String(*/it
+                                String(it
                                         .replace(reg, "")
-                                        /*.toByteArray(Charset.forName("MS949")))*/)
+                                        .toByteArray(Charset.forName("EUC-KR"))))
+/*
+                        Log.d(TAG, "Text is: ${tempData.mLinesOfTexts?.get(tempData.mLinesOfTexts!!.size-1).toString()}")
+
+                        //Log.d(TAG, "eachChar is: ${String.format("U+%04X", it.codePointAt(i))}")
+
+                        var i:Int = 0
+                        for(eachChar in it){
+                            Log.d(TAG, "eachChar is: ${String.format("U+%04X", it.codePointAt(i))}")
+                        }
+*/
+                    }else{
+                        tempData.mLinesOfTexts?.add(it)
+                        Log.d(TAG, "Text is: ${tempData.mLinesOfTexts?.get(tempData.mLinesOfTexts!!.size-1).toString()}")
+
+
                     }
                 }
                 if (it.contains("<SYNC Start=") && it.contains("nbsp") || it.contains("NBSP")) {
@@ -143,16 +206,67 @@ class SubtitleHandler(){
                     newSMIFile.appendText(
                             /*String(*/"${millisecToReadableTime(tempData.mStartingTime)}-->${millisecToReadableTime(tempData.mEndingTime)}"
                                     /*.toByteArray(Charset.forName("MS949")))*/)
-                    newSMIFile.appendText(/*String(*/"\n\r"/*.toByteArray(charset("MS949")))*/)
+                    newSMIFile.appendText(newLine)//String("\n\r".toByteArray(charset("MS949"))))
+
+                   //Adding Texts
                     tempData.mLinesOfTexts?.forEach {
+                        Log.d(TAG, "Text stored in TempData is $it")
+                        newSMIFile.appendText(String(it.toByteArray(charset("EUC-KR"))))
+                        newSMIFile.appendText(String(newLine.toByteArray(charset("EUC-KR"))))
+                    }
+                    //Adding Texts
+                    tempData.mLinesOfTexts?.forEach {
+                        Log.d(TAG, "Text stored in TempData is $it")
                         newSMIFile.appendText(/*String(*/it/*.toByteArray(charset("MS949")))*/)
-                        newSMIFile.appendText(/*String(*/"\n\r"/*.toByteArray(charset("MS949")))*/)                    }
+                        newSMIFile.appendText(/*String(*/"\n\r"/*.toByteArray(charset("MS949")))*/)
+                    }
                     i++
+                    tempData.mLinesOfTexts?.let { it1 -> tempData.mLinesOfTexts!!.removeAll(it1) }
                 }
 
-            }
-            newSMIFile.forEachLine { Log.d(TAG, "Checking CurrentLine : $it") }
+            }*/
+           // newSMIFile.readLines(charset("MS949")).forEach {Log.d(TAG, "Checking CurrentLine : $it") }
         }
+
+        private fun sortTextLines(SavingTo:File, file:File): File{
+            Log.d(TAG,"File Name is ${file.name}")
+            var isAfterFirstSync = false
+            val reg = Regex("<.*?>")
+            val tempFile = File(SavingTo, "Copy_2${file.nameWithoutExtension}.txt" )
+            if(tempFile.exists()){
+                tempFile.delete()
+            }
+            tempFile.createNewFile()
+
+            val newLine = "\n\r"
+            val endingTimeArray = mutableListOf<String>()
+
+            file.readLines(/*charset("MS949")*/).forEach{
+                Log.d(TAG, "Each Line ${it}")
+                if(it.contains("<SYNC Start=") && !(it.contains("nbsp")|| it.contains("NBSP"))){
+                    tempFile.appendText(millisecToReadableTime(it.substringAfter("Start=").substringBefore("><P").toInt()) +" --> " + newLine)
+                    isAfterFirstSync = true
+                }
+                if(isAfterFirstSync && ! (it.contains("SYNC") ||it.contains("sync"))){
+                    tempFile.appendText(it+ newLine)
+                }
+                if(it.contains("<SYNC Start=") && it.contains("nbsp")||it.contains("NBSP")){
+                    endingTimeArray.add(millisecToReadableTime(it.substringAfter("Start=").substringBefore("><P").toInt()).toString() + "nbsp"+ newLine)
+                }
+            }
+
+            val regexForTime = Regex(".*:.*:.*;")
+            var i = 0;
+            tempFile.readLines().forEach      {
+                    if(it.matches(regexForTime)){
+                        tempFile.appendText(it +endingTimeArray[i++])
+                    }
+            }
+
+            return tempFile
+        }
+
+
         fun millisecToReadableTime(milliseconds:Int):String{
             var remainMilisec:Int =(milliseconds%1000)
             var seconds:Int = ((milliseconds/1000) %60)
@@ -182,7 +296,5 @@ class SubtitleHandler(){
             data.add(tempData)
             return data
         }
-
-
     }
 }
