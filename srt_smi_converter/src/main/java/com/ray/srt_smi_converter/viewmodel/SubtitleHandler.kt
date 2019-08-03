@@ -76,16 +76,15 @@ class SubtitleHandler(){
                 }
             }*/
         }
-        fun createSRT(contents:MutableList<BasedSubtitleData>, selectedFile:File,appContext:Context){
+        fun createSRT(contents:MutableList<BasedSubtitleData>, selectedFile:File,appContext:Context):Boolean{
             //Log.d(TAG, "size of contents is ${contents.size}")
-            Log.d(TAG, "Type of Encoder is ${InputStreamReader(FileInputStream(selectedFile)).encoding}")
-            Log.d(TAG, "Path of selectedFile is ${selectedFile.path}")
+           // Log.d(TAG, "Type of Encoder is ${InputStreamReader(FileInputStream(selectedFile)).encoding}")
 
-            var tempText:String = ""
-            var typeOfEncoder = InputStreamReader(FileInputStream(selectedFile)).encoding
+            //var tempText:String = ""
+            //var typeOfEncoder = InputStreamReader(FileInputStream(selectedFile)).encoding
+            //val newLine = "\n\r"
+
             val SavingFolder = selectedFile.parentFile
-            val newLine = "\n\r"
-
 /*
             newSMIFile.appendText("<============================ readLines with charset==============>")
             selectedFile.readLines(charset("MS949")).forEach{
@@ -105,26 +104,17 @@ class SubtitleHandler(){
                 newSMIFile.appendText(it.toByteArray().toString() + newLine)
             }
 */
-            var CopyFile = File(SavingFolder,"Copy_${selectedFile.nameWithoutExtension}.txt")
-            if(CopyFile.exists()){
-                CopyFile.delete()
-            }
-            CopyFile.createNewFile()
-
-            CopyFile = selectedFile.copyTo(CopyFile, true)
-
-            Log.d(TAG, "CopyFile is ${CopyFile.name}")
-            val newSRTFile = sortTextLines(SavingFolder, CopyFile).createNewFile()
-/*
-            if(newSRTFile.exists()){
-                Log.d(TAG, "Directory exist!")
-            }
-            newSRTFile.createNewFile()
-*/
-
-
-
-
+            /*
+  //Copying File
+             var CopyFile = File(SavingFolder,"Copy_${selectedFile.nameWithoutExtension}.txt")
+             if(CopyFile.exists()){
+                 CopyFile.delete()
+             }
+             CopyFile.createNewFile()
+             CopyFile = selectedFile.copyTo(CopyFile, true)
+ */
+            val createdSRT = sortTextLines(SavingFolder, selectedFile).createNewFile()
+            return createdSRT
 /*
             TesterSMIFile.appendText("\n\r =================using readLines==========\n\r ")
             selectedFile.readLines(charset("MS949")).forEach {
@@ -229,62 +219,84 @@ class SubtitleHandler(){
         }
 
         private fun sortTextLines(SavingTo:File, file:File): File{
-            Log.d(TAG,"File Name is ${file.name}")
+            Log.d(TAG,"sortTextLines()")
             var isAfterFirstSync = false
-            val reg = Regex("<.*?>")
+            val regRemoveTag = Regex("<.*?>")
             val tempFile = File(SavingTo, "Copy_2${file.nameWithoutExtension}.txt" )
+/*
             if(tempFile.exists()){
                 tempFile.delete()
             }
             tempFile.createNewFile()
-
+*/
             val newLine = "\n\r"
             val endingTimeArray = mutableListOf<String>()
 
-            file.readLines(/*charset("MS949")*/).forEach{
+            // First Sorting
+            file.readLines().forEach{
                 Log.d(TAG, "Each Line ${it}")
                 if(it.contains("<SYNC Start=") && !(it.contains("nbsp")|| it.contains("NBSP"))){
                     tempFile.appendText(millisecToReadableTime(it.substringAfter("Start=").substringBefore("><P").toInt()) +" --> " + newLine)
                     isAfterFirstSync = true
                 }
+
                 if(isAfterFirstSync && ! (it.contains("SYNC") ||it.contains("sync"))){
-                    tempFile.appendText(it+ newLine)
+                    tempFile.appendText(String(it.replace(regRemoveTag, "").toByteArray(Charsets.UTF_8)) + newLine)
                 }
                 if(it.contains("<SYNC Start=") && it.contains("nbsp")||it.contains("NBSP")){
-                    endingTimeArray.add(millisecToReadableTime(it.substringAfter("Start=").substringBefore("><P").toInt()).toString() + "nbsp"+ newLine)
+                    endingTimeArray.add(millisecToReadableTime(it.substringAfter("Start=").substringBefore("><P").toInt()).toString() + newLine)
                 }
             }
 
-            val regexForTime = Regex(".*:.*:.*;")
-            var i = 0;
-            tempFile.readLines().forEach      {
-                    if(it.matches(regexForTime)){
-                        tempFile.appendText(it +endingTimeArray[i++])
-                    }
+            var index = 0
+            val sortedFile = File(SavingTo, "Sorted_${file.nameWithoutExtension}.txt" )
+            if(sortedFile.exists()){
+                sortedFile.delete()
             }
+            sortedFile.createNewFile()
 
-            return tempFile
+            //Second Sorting
+            tempFile.readLines().forEach{
+                if(it.contains(":") && it.contains(",") && index < endingTimeArray.size){
+                    sortedFile.appendText(index.toString())
+                    sortedFile.appendText( it +endingTimeArray[index] )
+                    index++
+                } else  {
+                    sortedFile.appendText(it)
+                }
+
+            }
+/*
+            if(tempFile.exists()){
+                tempFile.delete()
+            }
+*/
+            // Log.d(TAG, "Type of Encoder is ${InputStreamReader(FileInputStream(selectedFile)).encoding}")
+            Log.d(TAG, "tempFile encoding is ${InputStreamReader(FileInputStream(tempFile)).encoding}")
+            Log.d(TAG, "sortedFile encoding is ${InputStreamReader(FileInputStream(sortedFile)).encoding}")
+
+            return sortedFile
         }
 
 
         fun millisecToReadableTime(milliseconds:Int):String{
-            var remainMilisec:Int =(milliseconds%1000)
-            var seconds:Int = ((milliseconds/1000) %60)
-            var minutes:Int= ((milliseconds/(1000*60))%60)
-            var hours:Int = ((milliseconds/(1000*60*60))%24)
+            val remainMilisec:Int =(milliseconds%1000)
+            val seconds:Int = ((milliseconds/1000) %60)
+            val minutes:Int= ((milliseconds/(1000*60))%60)
+            val hours:Int = ((milliseconds/(1000*60*60))%24)
 
-            var hoursStr = if (hours < 10) "0$hours" else hours.toString()
-            var minutesStr = if (minutes < 10) "0$minutes" else minutes.toString()
-            var secondsStr = if (seconds < 10) "0$seconds" else seconds.toString()
+            val hoursStr = if (hours < 10) "0$hours" else hours.toString()
+            val minutesStr = if (minutes < 10) "0$minutes" else minutes.toString()
+            val secondsStr = if (seconds < 10) "0$seconds" else seconds.toString()
 
-            var readableTime:String = "$hoursStr:$minutesStr:$secondsStr,$remainMilisec"
+            val readableTime:String = "$hoursStr:$minutesStr:$secondsStr,$remainMilisec"
             return readableTime
         }
         fun parseSRTData(file:File):MutableList<BasedSubtitleData>{
             val textsFromSMI:MutableList<String>
             val data: MutableList<BasedSubtitleData> = mutableListOf()
             var index:Int = 0
-            var tempData = BasedSubtitleData()
+            val tempData = BasedSubtitleData()
             file.forEachLine{
                 if(it.contains("<SYNC")){
                     Log.d(TAG, "Inside Contains")
