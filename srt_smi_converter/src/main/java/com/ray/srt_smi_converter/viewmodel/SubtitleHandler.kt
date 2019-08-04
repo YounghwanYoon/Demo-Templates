@@ -220,9 +220,10 @@ class SubtitleHandler(){
 
         private fun sortTextLines(SavingTo:File, file:File): File{
             Log.d(TAG,"sortTextLines()")
+            Log.d(TAG, "default charset is ${Charset.defaultCharset()}")
             var isAfterFirstSync = false
             val regRemoveTag = Regex("<.*?>")
-            val tempFile = File(SavingTo, "Copy_2${file.nameWithoutExtension}.txt" )
+            val tempFile = File(SavingTo, "Temp_${file.nameWithoutExtension}.txt" )
 /*
             if(tempFile.exists()){
                 tempFile.delete()
@@ -233,7 +234,8 @@ class SubtitleHandler(){
             val endingTimeArray = mutableListOf<String>()
 
             // First Sorting
-            file.readLines().forEach{
+            //Charset.defaultCharset()
+            file.readLines(charset("MS-949")).forEach{
                 Log.d(TAG, "Each Line ${it}")
                 if(it.contains("<SYNC Start=") && !(it.contains("nbsp")|| it.contains("NBSP"))){
                     tempFile.appendText(millisecToReadableTime(it.substringAfter("Start=").substringBefore("><P").toInt()) +" --> " + newLine)
@@ -241,7 +243,8 @@ class SubtitleHandler(){
                 }
 
                 if(isAfterFirstSync && ! (it.contains("SYNC") ||it.contains("sync"))){
-                    tempFile.appendText(String(it.replace(regRemoveTag, "").toByteArray(Charsets.UTF_8)) + newLine)
+                    tempFile.appendText(it.replace(regRemoveTag, "") + newLine)
+                    //tempFile.appendText(String(it.replace(regRemoveTag, "").toByteArray(Charsets.UTF_8)) + newLine)
                 }
                 if(it.contains("<SYNC Start=") && it.contains("nbsp")||it.contains("NBSP")){
                     endingTimeArray.add(millisecToReadableTime(it.substringAfter("Start=").substringBefore("><P").toInt()).toString() + newLine)
@@ -249,31 +252,30 @@ class SubtitleHandler(){
             }
 
             var index = 0
-            val sortedFile = File(SavingTo, "Sorted_${file.nameWithoutExtension}.txt" )
+            val sortedFile = File(SavingTo, "Converted_${file.nameWithoutExtension}.txt" )
             if(sortedFile.exists()){
                 sortedFile.delete()
             }
-            sortedFile.createNewFile()
+            //sortedFile.createNewFile()
 
             //Second Sorting
-            tempFile.readLines().forEach{
+            //Charset.defaultCharset()
+            tempFile.readLines(/*charset("MS-949")*/).forEach{
                 if(it.contains(":") && it.contains(",") && index < endingTimeArray.size){
-                    sortedFile.appendText(index.toString())
+                    sortedFile.appendText(index.toString() + newLine)
                     sortedFile.appendText( it +endingTimeArray[index] )
                     index++
                 } else  {
-                    sortedFile.appendText(it)
+                    sortedFile.appendText(it + newLine)
                 }
-
             }
-/*
-            if(tempFile.exists()){
-                tempFile.delete()
-            }
-*/
             // Log.d(TAG, "Type of Encoder is ${InputStreamReader(FileInputStream(selectedFile)).encoding}")
             Log.d(TAG, "tempFile encoding is ${InputStreamReader(FileInputStream(tempFile)).encoding}")
             Log.d(TAG, "sortedFile encoding is ${InputStreamReader(FileInputStream(sortedFile)).encoding}")
+
+            if(tempFile.exists()){
+                tempFile.delete()
+            }
 
             return sortedFile
         }
