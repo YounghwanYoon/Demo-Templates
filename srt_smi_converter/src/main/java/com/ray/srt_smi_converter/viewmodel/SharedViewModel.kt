@@ -1,33 +1,49 @@
 package com.ray.srt_smi_converter.viewmodel
 
+import android.os.AsyncTask
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.viewpager.widget.ViewPager
 import com.ray.srt_smi_converter.view.ListofFiles
-import com.ray.srt_smi_converter.view.Select_Type_Fragment
+import com.ray.srt_smi_converter.view.Option_Fragment
 import com.ray.srt_smi_converter.view.adapter.StatePagerAdapter
 import com.ray.srt_smi_converter.viewmodel.SharedViewModel.viewpager.mViewPager
 import java.io.File
 
 class SharedViewModel: ViewModel(){
     private val TAG = this.javaClass.simpleName.toString()
-    private val directory : MutableLiveData<String> = MutableLiveData()
+    private val theFileList: MutableLiveData<List<File>> = MutableLiveData()
     private lateinit var mFileHandler:FileHandler
     private lateinit var mAdapter:StatePagerAdapter
+
+    private var mSelectedFile:MutableLiveData<File> = MutableLiveData()
+
+    fun getSelectedFile():LiveData<File>{
+        return mSelectedFile
+    }
+    fun setSelectedFile(file:File){
+        mSelectedFile.value= file
+    }
+    fun convertFile(){
+        Log.d(TAG,"convertFile is clicked")
+        val bg_work = mSelectedFile.value?.let { Background_Work(it).execute() };
+        Log.d(TAG,"convertFile work: $bg_work")
+    }
 
     object viewpager{
         internal lateinit var mViewPager: ViewPager
     }
 
     //Return selected directory of file
-    fun getDirectory(): LiveData<String> {
-        return directory
+    fun getFileList(): LiveData<List<File>> {
+        return theFileList
     }
 
-    fun setDirectory(selected_dir:String){
-        directory.value = selected_dir
+    fun setFile(selected_File: File){
+        Log.d(TAG,"setFile is clicked")
+        theFileList.value = selected_File.listFiles().toList()
     }
 
     fun changeFragment(currentItem: Int){
@@ -40,7 +56,7 @@ class SharedViewModel: ViewModel(){
         Log.d(TAG, "inside SharedViewModel's setupViewPager method")
         mViewPager= viewPager
         mAdapter = adapter
-        mAdapter.addFragment(Select_Type_Fragment())
+        mAdapter.addFragment(Option_Fragment())
         mAdapter.addFragment(ListofFiles())
         mViewPager.adapter = adapter
     }
@@ -57,8 +73,16 @@ class SharedViewModel: ViewModel(){
     fun updatedList(newDir: File):MutableList<File>{
         Log.d(TAG, "inside SharedViewModel's updatedList ()")
         Log.d(TAG, "inside SharedViewModel's newDir is ${newDir.path}")
-
         val files = mFileHandler.returnListInPath(newDir)
         return files
+    }
+
+    private class Background_Work(val mCurrentFile: File): AsyncTask<Void, Void, String>() {
+        override fun doInBackground(vararg p0: Void?): String {
+            SubtitleHandler.createSRT(mCurrentFile)
+            return "Completed"
+        }
+        override fun onPostExecute(result: String) {
+        }
     }
 }

@@ -45,7 +45,8 @@ class CustomedAdapter(private val context: Context?, val singleLayout:Int, var l
     //Intead, declear click listener under MyViewHolder. eachView()
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         Log.d(TAG, "CustomedAdapter class -  onBindViewHolder() is called")
-        holder.eachView(list[position], position)
+        var tempFile = list.get(position)
+        holder.eachView(tempFile, position)
     }
 
     inner class MyViewHolder(private var eachView:View): RecyclerView.ViewHolder(eachView), View.OnClickListener{

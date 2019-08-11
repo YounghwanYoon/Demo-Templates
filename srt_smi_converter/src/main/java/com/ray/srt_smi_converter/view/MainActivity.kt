@@ -20,7 +20,7 @@ import com.ray.srt_smi_converter.viewmodel.SubtitleHandler
 import java.io.File
 
 //FragmentActivity()
-class MainActivity :  AppCompatActivity(){
+class MainActivity :  FragmentActivity(){
     private var TAG:String = this.javaClass.simpleName.toString()
 
 private var mViewAdapter= StatePagerAdapter(supportFragmentManager)
