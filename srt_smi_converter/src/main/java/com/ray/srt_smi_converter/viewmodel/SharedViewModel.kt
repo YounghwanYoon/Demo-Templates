@@ -14,12 +14,11 @@ import java.io.File
 
 class SharedViewModel: ViewModel(){
     private val TAG = this.javaClass.simpleName.toString()
-    private val theFileList: MutableLiveData<List<File>> = MutableLiveData()
+    private val mFileList: MutableLiveData<List<File>> = MutableLiveData()
     private lateinit var mFileHandler:FileHandler
     private lateinit var mAdapter:StatePagerAdapter
 
     private var mSelectedFile:MutableLiveData<File> = MutableLiveData()
-
     fun getSelectedFile():LiveData<File>{
         return mSelectedFile
     }
@@ -38,12 +37,17 @@ class SharedViewModel: ViewModel(){
 
     //Return selected directory of file
     fun getFileList(): LiveData<List<File>> {
-        return theFileList
+        return mFileList
     }
 
     fun setFile(selected_File: File){
         Log.d(TAG,"setFile is clicked")
-        theFileList.value = selected_File.listFiles().toList()
+        mFileList.value = mFileHandler.returnListInPath(selected_File)
+                //selected_File.listFiles().toList().sorted()
+    }
+
+    fun setStartingList(){
+        mFileList.value = getListOfStartingDirectory()
     }
 
     fun changeFragment(currentItem: Int){
@@ -61,10 +65,11 @@ class SharedViewModel: ViewModel(){
         mViewPager.adapter = adapter
     }
 
-    fun getListOfCurrentDirectory(): MutableList<File> {
-        Log.d(TAG, "inside SharedViewModel's getListOfCurrentDirectory method")
+    fun getListOfStartingDirectory(): MutableList<File> {
+        Log.d(TAG, "inside SharedViewModel's getListOfStartingDirectory method")
 
         mFileHandler = FileHandler()
+        //Starting Location/File
         val file = mFileHandler.setStartingURLByManufacturer(android.os.Build.MANUFACTURER)
         val files =  mFileHandler.returnListInPath(file)
         return files
@@ -75,6 +80,10 @@ class SharedViewModel: ViewModel(){
         Log.d(TAG, "inside SharedViewModel's newDir is ${newDir.path}")
         val files = mFileHandler.returnListInPath(newDir)
         return files
+    }
+
+    fun getBaseDir():File{
+        return mFileHandler.setStartingURLByManufacturer(android.os.Build.MANUFACTURER)
     }
 
     private class Background_Work(val mCurrentFile: File): AsyncTask<Void, Void, String>() {
